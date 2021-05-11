@@ -9,7 +9,7 @@ export interface MapProps extends CanvasProps {
 }
 
 export abstract class Map extends Canvas {
-  abstract start: TCoordinates;
+  protected abstract start: TCoordinates;
 
   private tiles: Tile[];
 

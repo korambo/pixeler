@@ -98,7 +98,7 @@ export class Chest extends Interaction {
 
     if (this.canOpen || this.canLoot) this.drawHelper();
 
-    if (this.empty) {
+    if (this.empty && this.open) {
       drawEmpty(params);
       return;
     }

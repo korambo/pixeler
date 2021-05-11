@@ -19,7 +19,7 @@ interface DebugInfo {
 interface GameProps {
   canvasId: string;
   debug?: boolean;
-  customMap?: typeof SimpleMap; // todo
+  customMap?: typeof Map;
 }
 
 const getCanvas = (canvasId: string): InitProps => {
@@ -41,22 +41,18 @@ let curDraw = 0;
 
 export class Game extends Canvas {
   width = GAME_WIDTH / LINE_WIDTH;
-
   height = GAME_HEIGHT / LINE_WIDTH;
 
   background = 'lightblue';
 
   // effects
   gravity: Gravity;
-
   inputs: Inputs;
-
   camera: Camera;
 
   movingObjects: MovingGameObject[];
 
   map: Map;
-
   player: Player;
 
   debug: boolean;
@@ -71,6 +67,7 @@ export class Game extends Canvas {
     this.gravity = new Gravity();
     this.inputs = new Inputs();
 
+    // @ts-ignore
     this.map = new (props.customMap || SimpleMap)({ inputs: this.inputs, x: null, y: null });
 
     this.camera = new Camera({ map: this.map, x: null, y: null });

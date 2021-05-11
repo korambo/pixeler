@@ -5,11 +5,10 @@ import { Terrain } from '@objects/tiles/Terrain';
 import { Chest } from '@objects/Chest/Chest';
 
 class ChestMap extends Map {
-  width = 200;
+  protected width = 200;
+  protected height = 150;
 
-  height = 150;
-
-  start = { x: 20, y: 50 };
+  protected start = { x: 20, y: 50 };
 
   constructor(props: MapProps) {
     super(props);
@@ -22,12 +21,9 @@ class ChestMap extends Map {
 
     this.setInteractions([
       new Chest({ inputs: props.inputs, x: 60, y: 125 }),
-      new Chest({
-        inputs: props.inputs, x: 90, y: 125, open: true,
-      }),
-      new Chest({
-        inputs: props.inputs, x: 120, y: 125, open: true, empty: true,
-      }),
+      new Chest({ inputs: props.inputs, x: 90, y: 125, empty: true }),
+      new Chest({ inputs: props.inputs, x: 120, y: 125, open: true }),
+      new Chest({ inputs: props.inputs, x: 150, y: 125, open: true, empty: true }),
     ]);
   }
 }

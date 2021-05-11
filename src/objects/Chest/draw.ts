@@ -1,5 +1,8 @@
 import { Rectangle } from '@geometry/Rectangle';
 import { Draw, DrawParams } from '@core/Draw';
+import { Dot } from '@geometry/Dot';
+import { Line } from '@geometry/Line';
+import { Angle } from '@geometry/types';
 
 const colors = {
   border: '#47300e',
@@ -128,21 +131,15 @@ const closedCover = ({ sizes, coordinates }: DrawParams) => new Draw({
       color: colors.mainColorShadow,
       filled: true,
     }),
-    new Rectangle({
-      width: Draw.getPixels(1),
-      height: Draw.getPixels(1),
+    new Dot({
       x: Draw.addPixels(coordinates.x, 7),
       y: Draw.addPixels(coordinates.y, 10),
       color: colors.mainColorShadow,
-      filled: true,
     }),
-    new Rectangle({
-      width: Draw.getPixels(1),
-      height: Draw.getPixels(1),
+    new Dot({
       x: Draw.addPixels(coordinates.x, 10),
       y: Draw.addPixels(coordinates.y, 10),
       color: colors.mainColorShadow,
-      filled: true,
     }),
     new Rectangle({
       width: Draw.removePixels(sizes.width, 6),
@@ -152,21 +149,15 @@ const closedCover = ({ sizes, coordinates }: DrawParams) => new Draw({
       color: colors.mainColorShadow,
       filled: true,
     }),
-    new Rectangle({
-      width: Draw.getPixels(1),
-      height: Draw.getPixels(1),
+    new Dot({
       x: Draw.addPixels(coordinates.x, 1),
       y: Draw.addPixels(coordinates.y, 9),
       color: colors.secondColorShadow,
-      filled: true,
     }),
-    new Rectangle({
-      width: Draw.getPixels(1),
-      height: Draw.getPixels(1),
+    new Dot({
       x: Draw.removePixels(coordinates.x + sizes.width, 2),
       y: Draw.addPixels(coordinates.y, 9),
       color: colors.secondColorShadow,
-      filled: true,
     }),
     // lock
     new Rectangle({
@@ -185,21 +176,19 @@ const closedCover = ({ sizes, coordinates }: DrawParams) => new Draw({
       color: colors.border,
       filled: true,
     }),
-    new Rectangle({
-      width: Draw.getPixels(2),
-      height: Draw.getPixels(1),
+    new Line({
       x: Draw.addPixels(coordinates.x, 8),
       y: Draw.addPixels(coordinates.y, 5),
+      size: 2,
       color: colors.border,
-      filled: true,
+      angle: Angle.deg0,
     }),
-    new Rectangle({
-      width: Draw.getPixels(2),
-      height: Draw.getPixels(1),
+    new Line({
       x: Draw.addPixels(coordinates.x, 8),
       y: Draw.addPixels(coordinates.y, 10),
+      size: 2,
       color: colors.border,
-      filled: true,
+      angle: Angle.deg0,
     }),
     new Rectangle({
       width: Draw.getPixels(2),
@@ -210,19 +199,197 @@ const closedCover = ({ sizes, coordinates }: DrawParams) => new Draw({
       filled: true,
     }),
     // shadow at lock
-    new Rectangle({
-      width: Draw.getPixels(2),
-      height: Draw.getPixels(1),
+    new Line({
       x: Draw.addPixels(coordinates.x, 8),
       y: Draw.addPixels(coordinates.y, 9),
+      size: 2,
       color: colors.secondColorShadow,
-      filled: true,
+      angle: Angle.deg0,
+    }),
+  ],
+});
+
+const openedCover = ({ sizes, coordinates }: DrawParams) => new Draw({
+  ...sizes,
+  ...coordinates,
+
+  elements: [
+    // cover top
+    new Rectangle({
+      width: Draw.removePixels(sizes.width, 6),
+      height: Draw.getPixels(2),
+      x: Draw.addPixels(coordinates.x, 3),
+      y: coordinates.y,
+      color: colors.mainColorShadow,
+      filled: true
+    }),
+    new Rectangle({
+      width: Draw.removePixels(sizes.width, 4),
+      height: Draw.getPixels(4),
+      x: Draw.addPixels(coordinates.x, 2),
+      y: Draw.removePixels(coordinates.y, 1),
+      color: colors.border,
+    }),
+    new Rectangle({
+      width: Draw.removePixels(sizes.width, 2),
+      height: Draw.getPixels(6),
+      x: Draw.addPixels(coordinates.x, 1),
+      y: Draw.removePixels(coordinates.y, 2),
+      color: colors.secondColorShadow,
+    }),
+    new Rectangle({
+      width: sizes.width,
+      height: Draw.getPixels(6),
+      x: coordinates.x,
+      y: Draw.removePixels(coordinates.y, 3),
+      color: colors.border,
+    }),
+    // lock
+    new Dot({
+      x: Draw.addPixels(coordinates.x, 7),
+      y: Draw.removePixels(coordinates.y, 2),
+      color: colors.border,
+    }),
+    new Dot({
+      x: Draw.addPixels(coordinates.x, 10),
+      y: Draw.removePixels(coordinates.y, 2),
+      color: colors.border,
+    }),
+    new Line({
+      x: Draw.addPixels(coordinates.x, 8),
+      y: Draw.removePixels(coordinates.y, 4),
+      size: 2,
+      angle: Angle.deg0,
+      color: colors.border,
+    }),
+    new Line({
+      x: Draw.addPixels(coordinates.x, 8),
+      y: Draw.removePixels(coordinates.y, 3),
+      size: 2,
+      angle: Angle.deg0,
+      color: colors.secondColor,
+    }),
+    // walls
+    new Rectangle({
+      width: Draw.getPixels(3),
+      height: Draw.getPixels(5),
+      x: coordinates.x,
+      y: Draw.addPixels(coordinates.y, 2),
+      color: colors.border,
+    }),
+    new Line({
+      x: Draw.addPixels(coordinates.x, 1),
+      y: Draw.addPixels(coordinates.y, 4),
+      size: 2,
+      color: colors.secondColorLight,
+      angle: Angle.deg90
+    }),
+    new Rectangle({
+      width: Draw.getPixels(3),
+      height: Draw.getPixels(5),
+      x: Draw.removePixels(coordinates.x + sizes.width, 3),
+      y: Draw.addPixels(coordinates.y, 2),
+      color: colors.border,
+    }),
+    new Line({
+      x: Draw.removePixels(coordinates.x + sizes.width, 2),
+      y: Draw.addPixels(coordinates.y, 4),
+      size: 2,
+      color: colors.secondColorLight,
+      angle: Angle.deg90
+    }),
+    new Rectangle({
+      width: Draw.removePixels(sizes.width, 6),
+      height: Draw.getPixels(3),
+      x: Draw.addPixels(coordinates.x, 3),
+      y: Draw.addPixels(coordinates.y, 3),
+      color: colors.mainColorShadow,
+      filled: true
+    }),
+  ]
+});
+
+const gold = ({ sizes, coordinates }: DrawParams) => new Draw({
+  ...sizes,
+  ...coordinates,
+
+  elements: [
+    // gold
+    new Rectangle({
+      width: Draw.removePixels(sizes.width, 6),
+      height: Draw.getPixels(3),
+      x: Draw.addPixels(coordinates.x, 3),
+      y: Draw.addPixels(coordinates.y, 3),
+      color: colors.secondColorLight,
+      filled: true
+    }),
+    // border
+    new Dot({
+      x: Draw.addPixels(coordinates.x, 3),
+      y: Draw.addPixels(coordinates.y, 3),
+      color: colors.border
+    }),
+    new Line({
+      x: Draw.addPixels(coordinates.x, 5),
+      y: Draw.addPixels(coordinates.y, 2),
+      size: 4,
+      color: colors.secondColorLight
+    }),
+    new Line({
+      x: Draw.addPixels(coordinates.x, 5),
+      y: Draw.addPixels(coordinates.y, 1),
+      size: 4,
+      color: colors.border
+    }),
+    new Line({
+      x: Draw.addPixels(coordinates.x, 11),
+      y: Draw.addPixels(coordinates.y, 2),
+      size: 3,
+      color: colors.secondColorLight
+    }),
+    new Line({
+      x: Draw.addPixels(coordinates.x, 11),
+      y: Draw.addPixels(coordinates.y, 1),
+      size: 3,
+      color: colors.border
+    }),
+    new Dot({
+      x: Draw.removePixels(coordinates.x + sizes.width, 4),
+      y: Draw.addPixels(coordinates.y, 3),
+      color: colors.border
+    }),
+    // shadow
+    new Line({
+      x: Draw.addPixels(coordinates.x, 4),
+      y: Draw.addPixels(coordinates.y, 5),
+      size: 2,
+      angle: Angle.deg45,
+      color: colors.secondColorShadow
+    }),
+    new Line({
+      x: Draw.addPixels(coordinates.x, 5),
+      y: Draw.addPixels(coordinates.y, 5),
+      size: 2,
+      color: colors.secondColorShadow
+    }),
+    new Line({
+      x: Draw.addPixels(coordinates.x, 8),
+      y: Draw.addPixels(coordinates.y, 5),
+      size: 7,
+      color: colors.secondColorShadow
+    }),
+    new Line({
+      x: Draw.addPixels(coordinates.x, 10),
+      y: Draw.addPixels(coordinates.y, 4),
+      size: 2,
+      color: colors.secondColorShadow
     }),
   ],
 });
 
 export const drawEmpty = (params: DrawParams) => {
   bottom(params).draw();
+  openedCover(params).draw();
 };
 
 export const drawClosed = (params: DrawParams) => {
@@ -232,4 +399,6 @@ export const drawClosed = (params: DrawParams) => {
 
 export const drawOpened = (params: DrawParams) => {
   bottom(params).draw();
+  openedCover(params).draw();
+  gold(params).draw();
 };

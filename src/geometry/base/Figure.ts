@@ -8,9 +8,8 @@ export interface FigureProps extends TSizes, CanvasProps {
 }
 
 export abstract class Figure extends Canvas {
-  width = null;
-
-  height = null;
+  protected width = null;
+  protected height = null;
 
   public canFlip: boolean;
 

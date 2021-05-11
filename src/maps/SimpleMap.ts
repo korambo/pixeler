@@ -5,16 +5,13 @@ import { GAME_HEIGHT, LINE_WIDTH } from '@core/constants';
 import { Map, MapProps } from '@maps/base/Map';
 import { Chest } from '@objects/Chest';
 
-interface SimpleMapProps extends MapProps {}
-
 export class SimpleMap extends Map {
-  width = 500;
+  protected width = 500;
+  protected height = GAME_HEIGHT / LINE_WIDTH;
 
-  height = GAME_HEIGHT / LINE_WIDTH;
+  protected start = { x: 20, y: 50 };
 
-  start = { x: 20, y: 50 };
-
-  constructor(props: SimpleMapProps) {
+  constructor(props: MapProps) {
     super(props);
 
     const sizes = this.getOriginalSizes();

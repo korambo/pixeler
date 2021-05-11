@@ -2,8 +2,9 @@ import { Figure } from '@geometry/base/Figure';
 import { Flip, TCoordinates, TSizes } from '@core/types';
 import { Canvas } from '@core/Canvas';
 import { LINE_WIDTH } from '@core/constants';
+import { Line } from '@geometry/Line';
 
-type DrawElement = Figure;
+type DrawElement = Figure | Line;
 
 export interface DrawParams {
   sizes: TSizes;
