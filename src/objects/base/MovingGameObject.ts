@@ -10,14 +10,19 @@ export abstract class MovingGameObject extends GameObject {
   private acceleration = 0;
 
   abstract speed: number;
+
   abstract jumpSpeed: number;
+
   abstract jumpTime: number;
+
   abstract orientation: Orientation;
 
   protected gravity: Gravity;
 
   public canMove = false;
+
   public isJump = false;
+
   public isOnGround = false;
 
   protected constructor(props: MovingGameObjectProps) {
@@ -27,17 +32,16 @@ export abstract class MovingGameObject extends GameObject {
   }
 
   abstract effects(): void;
+
   abstract inputEffects(): void;
 
   public setIsOnGround = (isOnGround: boolean) => {
     this.isOnGround = isOnGround;
-  }
+  };
 
-  public getAcceleration = () => {
-    return this.acceleration;
-  }
+  public getAcceleration = () => this.acceleration;
 
   public setAcceleration = (acceleration: number) => {
     this.acceleration = acceleration;
-  }
+  };
 }

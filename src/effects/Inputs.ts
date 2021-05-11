@@ -24,12 +24,10 @@ export class Inputs {
     document.body.addEventListener('keyup', this.keyUp);
   }
 
-  public getKeysPressed = () => {
-    return this.keysPressed;
-  }
+  public getKeysPressed = () => this.keysPressed;
 
   private keyDown = (e: KeyboardEvent) => {
-    switch(e.code) {
+    switch (e.code) {
       case KEY_UP: {
         this.keysPressed.up = true;
         break;
@@ -55,10 +53,10 @@ export class Inputs {
         break;
       }
     }
-  }
+  };
 
   private keyUp = (e: KeyboardEvent) => {
-    switch(e.code) {
+    switch (e.code) {
       case KEY_UP: {
         this.keysPressed.up = false;
         break;
@@ -84,5 +82,5 @@ export class Inputs {
         break;
       }
     }
-  }
+  };
 }

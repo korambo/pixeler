@@ -1,4 +1,4 @@
-import { TCoordinates, TPaddings } from '@core/types';
+import { TCoordinates } from '@core/types';
 import { Tile } from '@objects/tiles/Tile';
 import { Canvas, CanvasProps } from '@core/Canvas';
 import { Inputs } from '@effects/Inputs';
@@ -12,6 +12,7 @@ export abstract class Map extends Canvas {
   abstract start: TCoordinates;
 
   private tiles: Tile[];
+
   private interactions: Interaction[];
 
   protected inputs: Inputs;
@@ -20,23 +21,19 @@ export abstract class Map extends Canvas {
     super(props);
 
     this.inputs = props.inputs;
-  };
+  }
 
   public setTiles = (tiles: Tile[]) => {
     this.tiles = tiles;
-  }
+  };
 
-  public getTiles = () => {
-    return this.tiles;
-  }
+  public getTiles = () => this.tiles;
 
   public setInteractions = (interactions: Interaction[]) => {
     this.interactions = interactions;
-  }
+  };
 
-  public getInteractions = () => {
-    return this.interactions;
-  }
+  public getInteractions = () => this.interactions;
 
   public getStart = (): TCoordinates => this.start;
 

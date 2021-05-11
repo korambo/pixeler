@@ -7,7 +7,7 @@ import { SimpleMap } from '@maps/SimpleMap';
 import { GAME_HEIGHT, GAME_WIDTH, LINE_WIDTH } from '@core/constants';
 
 import { Map } from '@maps/base/Map';
-import { Canvas, CanvasProps, InitProps } from '@core/Canvas';
+import { Canvas, InitProps } from '@core/Canvas';
 import { MovingGameObject } from '@objects/base/MovingGameObject';
 import { GameObject } from '@objects/base/GameObject';
 
@@ -19,7 +19,7 @@ interface DebugInfo {
 interface GameProps {
   canvasId: string;
   debug?: boolean;
-  customMap?: typeof SimpleMap;
+  customMap?: typeof SimpleMap; // todo
 }
 
 const getCanvas = (canvasId: string): InitProps => {
@@ -32,25 +32,31 @@ const getCanvas = (canvasId: string): InitProps => {
     canvas,
     ctx,
     cellSize,
-  }
+  };
 };
 
+// debug
 const maxRedraw = 60;
 let curDraw = 0;
 
 export class Game extends Canvas {
   width = GAME_WIDTH / LINE_WIDTH;
+
   height = GAME_HEIGHT / LINE_WIDTH;
 
   background = 'lightblue';
 
   // effects
   gravity: Gravity;
+
   inputs: Inputs;
+
   camera: Camera;
 
   movingObjects: MovingGameObject[];
+
   map: Map;
+
   player: Player;
 
   debug: boolean;
@@ -65,9 +71,7 @@ export class Game extends Canvas {
     this.gravity = new Gravity();
     this.inputs = new Inputs();
 
-    this.map = props.customMap
-      ? new props.customMap({ inputs: this.inputs, x: null, y: null })
-      : new SimpleMap({ inputs: this.inputs, x: null, y: null });
+    this.map = new (props.customMap || SimpleMap)({ inputs: this.inputs, x: null, y: null });
 
     this.camera = new Camera({ map: this.map, x: null, y: null });
 
@@ -89,9 +93,9 @@ export class Game extends Canvas {
     const coordinates = gameObject.getCoordinates();
     return {
       key: gameObject.constructor.name,
-      text: `${gameObject.constructor.name}: x=${coordinates.x} y=${coordinates.y}`
-    }
-  }
+      text: `${gameObject.constructor.name}: x=${coordinates.x} y=${coordinates.y}`,
+    };
+  };
 
   private drawInfo = ({ key, text }: DebugInfo) => {
     const cameraCoordinates = this.camera.selectedCoordinates;
@@ -104,11 +108,11 @@ export class Game extends Canvas {
     ctx.fillText(text, 5 - cameraCoordinates.x, 20 + 20 * Object.keys(this.info).indexOf(key) - cameraCoordinates.y);
 
     ctx.fill();
-  }
-
+  };
 
   public draw = () => {
     // debug
+    // eslint-disable-next-line no-constant-condition
     if (false) {
       curDraw++;
       if (curDraw > maxRedraw) {
@@ -117,7 +121,7 @@ export class Game extends Canvas {
     }
     requestAnimationFrame(this.draw);
 
-    this.drawBackground()
+    this.drawBackground();
     this.inputEffects();
     this.effects();
     this.map.draw();
@@ -133,7 +137,7 @@ export class Game extends Canvas {
       this.drawInfo(this.getDebugInfo(this.camera));
       this.drawInfo(this.getDebugInfo(this.player));
     }
-  }
+  };
 
   private boundaryCheck = (moving: MovingGameObject) => {
     const movingCoordinates = moving.getCoordinates();
@@ -156,7 +160,7 @@ export class Game extends Canvas {
     if (movingCoordinates.x > canvasSize.width - movingSize.width) {
       moving.setCoordinates({ x: canvasSize.width - movingSize.width });
     }
-  }
+  };
 
   effects = () => {
     this.camera.boundaryCheck(this.player);
@@ -170,12 +174,12 @@ export class Game extends Canvas {
       this.map.getTiles().forEach((tile) => tile.boundaryCheck(movingObject));
       this.map.getInteractions().forEach((interaction) => interaction.boundaryCheck(movingObject));
     });
-  }
+  };
 
   inputEffects = () => {
     this.movingObjects.forEach((movingObject) => movingObject.inputEffects());
     this.map.getInteractions().forEach((interaction) => interaction.inputEffects());
-  }
+  };
 
   drawBackground = () => {
     const { ctx } = this.getCanvasOptions();
@@ -183,17 +187,5 @@ export class Game extends Canvas {
 
     ctx.fillStyle = this.background;
     ctx.fillRect(0, 0, mapSizes.width, mapSizes.height);
-
-    ctx.lineWidth = 1;
-
-    for (let i = 0; i <= mapSizes.width; i++) {
-      // console.log(i);;10
-      ctx.moveTo(i, 0);
-      ctx.moveTo(i, this.height);
-    }
-
-    ctx.stroke();
-
-    ctx.lineWidth = LINE_WIDTH;
-  }
+  };
 }

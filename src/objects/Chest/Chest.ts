@@ -16,6 +16,7 @@ interface ChestProps extends InteractionProps {
 
 export class Chest extends Interaction {
   protected width = 18;
+
   protected height = 15;
 
   protected interactionTime = 200;
@@ -23,8 +24,11 @@ export class Chest extends Interaction {
   protected interactionPaddings = { left: 40, right: 40 };
 
   private canOpen: boolean = false;
+
   private open: boolean = false;
+
   private empty: boolean = false;
+
   private canLoot: boolean = false;
 
   constructor(props: ChestProps) {
@@ -47,11 +51,11 @@ export class Chest extends Interaction {
 
   private openChest = () => {
     this.open = true;
-  }
+  };
 
   private lootChest = () => {
     this.empty = true;
-  }
+  };
 
   // TODO вынести
   private drawHelper = () => {
@@ -67,7 +71,7 @@ export class Chest extends Interaction {
         x: coordinates.x + LINE_WIDTH * 2,
         y: coordinates.y - LINE_WIDTH * 18,
         color: '#b75d2a',
-        filled: true
+        filled: true,
       }),
       new Rectangle({
         width: 15 * cellSize,
@@ -81,10 +85,10 @@ export class Chest extends Interaction {
     parts.forEach((part) => part.draw());
 
     ctx.fillStyle = 'white';
-    ctx.beginPath()
-    ctx.fillText('F', coordinates.x + sizes.width / 2 - 4, coordinates.y - LINE_WIDTH * 12 );
+    ctx.beginPath();
+    ctx.fillText('F', coordinates.x + sizes.width / 2 - 4, coordinates.y - LINE_WIDTH * 12);
     ctx.fill();
-  }
+  };
 
   public draw() {
     const params: DrawParams = {
@@ -113,7 +117,7 @@ export class Chest extends Interaction {
         this.openChest();
       }
 
-      if (this.canLoot ) {
+      if (this.canLoot) {
         this.lootChest();
       }
     }

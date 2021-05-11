@@ -5,9 +5,10 @@ export interface TileProps extends GameObjectProps, TSizes {}
 
 export abstract class Tile extends GameObject {
   width = null;
+
   height = null;
 
-  protected constructor(props: TileProps) {
+  constructor(props: TileProps) {
     super(props);
 
     const { cellSize } = this.getCanvasOptions();

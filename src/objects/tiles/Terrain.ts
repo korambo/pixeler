@@ -1,8 +1,8 @@
 import { MovingGameObject } from '@objects/base/MovingGameObject';
-import { Tile, TileProps } from './Tile';
-import { atRectangle, outerSquire } from '@objects/__presets/boundaryCheck';
+import { atRectangle } from '@objects/__presets/boundaryCheck';
 import { Rectangle } from '@geometry/Rectangle';
 import { LINE_WIDTH } from '@core/constants';
+import { Tile, TileProps } from './Tile';
 
 interface TerrainProps extends TileProps {
   color?: [string, string],
@@ -11,13 +11,14 @@ interface TerrainProps extends TileProps {
 
 export class Terrain extends Tile {
   private onlyTopBorder: boolean = false;
+
   private colors: Array<[string, string]> = [
     ['#e040fb', '#aa00ff'],
     ['#009688', '#00796b'],
     ['#cddc39', '#afb42b'],
     ['#0097a7', '#006064'],
     ['#c2185b', '#880e4f'],
-    ['#ef5350', '#d32f2f']
+    ['#ef5350', '#d32f2f'],
   ];
 
   private readonly currentColor: [string, string];
@@ -30,9 +31,7 @@ export class Terrain extends Tile {
     this.currentColor = props.color || this.getColor();
   }
 
-  private getColor = () => {
-    return this.colors[Math.floor(Math.random() * this.colors.length)];
-  };
+  private getColor = () => this.colors[Math.floor(Math.random() * this.colors.length)];
 
   public boundaryCheck(movingObject: MovingGameObject) {
     atRectangle(this, movingObject);
@@ -49,7 +48,7 @@ export class Terrain extends Tile {
         x: coordinates.x,
         y: coordinates.y,
         color: this.currentColor[0],
-        filled: true
+        filled: true,
       }),
       new Rectangle({
         width: sizes.width,
@@ -60,6 +59,6 @@ export class Terrain extends Tile {
       }),
     ];
 
-    parts.forEach(part => part.draw());
+    parts.forEach((part) => part.draw());
   }
 }

@@ -18,10 +18,13 @@ export class Player extends MovingGameObject {
   orientation = Orientation.right;
 
   width = 10;
+
   height = 20;
 
   speed = Draw.getPixels(1);
+
   jumpSpeed = Draw.getPixels(3);
+
   jumpTime = 250;
 
   constructor(props: PlayerProps) {
@@ -47,8 +50,9 @@ export class Player extends MovingGameObject {
         drawPlayer({ sizes, coordinates, flip: Flip.x });
       }
     }
-  }
+  };
 
+  // eslint-disable-next-line consistent-return
   public getEdgePolygon(edge: Edge): TPolygon {
     const sizes = this.getSizes();
     const coordinates = this.getCoordinates();
@@ -57,13 +61,13 @@ export class Player extends MovingGameObject {
       case Edge.top:
       case Edge.right:
       case Edge.left: {
-        return MovingGameObject.prototype.getEdgePolygon.call(this, edge);
+        return MovingGameObject.prototype.getEdgePolygon.call(this, edge) as TPolygon;
       }
       case Edge.bottom: {
         switch (this.orientation) {
           case Orientation.right: {
             return [
-              [coordinates.x, coordinates.y + sizes.height ],
+              [coordinates.x, coordinates.y + sizes.height],
               [Draw.removePixels(coordinates.x + sizes.width, 2), coordinates.y + sizes.height],
               [Draw.removePixels(coordinates.x + sizes.width, 2), coordinates.y + sizes.height - this.edgeSize],
               [coordinates.x, coordinates.y + sizes.height - this.edgeSize],
@@ -71,7 +75,7 @@ export class Player extends MovingGameObject {
           }
           case Orientation.left: {
             return [
-              [Draw.addPixels(coordinates.x, 2), coordinates.y + sizes.height ],
+              [Draw.addPixels(coordinates.x, 2), coordinates.y + sizes.height],
               [Draw.removePixels(coordinates.x + sizes.width, 2), coordinates.y + sizes.height],
               [Draw.removePixels(coordinates.x + sizes.width, 2), coordinates.y + sizes.height - this.edgeSize],
               [Draw.addPixels(coordinates.x, 2), coordinates.y + sizes.height - this.edgeSize],
@@ -84,7 +88,7 @@ export class Player extends MovingGameObject {
 
   private checkCanMove = () => {
     this.canMove = this.isOnGround;
-  }
+  };
 
   private jump = () => {
     const coordinates = this.getCoordinates();
@@ -93,13 +97,13 @@ export class Player extends MovingGameObject {
     if (keysPressed.jump && this.canMove && !this.isJump) {
       this.isJump = true;
       this.setAcceleration(this.jumpSpeed);
-      setTimeout(() => { this.isJump = false }, this.jumpTime);
+      setTimeout(() => { this.isJump = false; }, this.jumpTime);
     }
 
     if (this.isJump) {
       this.setCoordinates({ y: coordinates.y - this.getAcceleration() });
     }
-  }
+  };
 
   private move = () => {
     const coordinates = this.getCoordinates();
@@ -122,7 +126,7 @@ export class Player extends MovingGameObject {
       this.orientation = Orientation.right;
       this.setCoordinates({ x: coordinates.x + this.speed });
     }
-  }
+  };
 
   private gravityEffect = () => {
     const coordinates = this.getCoordinates();
@@ -137,32 +141,32 @@ export class Player extends MovingGameObject {
     }
 
     if (acceleration > 0) {
-      this.setAcceleration(acceleration - accelerationPower)
+      this.setAcceleration(acceleration - accelerationPower);
     } else if (acceleration < 0) {
       this.setAcceleration(0);
     }
 
     if (canGravity) {
-      this.setCoordinates({ y: coordinates.y + gravityPower })
+      this.setCoordinates({ y: coordinates.y + gravityPower });
     }
-  }
+  };
 
   public inputEffects = () => {
     this.move();
     this.jump();
-  }
+  };
 
   private checkOnGround = () => {
-    const coordinates = this.getCoordinates();
-    const sizes = this.getSizes();
+    // const coordinates = this.getCoordinates();
+    // const sizes = this.getSizes();
 
     // this.setIsOnGround(coordinates.y >= this.canvas.height - sizes.height);
     this.setIsOnGround(false);
-  }
+  };
 
   public effects = () => {
     this.gravityEffect();
     this.checkCanMove();
     this.checkOnGround();
-  }
+  };
 }

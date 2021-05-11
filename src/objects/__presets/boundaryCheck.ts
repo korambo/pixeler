@@ -1,19 +1,15 @@
-import { polygonInPolygon, polygonIntersectsPolygon } from 'geometric';
+import { polygonIntersectsPolygon } from 'geometric';
 
 import { MovingGameObject } from '@objects/base/MovingGameObject';
 import { GameObject } from '@objects/base/GameObject';
 import { Edge, TCoordinates, TPaddings } from '@core/types';
-import { LINE_WIDTH } from '@core/constants';
-import { Draw } from '@core/Draw';
-import { Rectangle } from '@geometry/Rectangle';
-import { Line } from '@geometry/Line';
-import { Polygon } from '@geometry/Polygon';
 
 /**
  *
  * @param objectA
  * @param objectB
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const getIntersectPaddings = (objectA: GameObject, objectB: GameObject): TPaddings => {
   const objectACoordinates = objectA.getCoordinates();
   const objectASize = objectA.getSizes();
@@ -30,8 +26,8 @@ const getIntersectPaddings = (objectA: GameObject, objectB: GameObject): TPaddin
     top: objectACenter.y - objectBCoordinates.y,
     right: objectBCoordinates.x + objectBSize.width - objectACenter.x,
     bottom: objectBCoordinates.y + objectBSize.height - objectACenter.y,
-    left: objectACenter.x - objectBCoordinates.x
-  }
+    left: objectACenter.x - objectBCoordinates.x,
+  };
 };
 
 /**
@@ -44,13 +40,15 @@ export const canInteraction = (object: GameObject, moving: MovingGameObject, pad
   let objectPolygon = object.getPolygon();
 
   if (paddings) {
-    const resPaddings = Object.assign({ top: 0, right: 0, bottom: 0, left: 0 }, paddings);
+    const resPaddings = {
+      top: 0, right: 0, bottom: 0, left: 0, ...paddings,
+    };
 
     objectPolygon = [
       [objectPolygon[0][0] - resPaddings.left, objectPolygon[0][1] - resPaddings.top],
       [objectPolygon[1][0] + resPaddings.right, objectPolygon[1][1] - resPaddings.top],
       [objectPolygon[2][0] + resPaddings.right, objectPolygon[2][1] + resPaddings.bottom],
-      [objectPolygon[3][0] - resPaddings.left, objectPolygon[3][1] + resPaddings.bottom]
+      [objectPolygon[3][0] - resPaddings.left, objectPolygon[3][1] + resPaddings.bottom],
     ];
   }
 
@@ -87,9 +85,8 @@ export const outerSquire = (object: GameObject, moving: MovingGameObject) => {
   // const currentPadding = Math.min(...Object.values(paddings));
   const currentPadding = Math.min(topPadding, rightPadding, bottomPadding, leftPadding);
 
-
   if (currentPadding === topPadding && movingPivot.y >= objectCoordinates.y) {
-    moving.setIsOnGround(true)
+    moving.setIsOnGround(true);
     moving.setCoordinates({ y: objectCoordinates.y - movingSize.height });
   }
 
@@ -101,7 +98,9 @@ export const outerSquire = (object: GameObject, moving: MovingGameObject) => {
   // if (currentPadding === paddings.right && movingPivot.x <= objectCoordinates.x + objectSize.width) {
   //   moving.setCoordinates({ x: objectCoordinates.x + objectSize.width + movingSize.width / 2 });
   // }
-}
+  // todo
+  return false;
+};
 
 /**
  *
@@ -119,9 +118,9 @@ export const atRectangle = (object: GameObject, moving: MovingGameObject) => {
 
   if (!hasIntersect) return;
 
-  moving.setIsOnGround(true)
+  moving.setIsOnGround(true);
   moving.setCoordinates({ y: objectCoordinates.y - movingSize.height });
-}
+};
 
 // 0: (2) [360, 500]
 // 1: (2) [432, 500]

@@ -6,7 +6,7 @@ const colors = {
   mainColor: '#887777',
   secondColor: '#665555',
   accent: '#178178',
-  help: '#ffffff'
+  help: '#ffffff',
 };
 
 const head = ({ sizes, coordinates }: DrawParams) => new Draw({
@@ -21,7 +21,7 @@ const head = ({ sizes, coordinates }: DrawParams) => new Draw({
       x: coordinates.x,
       y: coordinates.y,
       color: colors.mainColor,
-      filled: true
+      filled: true,
     }),
 
     // head border
@@ -32,7 +32,7 @@ const head = ({ sizes, coordinates }: DrawParams) => new Draw({
       y: coordinates.y,
       color: colors.border,
     }),
-  ]
+  ],
 });
 
 const eyes = ({ sizes, coordinates, flip }: DrawParams) => new Draw({
@@ -48,7 +48,7 @@ const eyes = ({ sizes, coordinates, flip }: DrawParams) => new Draw({
       x: Draw.addPixels(coordinates.x, 3),
       y: Draw.addPixels(coordinates.y, 9),
       color: colors.accent,
-      filled: true
+      filled: true,
     }),
 
     // right
@@ -58,9 +58,9 @@ const eyes = ({ sizes, coordinates, flip }: DrawParams) => new Draw({
       x: Draw.addPixels(coordinates.x, 8),
       y: Draw.addPixels(coordinates.y, 9),
       color: colors.accent,
-      filled: true
+      filled: true,
     }),
-  ]
+  ],
 });
 
 const shadow = ({ sizes, coordinates, flip }: DrawParams) => new Draw({
@@ -76,7 +76,7 @@ const shadow = ({ sizes, coordinates, flip }: DrawParams) => new Draw({
       x: Draw.addPixels(coordinates.x, 1),
       y: Draw.addPixels(coordinates.y, 1),
       color: colors.secondColor,
-      filled: true
+      filled: true,
     }),
 
     // forehead
@@ -86,7 +86,7 @@ const shadow = ({ sizes, coordinates, flip }: DrawParams) => new Draw({
       x: Draw.addPixels(coordinates.x, 5),
       y: Draw.addPixels(coordinates.y, 2),
       color: colors.secondColor,
-      filled: true
+      filled: true,
     }),
     new Rectangle({
       width: Draw.addPixels(0, 3),
@@ -94,7 +94,7 @@ const shadow = ({ sizes, coordinates, flip }: DrawParams) => new Draw({
       x: Draw.addPixels(coordinates.x, 5),
       y: Draw.addPixels(coordinates.y, 4),
       color: colors.secondColor,
-      filled: true
+      filled: true,
     }),
     new Rectangle({
       width: Draw.addPixels(0, 3),
@@ -102,7 +102,7 @@ const shadow = ({ sizes, coordinates, flip }: DrawParams) => new Draw({
       x: Draw.addPixels(coordinates.x, 5),
       y: Draw.addPixels(coordinates.y, 6),
       color: colors.secondColor,
-      filled: true
+      filled: true,
     }),
 
     // eyes
@@ -112,7 +112,7 @@ const shadow = ({ sizes, coordinates, flip }: DrawParams) => new Draw({
       x: Draw.addPixels(coordinates.x, 3),
       y: Draw.addPixels(coordinates.y, 11),
       color: colors.secondColor,
-      filled: true
+      filled: true,
     }),
     new Rectangle({
       width: Draw.addPixels(0, 1),
@@ -120,9 +120,9 @@ const shadow = ({ sizes, coordinates, flip }: DrawParams) => new Draw({
       x: Draw.addPixels(coordinates.x, 8),
       y: Draw.addPixels(coordinates.y, 11),
       color: colors.secondColor,
-      filled: true
+      filled: true,
     }),
-  ]
+  ],
 });
 
 const legs = ({ sizes, coordinates, flip }: DrawParams) => new Draw({
@@ -138,7 +138,7 @@ const legs = ({ sizes, coordinates, flip }: DrawParams) => new Draw({
       x: coordinates.x,
       y: Draw.removePixels(coordinates.y + sizes.height, 1),
       color: colors.border,
-      filled: true
+      filled: true,
     }),
 
     // right leg
@@ -148,9 +148,9 @@ const legs = ({ sizes, coordinates, flip }: DrawParams) => new Draw({
       x: Draw.addPixels(coordinates.x, 6),
       y: Draw.removePixels(coordinates.y + sizes.height, 1),
       color: colors.border,
-      filled: true
+      filled: true,
     }),
-  ]
+  ],
 });
 
 const mouth = ({ sizes, coordinates, flip }: DrawParams) => new Draw({
@@ -167,7 +167,7 @@ const mouth = ({ sizes, coordinates, flip }: DrawParams) => new Draw({
       y: Draw.removePixels(coordinates.y + sizes.height, 7),
       color: colors.help,
       filled: true,
-      canFlip: false
+      canFlip: false,
     }),
 
     ...new Array(8).fill(null).map((_, i) => new Rectangle({
@@ -176,9 +176,9 @@ const mouth = ({ sizes, coordinates, flip }: DrawParams) => new Draw({
       x: Draw.addPixels(coordinates.x, 1 + i),
       y: Draw.removePixels(coordinates.y + sizes.height, i % 2 ? 6 : 7),
       color: colors.border,
-      filled: true
-    }))
-  ]
+      filled: true,
+    })),
+  ],
 });
 
 export const drawPlayer = (params: DrawParams) => {
@@ -188,4 +188,3 @@ export const drawPlayer = (params: DrawParams) => {
   mouth(params).draw();
   legs(params).draw();
 };
-

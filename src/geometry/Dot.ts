@@ -1,4 +1,3 @@
-import { LINE_WIDTH } from '@core/constants';
 import { Figure } from '@geometry/base/Figure';
 import { Draw } from '@core/Draw';
 import { CanvasProps } from '@core/Canvas';

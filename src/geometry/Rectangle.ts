@@ -16,7 +16,7 @@ export class Rectangle extends Figure {
     ctx.rect(coordinates.x, coordinates.y, sizes.width, sizes.height);
 
     ctx.fill();
-  }
+  };
 
   private drawStroke = () => {
     const { ctx } = this.getCanvasOptions();
@@ -36,8 +36,8 @@ export class Rectangle extends Figure {
     ctx.lineTo(coordinates.x + lineWidth, coordinates.y - lineWidth + sizes.height);
     ctx.lineTo(coordinates.x + lineWidth, coordinates.y);
 
-    ctx.stroke()
-  }
+    ctx.stroke();
+  };
 
   public draw() {
     this.filled ? this.drawFilled() : this.drawStroke();

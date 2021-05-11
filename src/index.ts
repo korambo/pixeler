@@ -1,14 +1,14 @@
 import { Game } from '@core/Game';
 
-import './style.css'
+import './style.css';
 
 const createCanvas = () => {
-    const canvas = document.createElement('canvas');
-    canvas.id = 'game';
+  const canvas = document.createElement('canvas');
+  canvas.id = 'game';
 
-    canvas.width = 800;
-    canvas.height = 600;
-    document.body.appendChild(canvas);
+  canvas.width = 800;
+  canvas.height = 600;
+  document.body.appendChild(canvas);
 };
 
 createCanvas();

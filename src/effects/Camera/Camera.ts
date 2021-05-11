@@ -10,6 +10,7 @@ interface CameraProps extends CanvasProps {
 
 export class Camera extends Canvas {
   protected width = null;
+
   protected height = null;
 
   public selectedCoordinates: TCoordinates = { x: 0, y: 0 };
@@ -20,8 +21,8 @@ export class Camera extends Canvas {
     top: 20,
     right: 70,
     bottom: 20,
-    left: 70
-  }
+    left: 70,
+  };
 
   constructor(props: CameraProps) {
     super(props);
@@ -35,7 +36,7 @@ export class Camera extends Canvas {
 
     this.setCoordinates({
       x: 0,
-      y: 0
+      y: 0,
     });
   }
 
@@ -48,7 +49,7 @@ export class Camera extends Canvas {
       bottom: this.paddings.bottom * cellSize,
       left: this.paddings.left * cellSize,
     };
-  }
+  };
 
   public boundaryCheck(player: Player) {
     const cameraSizes = this.getSizes();
@@ -61,7 +62,7 @@ export class Camera extends Canvas {
 
     const realPlayerCoordinates = {
       x: playerCoordinates.x + this.selectedCoordinates.x,
-    }
+    };
 
     if (realPlayerCoordinates.x + playerSizes.width > cameraSizes.width - paddings.right) {
       const x = (cameraSizes.width - paddings.right) - (playerCoordinates.x + playerSizes.width);
@@ -71,7 +72,7 @@ export class Camera extends Canvas {
     if (playerCoordinates.x + this.selectedCoordinates.x < paddings.left) {
       const x = paddings.left - playerCoordinates.x;
 
-     if (x <= 0) this.setCoordinates({ x });
+      if (x <= 0) this.setCoordinates({ x });
     }
   }
 
@@ -89,7 +90,7 @@ export class Camera extends Canvas {
       ctx.translate(this.selectedCoordinates.x, this.selectedCoordinates.y - coordinates.y);
       this.selectedCoordinates.y = coordinates.y;
     }
-  }
+  };
 
   public draw = () => {
     return;
@@ -112,5 +113,5 @@ export class Camera extends Canvas {
 
     ctx.stroke();
     ctx.setLineDash([]);
-  }
+  };
 }

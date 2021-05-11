@@ -1,6 +1,5 @@
 import { Rectangle } from '@geometry/Rectangle';
 import { Draw, DrawParams } from '@core/Draw';
-import { LINE_WIDTH } from '@core/constants';
 
 const colors = {
   border: '#47300e',
@@ -25,7 +24,7 @@ const bottom = ({ sizes, coordinates }: DrawParams) => new Draw({
       x: Draw.addPixels(coordinates.x, 3),
       y: Draw.addPixels(coordinates.y, 9),
       color: colors.mainColor,
-      filled: true
+      filled: true,
     }),
     new Rectangle({
       width: Draw.removePixels(sizes.width, 4),
@@ -55,9 +54,9 @@ const bottom = ({ sizes, coordinates }: DrawParams) => new Draw({
       x: Draw.addPixels(coordinates.x, 1),
       y: Draw.addPixels(coordinates.y, 7),
       color: colors.secondColorLight,
-      filled: true
+      filled: true,
     }),
-  ]
+  ],
 });
 
 const closedCover = ({ sizes, coordinates }: DrawParams) => new Draw({
@@ -72,7 +71,7 @@ const closedCover = ({ sizes, coordinates }: DrawParams) => new Draw({
       x: Draw.addPixels(coordinates.x, 3),
       y: Draw.addPixels(coordinates.y, 1),
       color: colors.mainColor,
-      filled: true
+      filled: true,
     }),
     new Rectangle({
       width: Draw.removePixels(sizes.width, 2),
@@ -102,7 +101,7 @@ const closedCover = ({ sizes, coordinates }: DrawParams) => new Draw({
       x: Draw.addPixels(coordinates.x, 3),
       y: Draw.addPixels(coordinates.y, 2),
       color: colors.mainColorLight,
-      filled: true
+      filled: true,
     }),
     new Rectangle({
       width: Draw.getPixels(1),
@@ -110,7 +109,7 @@ const closedCover = ({ sizes, coordinates }: DrawParams) => new Draw({
       x: Draw.addPixels(coordinates.x, 1),
       y: Draw.addPixels(coordinates.y, 2),
       color: colors.secondColorLight,
-      filled: true
+      filled: true,
     }),
     new Rectangle({
       width: Draw.getPixels(1),
@@ -118,7 +117,7 @@ const closedCover = ({ sizes, coordinates }: DrawParams) => new Draw({
       x: Draw.removePixels(coordinates.x + sizes.width, 2),
       y: Draw.addPixels(coordinates.y, 2),
       color: colors.secondColorLight,
-      filled: true
+      filled: true,
     }),
     // shadow
     new Rectangle({
@@ -127,7 +126,7 @@ const closedCover = ({ sizes, coordinates }: DrawParams) => new Draw({
       x: Draw.addPixels(coordinates.x, 8),
       y: Draw.addPixels(coordinates.y, 11),
       color: colors.mainColorShadow,
-      filled: true
+      filled: true,
     }),
     new Rectangle({
       width: Draw.getPixels(1),
@@ -135,7 +134,7 @@ const closedCover = ({ sizes, coordinates }: DrawParams) => new Draw({
       x: Draw.addPixels(coordinates.x, 7),
       y: Draw.addPixels(coordinates.y, 10),
       color: colors.mainColorShadow,
-      filled: true
+      filled: true,
     }),
     new Rectangle({
       width: Draw.getPixels(1),
@@ -143,7 +142,7 @@ const closedCover = ({ sizes, coordinates }: DrawParams) => new Draw({
       x: Draw.addPixels(coordinates.x, 10),
       y: Draw.addPixels(coordinates.y, 10),
       color: colors.mainColorShadow,
-      filled: true
+      filled: true,
     }),
     new Rectangle({
       width: Draw.removePixels(sizes.width, 6),
@@ -151,7 +150,7 @@ const closedCover = ({ sizes, coordinates }: DrawParams) => new Draw({
       x: Draw.addPixels(coordinates.x, 3),
       y: Draw.addPixels(coordinates.y, 9),
       color: colors.mainColorShadow,
-      filled: true
+      filled: true,
     }),
     new Rectangle({
       width: Draw.getPixels(1),
@@ -159,7 +158,7 @@ const closedCover = ({ sizes, coordinates }: DrawParams) => new Draw({
       x: Draw.addPixels(coordinates.x, 1),
       y: Draw.addPixels(coordinates.y, 9),
       color: colors.secondColorShadow,
-      filled: true
+      filled: true,
     }),
     new Rectangle({
       width: Draw.getPixels(1),
@@ -167,7 +166,7 @@ const closedCover = ({ sizes, coordinates }: DrawParams) => new Draw({
       x: Draw.removePixels(coordinates.x + sizes.width, 2),
       y: Draw.addPixels(coordinates.y, 9),
       color: colors.secondColorShadow,
-      filled: true
+      filled: true,
     }),
     // lock
     new Rectangle({
@@ -176,7 +175,7 @@ const closedCover = ({ sizes, coordinates }: DrawParams) => new Draw({
       x: Draw.addPixels(coordinates.x, 7),
       y: Draw.addPixels(coordinates.y, 6),
       color: colors.border,
-      filled: true
+      filled: true,
     }),
     new Rectangle({
       width: Draw.getPixels(1),
@@ -184,7 +183,7 @@ const closedCover = ({ sizes, coordinates }: DrawParams) => new Draw({
       x: Draw.addPixels(coordinates.x, 10),
       y: Draw.addPixels(coordinates.y, 6),
       color: colors.border,
-      filled: true
+      filled: true,
     }),
     new Rectangle({
       width: Draw.getPixels(2),
@@ -192,7 +191,7 @@ const closedCover = ({ sizes, coordinates }: DrawParams) => new Draw({
       x: Draw.addPixels(coordinates.x, 8),
       y: Draw.addPixels(coordinates.y, 5),
       color: colors.border,
-      filled: true
+      filled: true,
     }),
     new Rectangle({
       width: Draw.getPixels(2),
@@ -200,7 +199,7 @@ const closedCover = ({ sizes, coordinates }: DrawParams) => new Draw({
       x: Draw.addPixels(coordinates.x, 8),
       y: Draw.addPixels(coordinates.y, 10),
       color: colors.border,
-      filled: true
+      filled: true,
     }),
     new Rectangle({
       width: Draw.getPixels(2),
@@ -208,7 +207,7 @@ const closedCover = ({ sizes, coordinates }: DrawParams) => new Draw({
       x: Draw.addPixels(coordinates.x, 8),
       y: Draw.addPixels(coordinates.y, 6),
       color: colors.secondColor,
-      filled: true
+      filled: true,
     }),
     // shadow at lock
     new Rectangle({
@@ -217,9 +216,9 @@ const closedCover = ({ sizes, coordinates }: DrawParams) => new Draw({
       x: Draw.addPixels(coordinates.x, 8),
       y: Draw.addPixels(coordinates.y, 9),
       color: colors.secondColorShadow,
-      filled: true
+      filled: true,
     }),
-  ]
+  ],
 });
 
 export const drawEmpty = (params: DrawParams) => {
@@ -229,9 +228,8 @@ export const drawEmpty = (params: DrawParams) => {
 export const drawClosed = (params: DrawParams) => {
   bottom(params).draw();
   closedCover(params).draw();
-}
+};
 
 export const drawOpened = (params: DrawParams) => {
   bottom(params).draw();
-}
-
+};

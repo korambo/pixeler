@@ -1,14 +1,11 @@
 import { MovingGameObject } from '@objects/base/MovingGameObject';
-import { Tile, TileProps } from './Tile';
 import { outerSquire } from '@objects/__presets/boundaryCheck';
+import { Tile, TileProps } from './Tile';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface RockProps extends TileProps {}
 
 export class Rock extends Tile {
-  constructor(props: RockProps) {
-    super(props);
-  }
-
   public boundaryCheck(movingObject: MovingGameObject) {
     outerSquire(this, movingObject);
   }

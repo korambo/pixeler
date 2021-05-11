@@ -1,4 +1,3 @@
-import { TCoordinates } from '@core/types';
 import { Canvas, CanvasProps } from '@core/Canvas';
 import { MovingGameObject } from '@objects/base/MovingGameObject';
 

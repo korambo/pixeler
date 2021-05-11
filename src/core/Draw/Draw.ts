@@ -2,7 +2,6 @@ import { Figure } from '@geometry/base/Figure';
 import { Flip, TCoordinates, TSizes } from '@core/types';
 import { Canvas } from '@core/Canvas';
 import { LINE_WIDTH } from '@core/constants';
-import { Game } from '@core/Game';
 
 type DrawElement = Figure;
 
@@ -19,6 +18,7 @@ interface DrawProps extends TSizes, TCoordinates {
 
 export class Draw extends Canvas {
   width: null;
+
   height: null;
 
   private readonly flip: Flip;
@@ -42,23 +42,17 @@ export class Draw extends Canvas {
     });
   }
 
-  static addPixels = (num: number, count: number) => {
-    return num + LINE_WIDTH * count;
-  }
+  static addPixels = (num: number, count: number) => num + LINE_WIDTH * count;
 
-  static removePixels = (num: number, count: number) => {
-    return num - LINE_WIDTH * count;
-  }
+  static removePixels = (num: number, count: number) => num - LINE_WIDTH * count;
 
-  static getPixels = (count: number) => {
-    return LINE_WIDTH * count;
-  }
+  static getPixels = (count: number) => LINE_WIDTH * count;
 
   public draw = () => {
     const canvasCoordinates = this.getCoordinates();
     const canvasSizes = this.getSizes();
 
-    this.elements.forEach((item, index) => {
+    this.elements.forEach((item) => {
       if (this.flip && item.canFlip) {
         const coordinates = item.getCoordinates();
         const sizes = item.getSizes();
@@ -70,12 +64,12 @@ export class Draw extends Canvas {
 
             item.setCoordinates({
               x: end - sizes.width - padding,
-            })
+            });
           }
         }
       }
 
       item.draw();
     });
-  }
+  };
 }

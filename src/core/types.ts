@@ -16,7 +16,7 @@ export interface TPaddings {
 }
 export type TDot = [x: number, y: number];
 
-export type TPolygon = [TDot, TDot ,TDot ,TDot];
+export type TPolygon = [TDot, TDot, TDot, TDot];
 
 export enum Flip {
   x = 'x',

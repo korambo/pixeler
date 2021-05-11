@@ -23,17 +23,15 @@ export abstract class Interaction extends GameObject {
 
   abstract inputEffects(): void;
 
-  public canInteract = () => {
-    return !this.interactionTimeout;
-  }
+  public canInteract = () => !this.interactionTimeout;
 
   public setInteractionTimeout = () => {
     this.interactionTimeout = setTimeout(() => {
       this.clearInteractionTimeout();
     }, this.interactionTime);
-  }
+  };
 
   public clearInteractionTimeout = () => {
     this.interactionTimeout = null;
-  }
+  };
 }

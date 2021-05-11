@@ -1,5 +1,5 @@
 import { Canvas, CanvasProps } from '@core/Canvas';
-import { TCoordinates, TSizes } from '@core/types';
+import { TSizes } from '@core/types';
 
 export interface FigureProps extends TSizes, CanvasProps {
   filled?: boolean;
@@ -9,11 +9,13 @@ export interface FigureProps extends TSizes, CanvasProps {
 
 export abstract class Figure extends Canvas {
   width = null;
+
   height = null;
 
   public canFlip: boolean;
 
   protected filled: boolean = false;
+
   protected color: string = 'darkgrey';
 
   constructor(props: FigureProps) {
@@ -26,7 +28,7 @@ export abstract class Figure extends Canvas {
 
     this.setCoordinates({
       x: props.x,
-      y: props.y
+      y: props.y,
     });
 
     this.canFlip = typeof props.canFlip === 'boolean' ? props.canFlip : true;
