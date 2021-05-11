@@ -4,12 +4,13 @@ import { Inputs } from '@effects/Inputs';
 import { Camera } from '@effects/Camera';
 import { SimpleMap } from '@maps/SimpleMap';
 
-import { GAME_HEIGHT, GAME_WIDTH, LINE_WIDTH } from '@core/constants';
+import { GAME_HEIGHT, GAME_WIDTH } from '@core/constants';
 
 import { Map } from '@maps/base/Map';
-import { Canvas, InitProps } from '@core/Canvas';
+import { Canvas } from '@core/Canvas';
 import { MovingGameObject } from '@objects/base/MovingGameObject';
 import { GameObject } from '@objects/base/GameObject';
+import { Options } from '@core/Options';
 
 interface DebugInfo {
   key: string;
@@ -17,31 +18,17 @@ interface DebugInfo {
 }
 
 interface GameProps {
-  canvasId: string;
   debug?: boolean;
   customMap?: typeof Map;
 }
-
-const getCanvas = (canvasId: string): InitProps => {
-  const canvas = document.getElementById(canvasId) as HTMLCanvasElement;
-  const ctx = canvas.getContext('2d');
-
-  const cellSize = ((canvas.width * canvas.height) / (GAME_WIDTH * GAME_HEIGHT)) * LINE_WIDTH;
-
-  return {
-    canvas,
-    ctx,
-    cellSize,
-  };
-};
 
 // debug
 const maxRedraw = 60;
 let curDraw = 0;
 
 export class Game extends Canvas {
-  width = GAME_WIDTH / LINE_WIDTH;
-  height = GAME_HEIGHT / LINE_WIDTH;
+  width = GAME_WIDTH;
+  height = GAME_HEIGHT;
 
   background = 'lightblue';
 
@@ -61,8 +48,6 @@ export class Game extends Canvas {
 
   constructor(props: GameProps) {
     super(props);
-
-    super.init(getCanvas(props.canvasId));
 
     this.gravity = new Gravity();
     this.inputs = new Inputs();
@@ -96,7 +81,7 @@ export class Game extends Canvas {
 
   private drawInfo = ({ key, text }: DebugInfo) => {
     const cameraCoordinates = this.camera.selectedCoordinates;
-    const { ctx } = this.getCanvasOptions();
+    const { ctx } = Options.getCanvasOptions();
 
     this.info[key] = true;
     ctx.beginPath();
@@ -179,7 +164,7 @@ export class Game extends Canvas {
   };
 
   drawBackground = () => {
-    const { ctx } = this.getCanvasOptions();
+    const { ctx } = Options.getCanvasOptions();
     const mapSizes = this.map.getSizes();
 
     ctx.fillStyle = this.background;

@@ -1,21 +1,30 @@
 import { Game } from '@core/Game';
+import { Options } from '@core/Options';
 
 import './style.css';
 
-const createCanvas = () => {
+const createCanvas = (canvasId: string) => {
   const canvas = document.createElement('canvas');
-  canvas.id = 'game';
+  canvas.id = canvasId;
+  canvas.width = 1280;
+  canvas.height = 720;
 
-  canvas.width = 800;
-  canvas.height = 600;
   document.body.appendChild(canvas);
 };
 
-createCanvas();
+const init = () => {
+  const id = 'game';
 
-const game = new Game({ canvasId: 'game', debug: true });
+  createCanvas(id);
 
-// @ts-ignore
-window.game = game;
+  Options.init(id);
 
-game.draw();
+  const game = new Game({ debug: true });
+
+  // @ts-ignore
+  window.game = game;
+
+  game.draw();
+};
+
+init();

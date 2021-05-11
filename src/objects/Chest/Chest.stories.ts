@@ -3,6 +3,7 @@ import { Game } from '@core/Game';
 import { Map, MapProps } from '@maps/base/Map';
 import { Terrain } from '@objects/tiles/Terrain';
 import { Chest } from '@objects/Chest/Chest';
+import { Options } from '@core/Options';
 
 class ChestMap extends Map {
   protected width = 200;
@@ -33,7 +34,9 @@ export default {
 } as Meta;
 
 export const States = () => {
-  const game = new Game({ canvasId: 'game', customMap: ChestMap });
+  Options.init('game');
+
+  const game = new Game({ customMap: ChestMap });
   game.draw();
 
   return '';

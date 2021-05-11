@@ -1,17 +1,17 @@
 import { Map } from '@maps/base/Map';
 import { Player } from '@objects/Player';
-import { GAME_HEIGHT, GAME_WIDTH, LINE_WIDTH } from '@core/constants';
+import { GAME_HEIGHT, GAME_WIDTH } from '@core/constants';
 import { Canvas, CanvasProps } from '@core/Canvas';
 import { TCoordinates, TPaddings } from '@core/types';
+import { Options } from '@core/Options';
 
 interface CameraProps extends CanvasProps {
   map: Map,
 }
 
 export class Camera extends Canvas {
-  protected width = null;
-
-  protected height = null;
+  protected width = GAME_WIDTH;
+  protected height = GAME_HEIGHT;
 
   public selectedCoordinates: TCoordinates = { x: 0, y: 0 };
 
@@ -29,11 +29,6 @@ export class Camera extends Canvas {
 
     this.map = props.map;
 
-    this.setSizes({
-      width: GAME_WIDTH,
-      height: GAME_HEIGHT,
-    });
-
     this.setCoordinates({
       x: 0,
       y: 0,
@@ -41,7 +36,7 @@ export class Camera extends Canvas {
   }
 
   private getPaddings = (): TPaddings => {
-    const { cellSize } = this.getCanvasOptions();
+    const { cellSize } = Options.getCanvasOptions();
 
     return {
       top: this.paddings.top * cellSize,
@@ -77,7 +72,7 @@ export class Camera extends Canvas {
   }
 
   public effect = () => {
-    const { ctx } = this.getCanvasOptions();
+    const { ctx } = Options.getCanvasOptions();
 
     const coordinates = this.getCoordinates();
 
@@ -95,14 +90,14 @@ export class Camera extends Canvas {
   public draw = () => {
     return;
 
-    const { ctx } = this.getCanvasOptions();
+    const { ctx, cellSize } = Options.getCanvasOptions();
 
     const sizes = this.getSizes();
     const paddings = this.getPaddings();
 
     ctx.beginPath();
     ctx.strokeStyle = 'black';
-    ctx.lineWidth = LINE_WIDTH;
+    ctx.lineWidth = cellSize;
     ctx.setLineDash([15, 20]);
 
     ctx.moveTo(paddings.left - this.selectedCoordinates.x, 0);

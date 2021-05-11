@@ -1,11 +1,11 @@
-import { LINE_WIDTH } from '@core/constants';
 import { Figure, FigureProps } from '@geometry/base/Figure';
+import { Options } from '@core/Options';
 
 export interface RectangleProps extends FigureProps {}
 
 export class Rectangle extends Figure {
   private drawFilled = () => {
-    const { ctx } = this.getCanvasOptions();
+    const { ctx } = Options.getCanvasOptions();
     const sizes = this.getSizes();
     const coordinates = this.getCoordinates();
 
@@ -19,14 +19,14 @@ export class Rectangle extends Figure {
   };
 
   private drawStroke = () => {
-    const { ctx } = this.getCanvasOptions();
+    const { ctx, cellSize } = Options.getCanvasOptions();
     const sizes = this.getSizes();
     const coordinates = this.getCoordinates();
 
-    const lineWidth = LINE_WIDTH / 2;
+    const lineWidth = cellSize / 2;
 
     ctx.strokeStyle = this.color;
-    ctx.lineWidth = LINE_WIDTH;
+    ctx.lineWidth = cellSize;
 
     ctx.beginPath();
 

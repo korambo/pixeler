@@ -1,6 +1,6 @@
-import { LINE_WIDTH } from '@core/constants';
 import { Figure } from '@geometry/base/Figure';
 import { TPolygon } from '@core/types';
+import { Options } from '@core/Options';
 
 export interface PolygonProps {
   dots: TPolygon;
@@ -19,9 +19,9 @@ export class Polygon extends Figure {
   }
 
   public draw() {
-    const { ctx } = this.getCanvasOptions();
+    const { ctx, cellSize } = Options.getCanvasOptions();
 
-    const lineWidth = LINE_WIDTH / 2;
+    const lineWidth = cellSize / 2;
 
     ctx.strokeStyle = 'red';
     ctx.lineWidth = 1;

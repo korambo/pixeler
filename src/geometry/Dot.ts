@@ -1,6 +1,7 @@
 import { Figure } from '@geometry/base/Figure';
 import { Draw } from '@core/Draw';
 import { CanvasProps } from '@core/Canvas';
+import { Options } from '@core/Options';
 
 export interface DotProps extends CanvasProps {
   canFlip?: boolean;
@@ -17,7 +18,7 @@ export class Dot extends Figure {
   }
 
   public draw() {
-    const { ctx } = this.getCanvasOptions();
+    const { ctx } = Options.getCanvasOptions();
     const sizes = this.getSizes();
     const coordinates = this.getCoordinates();
 

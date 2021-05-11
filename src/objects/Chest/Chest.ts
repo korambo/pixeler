@@ -1,13 +1,13 @@
 import { MovingGameObject } from '@objects/base/MovingGameObject';
 import { atRectangle, canInteraction } from '@objects/__presets/boundaryCheck';
 import { Rectangle } from '@geometry/Rectangle';
-import { LINE_WIDTH } from '@core/constants';
 
 import { Interaction, InteractionProps } from '@objects/base/Interaction';
 import { Player } from '@objects/Player/Player';
 import { DrawParams } from '@core/Draw';
 
 import { drawEmpty, drawOpened, drawClosed } from '@objects/Chest/draw';
+import { Options } from '@core/Options';
 
 interface ChestProps extends InteractionProps {
   open?: boolean;
@@ -16,20 +16,15 @@ interface ChestProps extends InteractionProps {
 
 export class Chest extends Interaction {
   protected width = 18;
-
   protected height = 15;
 
   protected interactionTime = 200;
-
   protected interactionPaddings = { left: 40, right: 40 };
 
-  private canOpen: boolean = false;
-
-  private open: boolean = false;
-
-  private empty: boolean = false;
-
   private canLoot: boolean = false;
+  private canOpen: boolean = false;
+  private open: boolean = false;
+  private empty: boolean = false;
 
   constructor(props: ChestProps) {
     super(props);
@@ -59,7 +54,7 @@ export class Chest extends Interaction {
 
   // TODO вынести
   private drawHelper = () => {
-    const { ctx, cellSize } = this.getCanvasOptions();
+    const { ctx, cellSize } = Options.getCanvasOptions();
 
     const coordinates = this.getCoordinates();
     const sizes = this.getSizes();
@@ -68,16 +63,16 @@ export class Chest extends Interaction {
       new Rectangle({
         width: 15 * cellSize,
         height: 10 * cellSize,
-        x: coordinates.x + LINE_WIDTH * 2,
-        y: coordinates.y - LINE_WIDTH * 18,
+        x: coordinates.x + cellSize * 2,
+        y: coordinates.y - cellSize * 18,
         color: '#b75d2a',
         filled: true,
       }),
       new Rectangle({
         width: 15 * cellSize,
         height: 10 * cellSize,
-        x: coordinates.x + LINE_WIDTH * 2,
-        y: coordinates.y - LINE_WIDTH * 18,
+        x: coordinates.x + cellSize * 2,
+        y: coordinates.y - cellSize * 18,
         color: '#47300e',
       }),
     ];
@@ -86,7 +81,7 @@ export class Chest extends Interaction {
 
     ctx.fillStyle = 'white';
     ctx.beginPath();
-    ctx.fillText('F', coordinates.x + sizes.width / 2 - 4, coordinates.y - LINE_WIDTH * 12);
+    ctx.fillText('F', coordinates.x + sizes.width / 2 - 4, coordinates.y - cellSize * 12);
     ctx.fill();
   };
 

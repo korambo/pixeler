@@ -221,7 +221,7 @@ const openedCover = ({ sizes, coordinates }: DrawParams) => new Draw({
       x: Draw.addPixels(coordinates.x, 3),
       y: coordinates.y,
       color: colors.mainColorShadow,
-      filled: true
+      filled: true,
     }),
     new Rectangle({
       width: Draw.removePixels(sizes.width, 4),
@@ -282,7 +282,7 @@ const openedCover = ({ sizes, coordinates }: DrawParams) => new Draw({
       y: Draw.addPixels(coordinates.y, 4),
       size: 2,
       color: colors.secondColorLight,
-      angle: Angle.deg90
+      angle: Angle.deg90,
     }),
     new Rectangle({
       width: Draw.getPixels(3),
@@ -296,7 +296,7 @@ const openedCover = ({ sizes, coordinates }: DrawParams) => new Draw({
       y: Draw.addPixels(coordinates.y, 4),
       size: 2,
       color: colors.secondColorLight,
-      angle: Angle.deg90
+      angle: Angle.deg90,
     }),
     new Rectangle({
       width: Draw.removePixels(sizes.width, 6),
@@ -304,9 +304,9 @@ const openedCover = ({ sizes, coordinates }: DrawParams) => new Draw({
       x: Draw.addPixels(coordinates.x, 3),
       y: Draw.addPixels(coordinates.y, 3),
       color: colors.mainColorShadow,
-      filled: true
+      filled: true,
     }),
-  ]
+  ],
 });
 
 const gold = ({ sizes, coordinates }: DrawParams) => new Draw({
@@ -321,42 +321,42 @@ const gold = ({ sizes, coordinates }: DrawParams) => new Draw({
       x: Draw.addPixels(coordinates.x, 3),
       y: Draw.addPixels(coordinates.y, 3),
       color: colors.secondColorLight,
-      filled: true
+      filled: true,
     }),
     // border
     new Dot({
       x: Draw.addPixels(coordinates.x, 3),
       y: Draw.addPixels(coordinates.y, 3),
-      color: colors.border
+      color: colors.border,
     }),
     new Line({
       x: Draw.addPixels(coordinates.x, 5),
       y: Draw.addPixels(coordinates.y, 2),
       size: 4,
-      color: colors.secondColorLight
+      color: colors.secondColorLight,
     }),
     new Line({
       x: Draw.addPixels(coordinates.x, 5),
       y: Draw.addPixels(coordinates.y, 1),
       size: 4,
-      color: colors.border
+      color: colors.border,
     }),
     new Line({
       x: Draw.addPixels(coordinates.x, 11),
       y: Draw.addPixels(coordinates.y, 2),
       size: 3,
-      color: colors.secondColorLight
+      color: colors.secondColorLight,
     }),
     new Line({
       x: Draw.addPixels(coordinates.x, 11),
       y: Draw.addPixels(coordinates.y, 1),
       size: 3,
-      color: colors.border
+      color: colors.border,
     }),
     new Dot({
       x: Draw.removePixels(coordinates.x + sizes.width, 4),
       y: Draw.addPixels(coordinates.y, 3),
-      color: colors.border
+      color: colors.border,
     }),
     // shadow
     new Line({
@@ -364,25 +364,25 @@ const gold = ({ sizes, coordinates }: DrawParams) => new Draw({
       y: Draw.addPixels(coordinates.y, 5),
       size: 2,
       angle: Angle.deg45,
-      color: colors.secondColorShadow
+      color: colors.secondColorShadow,
     }),
     new Line({
       x: Draw.addPixels(coordinates.x, 5),
       y: Draw.addPixels(coordinates.y, 5),
       size: 2,
-      color: colors.secondColorShadow
+      color: colors.secondColorShadow,
     }),
     new Line({
       x: Draw.addPixels(coordinates.x, 8),
       y: Draw.addPixels(coordinates.y, 5),
       size: 7,
-      color: colors.secondColorShadow
+      color: colors.secondColorShadow,
     }),
     new Line({
       x: Draw.addPixels(coordinates.x, 10),
       y: Draw.addPixels(coordinates.y, 4),
       size: 2,
-      color: colors.secondColorShadow
+      color: colors.secondColorShadow,
     }),
   ],
 });

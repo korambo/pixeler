@@ -6,10 +6,12 @@
   },
   "rules": {
     "@typescript-eslint/no-unused-expressions": "off",
+    "@typescript-eslint/lines-between-class-members": "off",
 
     "import/prefer-default-export": "off",
     "import/no-extraneous-dependencies": "off",
 
+    "object-curly-newline": "off",
     "no-plusplus": "off",
     "default-case": "off",
     "max-len": ["error", 120]

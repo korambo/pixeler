@@ -1,7 +1,7 @@
 import { MovingGameObject } from '@objects/base/MovingGameObject';
 import { atRectangle } from '@objects/__presets/boundaryCheck';
 import { Rectangle } from '@geometry/Rectangle';
-import { LINE_WIDTH } from '@core/constants';
+import { Options } from '@core/Options';
 import { Tile, TileProps } from './Tile';
 
 interface TerrainProps extends TileProps {
@@ -38,6 +38,7 @@ export class Terrain extends Tile {
   }
 
   public draw() {
+    const { cellSize } = Options.getCanvasOptions();
     const coordinates = this.getCoordinates();
     const sizes = this.getSizes();
 
@@ -52,10 +53,11 @@ export class Terrain extends Tile {
       }),
       new Rectangle({
         width: sizes.width,
-        height: this.onlyTopBorder ? LINE_WIDTH : sizes.height,
+        height: this.onlyTopBorder ? cellSize : sizes.height,
         x: coordinates.x,
         y: coordinates.y,
         color: this.currentColor[1],
+        filled: this.onlyTopBorder,
       }),
     ];
 

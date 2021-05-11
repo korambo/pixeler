@@ -1,8 +1,8 @@
 import { Figure } from '@geometry/base/Figure';
 import { Flip, TCoordinates, TSizes } from '@core/types';
 import { Canvas } from '@core/Canvas';
-import { LINE_WIDTH } from '@core/constants';
 import { Line } from '@geometry/Line';
+import { Options } from '@core/Options';
 
 type DrawElement = Figure | Line;
 
@@ -43,11 +43,23 @@ export class Draw extends Canvas {
     });
   }
 
-  static addPixels = (num: number, count: number) => num + LINE_WIDTH * count;
+  static addPixels = (num: number, count: number) => {
+    const { cellSize } = Options.getCanvasOptions();
 
-  static removePixels = (num: number, count: number) => num - LINE_WIDTH * count;
+    return num + cellSize * count;
+  };
 
-  static getPixels = (count: number) => LINE_WIDTH * count;
+  static removePixels = (num: number, count: number) => {
+    const { cellSize } = Options.getCanvasOptions();
+
+    return num - cellSize * count;
+  };
+
+  static getPixels = (count: number) => {
+    const { cellSize } = Options.getCanvasOptions();
+
+    return cellSize * count;
+  };
 
   public draw = () => {
     const canvasCoordinates = this.getCoordinates();

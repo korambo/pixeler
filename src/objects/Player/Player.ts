@@ -13,18 +13,15 @@ interface PlayerProps extends MovingGameObjectProps {
 }
 
 export class Player extends MovingGameObject {
+  width = 10;
+  height = 20;
+
   inputs: Inputs;
 
   orientation = Orientation.right;
 
-  width = 10;
-
-  height = 20;
-
   speed = Draw.getPixels(1);
-
   jumpSpeed = Draw.getPixels(3);
-
   jumpTime = 250;
 
   constructor(props: PlayerProps) {

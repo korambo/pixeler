@@ -1,26 +1,14 @@
-import {
-  Edge, TCoordinates, TPolygon, TSizes,
-} from '@core/types';
-import { LINE_WIDTH } from '@core/constants';
+import { Edge, TCoordinates, TPolygon, TSizes } from '@core/types';
+import { Options } from '@core/Options';
 
 export interface CanvasProps extends TCoordinates {}
-
-export interface InitProps {
-  canvas: HTMLCanvasElement;
-  ctx: CanvasRenderingContext2D
-  cellSize: number;
-}
-
-let canvas: HTMLCanvasElement;
-let ctx: CanvasRenderingContext2D;
-let cellSize: number;
 
 export abstract class Canvas {
   private x: number;
 
   private y: number;
 
-  protected edgeSize = LINE_WIDTH * 2;
+  protected edgeSize = Options.getCanvasOptions().cellSize * 2;
 
   protected abstract width: number;
 
@@ -33,34 +21,21 @@ export abstract class Canvas {
 
   abstract draw(): void;
 
-  // eslint-disable-next-line class-methods-use-this
-  public init(props: InitProps) {
-    canvas = props.canvas;
-    ctx = props.ctx;
-    cellSize = props.cellSize;
-  }
-
-  public getCanvasOptions = () => {
-    if (!canvas || !ctx || !cellSize) {
-      throw new Error('Canvas not init!');
-    }
-
-    return {
-      canvas,
-      ctx,
-      cellSize,
-    };
-  };
-
   public setSizes = (sizes: Partial<TSizes>) => {
+    const { cellSize } = Options.getCanvasOptions();
+
     if (sizes.width) this.width = sizes.width / cellSize;
     if (sizes.height) this.height = sizes.height / cellSize;
   };
 
-  public getSizes = (): TSizes => ({
-    width: this.width * cellSize,
-    height: this.height * cellSize,
-  });
+  public getSizes = (): TSizes => {
+    const { cellSize } = Options.getCanvasOptions();
+
+    return {
+      width: this.width * cellSize,
+      height: this.height * cellSize,
+    };
+  };
 
   public getOriginalSizes = () => ({
     width: this.width,
@@ -68,11 +43,15 @@ export abstract class Canvas {
   });
 
   public setCoordinates = (coordinates: Partial<TCoordinates>) => {
+    const { cellSize } = Options.getCanvasOptions();
+
     if (typeof coordinates.x === 'number') this.x = coordinates.x / cellSize;
     if (typeof coordinates.y === 'number') this.y = coordinates.y / cellSize;
   };
 
   public getCoordinates(): TCoordinates {
+    const { cellSize } = Options.getCanvasOptions();
+
     return {
       x: this.x * cellSize,
       y: this.y * cellSize,

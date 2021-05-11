@@ -1,7 +1,9 @@
-export class Gravity {
-  private gravityPower = 8;
+import { Draw } from '@core/Draw';
 
-  private accelerationPower = 1;
+export class Gravity {
+  private gravityPower = Draw.getPixels(2);
+
+  private accelerationPower = Draw.getPixels(1) / 4;
 
   getGravityPower = () => this.gravityPower;
 

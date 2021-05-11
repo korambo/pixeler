@@ -1,5 +1,6 @@
 import { MovingGameObject } from '@objects/base/MovingGameObject';
 import { outerSquire } from '@objects/__presets/boundaryCheck';
+import { Options } from '@core/Options';
 import { Tile, TileProps } from './Tile';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -11,7 +12,7 @@ export class Rock extends Tile {
   }
 
   public draw() {
-    const { ctx } = this.getCanvasOptions();
+    const { ctx } = Options.getCanvasOptions();
 
     const coordinates = this.getCoordinates();
     const sizes = this.getSizes();
