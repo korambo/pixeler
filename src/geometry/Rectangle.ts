@@ -40,6 +40,10 @@ export class Rectangle extends Figure {
   };
 
   public draw() {
+    const { ctx } = Options.getCanvasOptions();
+
+    if (this.dashed) ctx.setLineDash(this.dashed);
     this.filled ? this.drawFilled() : this.drawStroke();
+    if (this.dashed) ctx.setLineDash([]);
   }
 }

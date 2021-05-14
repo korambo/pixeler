@@ -15,7 +15,7 @@ module.exports = {
         exclude: /node_modules/,
       }, {
         test: /\.css$/i,
-        use: ["style-loader", "css-loader"],
+        use: ['style-loader', 'css-loader'],
       }, {
         test: /\.svg$/i,
         use: [
@@ -35,7 +35,7 @@ module.exports = {
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
     plugins: [
-      new TsconfigPathsPlugin({ configFile: path.resolve(__dirname, 'tsconfig.json') })
+      new TsconfigPathsPlugin({ configFile: path.resolve(__dirname, 'tsconfig.json') }),
     ],
   },
   devServer: {

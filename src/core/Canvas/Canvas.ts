@@ -1,17 +1,15 @@
-import { Edge, TCoordinates, TPolygon, TSizes } from '@core/types';
+import { Edge, TCoordinates, TPaddings, TPolygon, TSizes } from '@core/types';
 import { Options } from '@core/Options';
 
 export interface CanvasProps extends TCoordinates {}
 
 export abstract class Canvas {
-  private x: number;
-
-  private y: number;
-
   protected edgeSize = Options.getCanvasOptions().cellSize * 2;
 
-  protected abstract width: number;
+  protected x: number;
+  protected y: number;
 
+  protected abstract width: number;
   protected abstract height: number;
 
   constructor(props) {
@@ -45,8 +43,15 @@ export abstract class Canvas {
   public setCoordinates = (coordinates: Partial<TCoordinates>) => {
     const { cellSize } = Options.getCanvasOptions();
 
+    // удалить деление
     if (typeof coordinates.x === 'number') this.x = coordinates.x / cellSize;
     if (typeof coordinates.y === 'number') this.y = coordinates.y / cellSize;
+  };
+
+  // remove
+  public setOriginalCoordinates = (coordinates: Partial<TCoordinates>) => {
+    if (typeof coordinates.x === 'number') this.x = coordinates.x;
+    if (typeof coordinates.y === 'number') this.y = coordinates.y;
   };
 
   public getCoordinates(): TCoordinates {
@@ -58,16 +63,29 @@ export abstract class Canvas {
     };
   }
 
-  public getPolygon(): TPolygon {
+  public getPolygon(paddings?: Partial<TPaddings>): TPolygon {
     const sizes = this.getSizes();
     const coordinates = this.getCoordinates();
 
-    return [
+    let polygon: TPolygon = [
       [coordinates.x, coordinates.y],
       [coordinates.x + sizes.width, coordinates.y],
       [coordinates.x + sizes.width, coordinates.y + sizes.height],
       [coordinates.x, coordinates.y + sizes.height],
     ];
+
+    if (paddings) {
+      const resPaddings = { top: 0, right: 0, bottom: 0, left: 0, ...paddings };
+
+      polygon = [
+        [polygon[0][0] - resPaddings.left, polygon[0][1] - resPaddings.top],
+        [polygon[1][0] + resPaddings.right, polygon[1][1] - resPaddings.top],
+        [polygon[2][0] + resPaddings.right, polygon[2][1] + resPaddings.bottom],
+        [polygon[3][0] - resPaddings.left, polygon[3][1] + resPaddings.bottom],
+      ];
+    }
+
+    return polygon;
   }
 
   // eslint-disable-next-line consistent-return

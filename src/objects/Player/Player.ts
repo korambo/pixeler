@@ -20,9 +20,9 @@ export class Player extends MovingGameObject {
 
   orientation = Orientation.right;
 
-  speed = Draw.getPixels(1);
+  speed = Draw.getPixels(2);
   jumpSpeed = Draw.getPixels(3);
-  jumpTime = 250;
+  jumpTime = 300;
 
   constructor(props: PlayerProps) {
     super(props);
@@ -73,8 +73,8 @@ export class Player extends MovingGameObject {
           case Orientation.left: {
             return [
               [Draw.addPixels(coordinates.x, 2), coordinates.y + sizes.height],
-              [Draw.removePixels(coordinates.x + sizes.width, 2), coordinates.y + sizes.height],
-              [Draw.removePixels(coordinates.x + sizes.width, 2), coordinates.y + sizes.height - this.edgeSize],
+              [coordinates.x + sizes.width, coordinates.y + sizes.height],
+              [coordinates.x + sizes.width, coordinates.y + sizes.height - this.edgeSize],
               [Draw.addPixels(coordinates.x, 2), coordinates.y + sizes.height - this.edgeSize],
             ];
           }

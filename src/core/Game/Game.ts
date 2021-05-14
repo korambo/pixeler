@@ -6,20 +6,15 @@ import { SimpleMap } from '@maps/SimpleMap';
 
 import { GAME_HEIGHT, GAME_WIDTH } from '@core/constants';
 
-import { Map } from '@maps/base/Map';
+import { Map, MapProps } from '@maps/base/Map';
 import { Canvas } from '@core/Canvas';
 import { MovingGameObject } from '@objects/base/MovingGameObject';
-import { GameObject } from '@objects/base/GameObject';
 import { Options } from '@core/Options';
-
-interface DebugInfo {
-  key: string;
-  text: string;
-}
+import { Debug } from '@core/Debug';
 
 interface GameProps {
   debug?: boolean;
-  customMap?: typeof Map;
+  customMap?: { new(props: MapProps): Map };
 }
 
 // debug
@@ -42,9 +37,7 @@ export class Game extends Canvas {
   map: Map;
   player: Player;
 
-  debug: boolean;
-
-  info: Record<string, boolean> = {};
+  debug: Debug;
 
   constructor(props: GameProps) {
     super(props);
@@ -52,47 +45,25 @@ export class Game extends Canvas {
     this.gravity = new Gravity();
     this.inputs = new Inputs();
 
-    // @ts-ignore
-    this.map = new (props.customMap || SimpleMap)({ inputs: this.inputs, x: null, y: null });
-
-    this.camera = new Camera({ map: this.map, x: null, y: null });
+    this.map = new (props.customMap || SimpleMap)({ inputs: this.inputs, x: 0, y: 0 });
 
     const startCoordinates = this.map.getStart();
 
-    this.debug = props.debug;
+    this.camera = new Camera({ map: this.map, ...startCoordinates });
 
     this.player = new Player({
       inputs: this.inputs,
       gravity: this.gravity,
-      x: startCoordinates.x,
-      y: startCoordinates.y,
+      ...startCoordinates,
     });
 
     this.movingObjects = [this.player];
+
+    this.debug = new Debug({ camera: this.camera, items: [this.camera, this.player] });
   }
 
-  private getDebugInfo = (gameObject: GameObject): DebugInfo => {
-    const coordinates = gameObject.getCoordinates();
-    return {
-      key: gameObject.constructor.name,
-      text: `${gameObject.constructor.name}: x=${coordinates.x} y=${coordinates.y}`,
-    };
-  };
-
-  private drawInfo = ({ key, text }: DebugInfo) => {
-    const cameraCoordinates = this.camera.selectedCoordinates;
-    const { ctx } = Options.getCanvasOptions();
-
-    this.info[key] = true;
-    ctx.beginPath();
-    ctx.fillStyle = 'black';
-    ctx.font = '14px arial';
-    ctx.fillText(text, 5 - cameraCoordinates.x, 20 + 20 * Object.keys(this.info).indexOf(key) - cameraCoordinates.y);
-
-    ctx.fill();
-  };
-
   public draw = () => {
+    const debug = Options.getDebug();
     // debug
     // eslint-disable-next-line no-constant-condition
     if (false) {
@@ -112,12 +83,12 @@ export class Game extends Canvas {
       movingObject.draw();
     });
 
-    if (this.debug) {
-      this.camera.draw();
+    if (debug.coordinates) {
+      this.debug.drawCoordinates();
+    }
 
-      this.drawInfo({ key: 'debug', text: `debug: ${this.debug}` });
-      this.drawInfo(this.getDebugInfo(this.camera));
-      this.drawInfo(this.getDebugInfo(this.player));
+    if (debug.info) {
+      this.debug.drawInfo();
     }
   };
 
@@ -126,21 +97,24 @@ export class Game extends Canvas {
     const movingSize = moving.getSizes();
     const canvasSize = this.map.getSizes();
 
-    // top
-    if (movingCoordinates.y < 0) {
-      moving.setCoordinates({ y: 0 });
-    }
-    // bottom
-    if (movingCoordinates.y > canvasSize.height - movingSize.height) {
-      moving.setCoordinates({ y: canvasSize.height - movingSize.height });
-    }
-    // left
-    if (movingCoordinates.x < 0) {
-      moving.setCoordinates({ x: 0 });
-    }
-    // right
-    if (movingCoordinates.x > canvasSize.width - movingSize.width) {
-      moving.setCoordinates({ x: canvasSize.width - movingSize.width });
+    if (moving instanceof Player) {
+      // top
+      if (movingCoordinates.y < 0) {
+        moving.setCoordinates({ y: 0 });
+      }
+      // bottom
+      if (movingCoordinates.y > this.map.getSizes().height) {
+        moving.setOriginalCoordinates(this.map.getStart());
+        this.camera.setOriginalCoordinates(this.map.getStart());
+      }
+      // left
+      if (movingCoordinates.x < 0) {
+        moving.setCoordinates({ x: 0 });
+      }
+      // right
+      if (movingCoordinates.x > canvasSize.width - movingSize.width) {
+        moving.setCoordinates({ x: canvasSize.width - movingSize.width });
+      }
     }
   };
 

@@ -5,6 +5,7 @@ export interface FigureProps extends TSizes, CanvasProps {
   filled?: boolean;
   canFlip?: boolean;
   color?: string;
+  dashed?: [number, number];
 }
 
 export abstract class Figure extends Canvas {
@@ -14,6 +15,7 @@ export abstract class Figure extends Canvas {
   public canFlip: boolean;
 
   protected filled: boolean = false;
+  protected dashed: [number, number];
 
   protected color: string = 'darkgrey';
 
@@ -34,5 +36,6 @@ export abstract class Figure extends Canvas {
 
     if (props.color) this.color = props.color;
     if (typeof props.filled !== 'undefined') this.filled = props.filled;
+    if (typeof props.dashed !== 'undefined') this.dashed = props.dashed;
   }
 }

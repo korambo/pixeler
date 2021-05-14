@@ -36,24 +36,9 @@ const getIntersectPaddings = (objectA: GameObject, objectB: GameObject): TPaddin
  * @param moving
  * @param paddings
  */
-export const canInteraction = (object: GameObject, moving: MovingGameObject, paddings?: Partial<TPaddings>) => {
-  let objectPolygon = object.getPolygon();
-
-  if (paddings) {
-    const resPaddings = {
-      top: 0, right: 0, bottom: 0, left: 0, ...paddings,
-    };
-
-    objectPolygon = [
-      [objectPolygon[0][0] - resPaddings.left, objectPolygon[0][1] - resPaddings.top],
-      [objectPolygon[1][0] + resPaddings.right, objectPolygon[1][1] - resPaddings.top],
-      [objectPolygon[2][0] + resPaddings.right, objectPolygon[2][1] + resPaddings.bottom],
-      [objectPolygon[3][0] - resPaddings.left, objectPolygon[3][1] + resPaddings.bottom],
-    ];
-  }
-
-  return polygonIntersectsPolygon(objectPolygon, moving.getPolygon());
-};
+export const canInteraction = (object: GameObject, moving: MovingGameObject, paddings?: Partial<TPaddings>) => (
+  polygonIntersectsPolygon(object.getPolygon(paddings), moving.getPolygon())
+);
 
 /**
  *

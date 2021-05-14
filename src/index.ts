@@ -17,7 +17,7 @@ const init = () => {
 
   createCanvas(id);
 
-  Options.init(id);
+  Options.init(id, true);
 
   const game = new Game({ debug: true });
 

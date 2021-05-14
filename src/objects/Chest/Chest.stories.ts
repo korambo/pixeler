@@ -10,6 +10,7 @@ class ChestMap extends Map {
   protected height = 150;
 
   protected start = { x: 20, y: 50 };
+  protected startCamera = { x: 0, y: 0 };
 
   constructor(props: MapProps) {
     super(props);

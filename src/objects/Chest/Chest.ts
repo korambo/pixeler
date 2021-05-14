@@ -4,7 +4,7 @@ import { Rectangle } from '@geometry/Rectangle';
 
 import { Interaction, InteractionProps } from '@objects/base/Interaction';
 import { Player } from '@objects/Player/Player';
-import { DrawParams } from '@core/Draw';
+import { Draw, DrawParams } from '@core/Draw';
 
 import { drawEmpty, drawOpened, drawClosed } from '@objects/Chest/draw';
 import { Options } from '@core/Options';
@@ -19,7 +19,7 @@ export class Chest extends Interaction {
   protected height = 15;
 
   protected interactionTime = 200;
-  protected interactionPaddings = { left: 40, right: 40 };
+  protected interactionPaddings = { left: 40, right: 40, top: -Draw.getPixels(1) };
 
   private canLoot: boolean = false;
   private canOpen: boolean = false;
