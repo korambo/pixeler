@@ -15,7 +15,7 @@ export abstract class Interaction extends GameObject {
 
   protected abstract interactionPaddings: Partial<TPaddings>;
 
-  protected constructor(props: InteractionProps) {
+  constructor(props: InteractionProps) {
     super(props);
 
     this.inputs = props.inputs;

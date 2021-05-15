@@ -61,6 +61,35 @@ export class Draw extends Canvas {
     return cellSize * count;
   };
 
+  static resizeImage = (base64Image: string): Promise<CanvasImageSource> => new Promise((resolve) => {
+    const { cellSize } = Options.getCanvasOptions();
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    const img = new Image();
+    img.src = base64Image;
+
+    img.onload = () => {
+      const width = Math.sqrt(img.width ** 2 / cellSize);
+      const height = Math.sqrt(img.height ** 2 / cellSize);
+
+      canvas.width = width;
+      canvas.height = height;
+
+      ctx.drawImage(img, 0, 0);
+
+      resolve(canvas);
+    };
+  });
+
+  static drawImage = (base64Image: string, coordinates: TCoordinates) => {
+    const { ctx } = Options.getCanvasOptions();
+
+    Draw.resizeImage(base64Image).then((resizedImg) => {
+      ctx.drawImage(resizedImg, coordinates.x, coordinates.y);
+    });
+  };
+
   public draw = () => {
     const canvasCoordinates = this.getCoordinates();
     const canvasSizes = this.getSizes();

@@ -27,6 +27,8 @@ export class Player extends MovingGameObject {
   constructor(props: PlayerProps) {
     super(props);
 
+    console.log(13);
+
     this.inputs = props.inputs;
   }
 

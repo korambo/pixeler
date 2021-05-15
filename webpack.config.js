@@ -1,23 +1,26 @@
+const { spawn } = require('child_process');
 const path = require('path');
 
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { TsconfigPathsPlugin } = require('tsconfig-paths-webpack-plugin');
 
 module.exports = {
-  entry: './src/index.ts',
+  entry: './src/renderer.ts',
   mode: 'development',
   devtool: 'inline-source-map',
+  target: 'electron-renderer',
+  // watch: true,
   module: {
     rules: [
       {
         test: /\.tsx?$/,
         use: 'ts-loader',
         exclude: /node_modules/,
-      }, {
+      },
+      {
         test: /\.css$/i,
         use: ['style-loader', 'css-loader'],
       }, {
-        test: /\.svg$/i,
+        test: /\.png$/i,
         use: [
           {
             loader: 'url-loader',
@@ -29,9 +32,6 @@ module.exports = {
       },
     ],
   },
-  plugins: [
-    new HtmlWebpackPlugin(),
-  ],
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
     plugins: [
@@ -41,9 +41,19 @@ module.exports = {
   devServer: {
     host: '0.0.0.0',
     contentBase: path.join(__dirname, 'dist'),
+    before() {
+      console.log('Starting Main Process...');
+      spawn('yarn', ['electron'], {
+        shell: true,
+        env: process.env,
+        stdio: 'inherit',
+      })
+        .on('close', (code) => process.exit(code))
+        .on('error', (spawnError) => console.error(spawnError));
+    },
   },
   output: {
-    filename: 'bundle.js',
+    filename: 'renderer.js',
     path: path.resolve(__dirname, 'dist'),
   },
 };

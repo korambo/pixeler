@@ -3,6 +3,7 @@ import { Rock } from '@objects/tiles/Rock';
 
 import { Map, MapProps } from '@maps/base/Map';
 import { Chest } from '@objects/Chest';
+import { Heart } from '@objects/Heart/Heart';
 
 export class SimpleMap extends Map {
   protected width = 500;
@@ -49,6 +50,8 @@ export class SimpleMap extends Map {
     ]);
 
     this.setInteractions([
+      new Heart({ inputs: props.inputs, x: 50, y: this.height - 100 }),
+
       new Chest({ inputs: props.inputs, x: 70, y: this.height - 35 }),
       new Chest({ inputs: props.inputs, x: 100, y: this.height - 35, open: true }),
       new Chest({ inputs: props.inputs, x: 130, y: this.height - 35, open: true, empty: true }),

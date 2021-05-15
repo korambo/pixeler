@@ -2,6 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "paths": {
+      "@assets/*": ["assets/*"],
       "@core/*": ["core/*"],
       "@effects/*": ["effects/*"],
       "@maps/*": ["maps/*"],
@@ -9,7 +10,9 @@
       "@tools/*": ["tools/*"],
       "@geometry/*": ["geometry/*"]
     },
-    "experimentalDecorators": true
+    "strict": false,
+    "experimentalDecorators": true,
+    "noUnusedLocals": false
   },
   "outDir": "./dist/",
   "noImplicitAny": true,
@@ -20,5 +23,4 @@
   "sourceMap": true,
   "moduleResolution": "node",
   "typeRoots": ["./global.d.ts"],
-
 }
