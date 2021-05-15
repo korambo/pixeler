@@ -1,13 +1,11 @@
 import { MovingGameObject } from '@objects/base/MovingGameObject';
 import { atRectangle, canInteraction } from '@objects/__presets/boundaryCheck';
-import { Rectangle } from '@geometry/Rectangle';
 
 import { Interaction, InteractionProps } from '@objects/base/Interaction';
-import { Player } from '@objects/Player/Player';
+import { Player } from '@objects/Player';
 import { Draw, DrawParams } from '@core/Draw';
 
-import { drawEmpty, drawOpened, drawClosed } from '@objects/Chest/draw';
-import { Options } from '@core/Options';
+import { drawEmpty, drawOpened, drawClosed } from '@objects/interaction/Chest/draw';
 
 interface ChestProps extends InteractionProps {
   open?: boolean;
@@ -52,38 +50,7 @@ export class Chest extends Interaction {
     this.empty = true;
   };
 
-  // TODO вынести
-  private drawHelper = () => {
-    const { ctx, cellSize } = Options.getCanvasOptions();
-
-    const coordinates = this.getCoordinates();
-    const sizes = this.getSizes();
-
-    const parts = [
-      new Rectangle({
-        width: 15 * cellSize,
-        height: 10 * cellSize,
-        x: coordinates.x + cellSize * 2,
-        y: coordinates.y - cellSize * 18,
-        color: '#b75d2a',
-        filled: true,
-      }),
-      new Rectangle({
-        width: 15 * cellSize,
-        height: 10 * cellSize,
-        x: coordinates.x + cellSize * 2,
-        y: coordinates.y - cellSize * 18,
-        color: '#47300e',
-      }),
-    ];
-
-    parts.forEach((part) => part.draw());
-
-    ctx.fillStyle = 'white';
-    ctx.beginPath();
-    ctx.fillText('F', coordinates.x + sizes.width / 2 - 4, coordinates.y - cellSize * 12);
-    ctx.fill();
-  };
+  public animate = () => {};
 
   public draw() {
     const params: DrawParams = {
@@ -91,7 +58,7 @@ export class Chest extends Interaction {
       sizes: this.getSizes(),
     };
 
-    if (this.canOpen || this.canLoot) this.drawHelper();
+    if (this.canOpen || this.canLoot) this.info.draw();
 
     if (this.empty && this.open) {
       drawEmpty(params);

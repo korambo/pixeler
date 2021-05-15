@@ -6,7 +6,6 @@ export interface TileProps extends GameObjectProps, TSizes {}
 
 export abstract class Tile extends GameObject {
   width = null;
-
   height = null;
 
   constructor(props: TileProps) {

@@ -1,6 +1,7 @@
 import { Gravity } from '@effects/Gravity';
 import { Orientation } from '@objects/types';
 import { GameObject, GameObjectProps } from '@objects/base/GameObject';
+import { Animation } from '@core/Animation/Animation';
 
 export interface MovingGameObjectProps extends GameObjectProps {
   gravity: Gravity,
@@ -18,6 +19,7 @@ export abstract class MovingGameObject extends GameObject {
   abstract orientation: Orientation;
 
   protected gravity: Gravity;
+  protected animation: Animation;
 
   public canMove = false;
 
@@ -28,8 +30,11 @@ export abstract class MovingGameObject extends GameObject {
   protected constructor(props: MovingGameObjectProps) {
     super(props);
 
+    this.animation = new Animation(this);
     this.gravity = props.gravity;
   }
+
+  abstract animate(): void;
 
   abstract effects(): void;
 

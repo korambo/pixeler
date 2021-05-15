@@ -2,7 +2,7 @@ import { MovingGameObject } from '@objects/base/MovingGameObject';
 import { atRectangle } from '@objects/__presets/boundaryCheck';
 import { Rectangle } from '@geometry/Rectangle';
 import { Options } from '@core/Options';
-import { Tile, TileProps } from './Tile';
+import { Tile, TileProps } from '../base/Tile';
 
 interface TerrainProps extends TileProps {
   color?: [string, string],

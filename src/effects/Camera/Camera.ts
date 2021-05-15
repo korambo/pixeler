@@ -88,10 +88,7 @@ export class Camera extends Canvas {
     }
 
     if (newCoordinates.x !== cameraCoordinates.x || newCoordinates.y !== cameraCoordinates.y) {
-      this.setCoordinates({
-        x: Number(newCoordinates.x.toFixed(0)),
-        y: Number(newCoordinates.y.toFixed(0)),
-      });
+      this.setCoordinates(newCoordinates);
     }
   }
 

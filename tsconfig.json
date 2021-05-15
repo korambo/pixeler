@@ -20,5 +20,4 @@
   "sourceMap": true,
   "moduleResolution": "node",
   "typeRoots": ["./global.d.ts"],
-
 }

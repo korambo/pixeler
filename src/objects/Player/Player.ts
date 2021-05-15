@@ -20,7 +20,7 @@ export class Player extends MovingGameObject {
 
   orientation = Orientation.right;
 
-  speed = Draw.getPixels(2);
+  speed = Draw.getPixels(1.5);
   jumpSpeed = Draw.getPixels(3);
   jumpTime = 300;
 
@@ -147,6 +147,8 @@ export class Player extends MovingGameObject {
       this.setCoordinates({ y: coordinates.y + gravityPower });
     }
   };
+
+  public animate = () => {};
 
   public inputEffects = () => {
     this.move();

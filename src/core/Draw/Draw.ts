@@ -46,19 +46,25 @@ export class Draw extends Canvas {
   static addPixels = (num: number, count: number) => {
     const { cellSize } = Options.getCanvasOptions();
 
-    return num + cellSize * count;
+    return parseInt(`${num + cellSize * count}`, 10);
   };
 
   static removePixels = (num: number, count: number) => {
     const { cellSize } = Options.getCanvasOptions();
 
-    return num - cellSize * count;
+    return parseInt(`${num - cellSize * count}`, 10);
   };
 
   static getPixels = (count: number) => {
     const { cellSize } = Options.getCanvasOptions();
 
-    return cellSize * count;
+    return parseInt(`${cellSize * count}`, 10);
+  };
+
+  static drawImage = (img: HTMLImageElement, coordinates: TCoordinates, size: TSizes) => {
+    const { ctx, cellSize } = Options.getCanvasOptions();
+
+    ctx.drawImage(img, coordinates.x, coordinates.y, size.width * cellSize, size.height * cellSize);
   };
 
   public draw = () => {
