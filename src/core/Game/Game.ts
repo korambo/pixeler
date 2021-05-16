@@ -11,7 +11,7 @@ import { Canvas } from '@core/Canvas';
 import { MovingGameObject } from '@objects/base/MovingGameObject';
 import { Options } from '@core/Options';
 import { Debug } from '@core/Debug';
-import { ImageLoader } from '@core/ImageLoader/ImageLoader';
+import { ImageLoader } from '@core/ImageLoader';
 
 interface GameProps {
   debug?: boolean;

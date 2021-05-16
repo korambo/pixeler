@@ -1,10 +1,12 @@
-import { Terrain } from '@objects/tiles/Terrain';
+import { Terrain } from '@objects/tiles/Terrain/Terrain';
 import { Rock } from '@objects/decoration/Rock';
 
 import { Map, MapProps } from '@maps/base/Map';
 import { Chest } from '@objects/interaction/Chest';
 import { Heart } from '@objects/interaction/Heart/Heart';
 import { Options } from '@core/Options';
+import { Platform } from '@objects/Platform';
+import { Ground } from '@objects/tiles/Ground';
 
 export class SimpleMap extends Map {
   protected width = 500;
@@ -15,16 +17,7 @@ export class SimpleMap extends Map {
   constructor(props: MapProps) {
     super(props);
 
-    const tilesProps = {
-      imageLoader: props.imageLoader,
-    };
-
-    const interactionProps = {
-      inputs: props.inputs,
-      imageLoader: props.imageLoader,
-    };
-
-    this.setTiles([
+    this.setTiles((tilesProps) => [
       ...new Array(16).fill(null).map((_, i) => (
         new Terrain({
           width: 20,
@@ -35,37 +28,71 @@ export class SimpleMap extends Map {
         })
       )),
 
-      new Rock({ x: 200, y: this.height - 33, ...tilesProps }),
-
-      new Rock({ x: 320, y: this.height - 33, ...tilesProps }),
-
       new Terrain({
-        width: this.width / 2,
-        height: 20,
+        width: 20,
+        height: 10,
+        x: 30,
+        y: this.height - 80,
+        ...tilesProps,
+      }),
+
+      new Platform({
+        tilesCount: [20, 3],
         x: 0,
-        y: this.height - 20,
-        color: ['#b45333', '#83d34f'],
-        onlyTopBorder: true,
+        y: this.height - 30,
+        tile: Ground,
         ...tilesProps,
       }),
 
-      new Terrain({
-        width: this.width / 2 - 20,
-        height: 20,
-        x: this.width / 2 + 20,
-        y: this.height - 20,
-        color: ['#b45333', '#83d34f'],
-        onlyTopBorder: true,
+      new Platform({
+        tilesCount: [10, 4],
+        x: 200,
+        y: this.height - 40,
+        tile: Ground,
         ...tilesProps,
       }),
+
+      new Platform({
+        tilesCount: [10, 5],
+        x: 300,
+        y: this.height - 50,
+        tile: Ground,
+        ...tilesProps,
+      }),
+
+      // new Terrain({
+      //   width: this.width / 2,
+      //   height: 20,
+      //   x: 0,
+      //   y: this.height - 20,
+      //   color: ['#b45333', '#83d34f'],
+      //   onlyTopBorder: true,
+      //   ...tilesProps,
+      // }),
+      //
+      // new Terrain({
+      //   width: this.width / 2 - 20,
+      //   height: 20,
+      //   x: this.width / 2 + 20,
+      //   y: this.height - 20,
+      //   color: ['#b45333', '#83d34f'],
+      //   onlyTopBorder: true,
+      //   ...tilesProps,
+      // }),
     ]);
 
-    this.setInteractions([
+    this.setInteractions((interactionProps) => [
       new Heart({ x: 202, y: this.height - 145, ...interactionProps }),
 
-      new Chest({ x: 70, y: this.height - 35, ...interactionProps }),
-      new Chest({ x: 100, y: this.height - 35, open: true, ...interactionProps }),
-      new Chest({ x: 130, y: this.height - 35, open: true, empty: true, ...interactionProps }),
+      new Chest({ x: 100, y: this.height - 45, ...interactionProps }),
+      new Chest({ x: 130, y: this.height - 45, open: true, ...interactionProps }),
+      new Chest({ x: 160, y: this.height - 45, open: true, empty: true, ...interactionProps }),
+    ]);
+
+    this.setDecoration((decorationProps) => [
+      new Rock({ x: 210, y: this.height - 53, ...decorationProps }),
+
+      new Rock({ x: 330, y: this.height - 63, ...decorationProps }),
     ]);
   }
 

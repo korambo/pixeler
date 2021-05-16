@@ -2,14 +2,18 @@ import { MovingGameObject } from '@objects/base/MovingGameObject';
 import { atRectangle } from '@objects/__presets/boundaryCheck';
 import { Rectangle } from '@geometry/Rectangle';
 import { Options } from '@core/Options';
-import { Tile, TileProps } from '../base/Tile';
+import { GameObject, GameObjectProps } from '@objects/base/GameObject';
+import { TSizes } from '@core/types';
 
-interface TerrainProps extends TileProps {
+interface TerrainProps extends GameObjectProps, TSizes {
   color?: [string, string],
   onlyTopBorder?: boolean,
 }
 
-export class Terrain extends Tile {
+export class Terrain extends GameObject {
+  width = null;
+  height = null;
+
   private onlyTopBorder: boolean = false;
 
   private colors: Array<[string, string]> = [
@@ -29,6 +33,13 @@ export class Terrain extends Tile {
     if (typeof props.onlyTopBorder !== 'undefined') this.onlyTopBorder = props.onlyTopBorder;
 
     this.currentColor = props.color || this.getColor();
+
+    const { cellSize } = Options.getCanvasOptions();
+
+    this.setSizes({
+      width: props.width * cellSize,
+      height: props.height * cellSize,
+    });
   }
 
   private getColor = () => this.colors[Math.floor(Math.random() * this.colors.length)];

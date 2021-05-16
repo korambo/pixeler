@@ -11,6 +11,26 @@ module.exports = {
     "@storybook/addon-essentials"
   ],
   webpackFinal: (config) => {
-    return { ...config, resolve: { ...config.resolve, ...custom.resolve } };
+    return {
+      ...config,
+      resolve: { ...config.resolve, ...custom.resolve },
+      module: {
+        ...config.module,
+        rules: [
+          {
+            test: /\.(png|svg)$/i,
+            use: [
+              {
+                loader: 'url-loader',
+                options: {
+                  encoding: 'base64',
+                },
+              },
+            ],
+          },
+          ...config.module.rules.filter(({ test }) => !test.toString().match('svg')),
+        ]
+      }
+    };
   },
 }

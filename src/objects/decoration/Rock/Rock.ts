@@ -1,12 +1,9 @@
 import { Draw } from '@core/Draw';
-import { GameObject } from '@objects/base/GameObject';
+import { Decoration } from '@objects/base/Decoration';
 
-export class Rock extends GameObject {
+export class Rock extends Decoration {
   width = 13;
   height = 13;
-
-  // eslint-disable-next-line class-methods-use-this
-  public boundaryCheck() {}
 
   public draw() {
     const coordinates = this.getCoordinates();

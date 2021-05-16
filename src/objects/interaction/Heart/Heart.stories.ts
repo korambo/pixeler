@@ -2,10 +2,10 @@ import { Meta } from '@storybook/html';
 import { Game } from '@core/Game';
 import { Map, MapProps } from '@maps/base/Map';
 import { Terrain } from '@objects/tiles/Terrain/Terrain';
-import { Chest } from '@objects/interaction/Chest/Chest';
 import { Options } from '@core/Options';
+import { Heart } from '@objects/interaction/Heart/Heart';
 
-class ChestMap extends Map {
+class HeartMap extends Map {
   protected width = 320;
   protected height = 180;
 
@@ -21,22 +21,19 @@ class ChestMap extends Map {
     ]);
 
     this.setInteractions((interactionProps) => [
-      new Chest({ x: 60, y: 125, ...interactionProps }),
-      new Chest({ x: 90, y: 125, empty: true, ...interactionProps }),
-      new Chest({ x: 120, y: 125, open: true, ...interactionProps }),
-      new Chest({ x: 150, y: 125, open: true, empty: true, ...interactionProps }),
+      new Heart({ x: 60, y: 125, ...interactionProps }),
     ]);
   }
 }
 
 export default {
-  title: 'Interaction/Chest',
+  title: 'Interaction/Heart',
 } as Meta;
 
 export const States = () => {
   Options.init('game');
 
-  const game = new Game({ customMap: ChestMap });
+  const game = new Game({ customMap: HeartMap });
   game.draw();
 
   return '';

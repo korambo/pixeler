@@ -67,6 +67,23 @@ export class Draw extends Canvas {
     ctx.drawImage(img, coordinates.x, coordinates.y, size.width * cellSize, size.height * cellSize);
   };
 
+  static getPattern = (img: HTMLImageElement, size: TSizes): CanvasPattern => {
+    const { ctx, cellSize } = Options.getCanvasOptions();
+
+    const patternCanvas = document.createElement('canvas');
+    const patternCtx = patternCanvas.getContext('2d');
+
+    const width = size.width * cellSize;
+    const height = size.height * cellSize;
+
+    patternCanvas.width = width;
+    patternCanvas.height = height;
+
+    patternCtx.drawImage(img, 0, 0, width, height);
+
+    return ctx.createPattern(patternCanvas, 'repeat');
+  };
+
   public draw = () => {
     const canvasCoordinates = this.getCoordinates();
     const canvasSizes = this.getSizes();

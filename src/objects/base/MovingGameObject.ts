@@ -1,7 +1,7 @@
 import { Gravity } from '@effects/Gravity';
 import { Orientation } from '@objects/types';
 import { GameObject, GameObjectProps } from '@objects/base/GameObject';
-import { Animation } from '@core/Animation/Animation';
+import { Animation } from '@core/Animation';
 
 export interface MovingGameObjectProps extends GameObjectProps {
   gravity: Gravity,

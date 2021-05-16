@@ -2,7 +2,7 @@ import { GameObject, GameObjectProps } from '@objects/base/GameObject';
 import { Inputs } from '@effects/Inputs';
 import { TPaddings } from '@core/types';
 import { InteractionInfo } from '@objects/interface/InteractionInfo';
-import { Animation } from '@core/Animation/Animation';
+import { Animation } from '@core/Animation';
 
 export interface InteractionProps extends GameObjectProps {
   inputs: Inputs;

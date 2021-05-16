@@ -15,28 +15,34 @@ export class ImageLoader {
 
   private getImageName = (path: string) => path.split('/').reverse()[0];
 
-  private loadImg = (base64Img: string) => new Promise<HTMLImageElement>((resolve) => {
+  private loadImage = (base64Img: string) => new Promise<HTMLImageElement>((resolve, reject) => {
     const img = new Image();
 
-    img.onload = () => {
-      resolve(img);
-    };
+    img.onload = () => resolve(img);
+    img.onerror = (err) => reject(err);
 
     img.src = base64Img;
   });
 
   private loadImages = async () => {
-    await Promise.all(Object.keys(cache).map((path) => {
+    const res = await Promise.all(Object.keys(cache).map((path) => {
       const { default: base64Image } = cache[path];
 
-      return this.loadImg(base64Image).then((img) => {
-        const name = this.getImageName(path);
+      return this.loadImage(base64Image)
+        .then((img) => {
+          const name = this.getImageName(path);
 
-        this.images[name] = img;
-      });
+          this.images[name] = img;
+        })
+        .catch((err) => ({ error: { err, msg: `Image ${this.getImageName(path)} could not be loaded` } }));
     }));
 
-    this.loaded = true;
+    if (res.filter(Boolean).length) {
+      // eslint-disable-next-line no-console
+      console.error(res);
+    } else {
+      this.loaded = true;
+    }
   };
 
   public getImage = (name: string) => this.images[name];
