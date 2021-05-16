@@ -4,7 +4,7 @@ import { Options } from '@core/Options';
 export interface CanvasProps extends TCoordinates {}
 
 export abstract class Canvas {
-  protected edgeSize = Options.getCanvasOptions().cellSize * 2;
+  protected edgeSize = Options.getCanvasOptions().cellSize * 1.5;
 
   protected x: number;
   protected y: number;

@@ -96,23 +96,12 @@ export const atRectangle = (object: GameObject, moving: MovingGameObject) => {
   const objectCoordinates = object.getCoordinates();
   const movingSize = moving.getSizes();
 
-  const hasIntersect = polygonIntersectsPolygon(object.getEdgePolygon(Edge.top), moving.getEdgePolygon(Edge.bottom));
+  // console.log(getIntersectPaddings(object, moving));
 
-  // new Polygon({ dots: object.getEdgePolygon(Edge.bottom) }).draw();
-  // new Polygon({ dots: moving.getEdgePolygon(Edge.right) }).draw();
+  const hasIntersect = polygonIntersectsPolygon(object.getEdgePolygon(Edge.top), moving.getEdgePolygon(Edge.bottom));
 
   if (!hasIntersect) return;
 
   moving.setIsOnGround(true);
   moving.setCoordinates({ y: objectCoordinates.y - movingSize.height });
 };
-
-// 0: (2) [360, 500]
-// 1: (2) [432, 500]
-// 2: (2) [432, 504]
-// 3: (2) [360, 504]
-//
-// 0: (2) [384, 500]
-// 1: (2) [424, 500]
-// 2: (2) [424, 496]
-// 3: (2) [384, 496]

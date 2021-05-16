@@ -6,7 +6,7 @@
       "@effects/*": ["effects/*"],
       "@maps/*": ["maps/*"],
       "@objects/*": ["objects/*"],
-      "@tools/*": ["tools/*"],
+      "@tiles/*": ["tiles/*"],
       "@geometry/*": ["geometry/*"]
     },
     "experimentalDecorators": true

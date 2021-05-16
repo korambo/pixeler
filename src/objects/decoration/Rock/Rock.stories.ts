@@ -2,11 +2,11 @@ import { Meta } from '@storybook/html';
 import { Game } from '@core/Game';
 import { Map, MapProps } from '@maps/base/Map';
 import { Options } from '@core/Options';
-import { Heart } from '@objects/interaction/Heart/Heart';
 import { Platform } from '@objects/terrain/Platform';
 import { Ground } from '@tiles/Ground';
+import { Rock } from '@objects/decoration/Rock/Rock';
 
-class HeartMap extends Map {
+class RockMap extends Map {
   protected width = 320;
   protected height = 180;
 
@@ -26,20 +26,20 @@ class HeartMap extends Map {
       }),
     ]);
 
-    this.setInteractions((interactionProps) => [
-      new Heart({ x: 150, y: this.height - 45, ...interactionProps }),
+    this.setDecoration((decorationProps) => [
+      new Rock({ x: 150, y: this.height - 43, ...decorationProps }),
     ]);
   }
 }
 
 export default {
-  title: 'Interaction/Heart',
+  title: 'Decoration/Rock',
 } as Meta;
 
 export const States = () => {
   Options.init('game');
 
-  const game = new Game({ customMap: HeartMap });
+  const game = new Game({ customMap: RockMap });
   game.draw();
 
   return '';

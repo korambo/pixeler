@@ -142,7 +142,7 @@ export class Game extends Canvas {
 
       movingObject.effects();
 
-      this.map.getTiles().forEach((tile) => tile.boundaryCheck(movingObject));
+      this.map.getTerrain().forEach((terrain) => terrain.boundaryCheck(movingObject));
       this.map.getInteractions().forEach((interaction) => interaction.boundaryCheck(movingObject));
     });
   };

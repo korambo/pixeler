@@ -4,8 +4,7 @@ import { outerSquire } from '@objects/__presets/boundaryCheck';
 
 import { Orientation } from '@objects/types';
 
-import { drawPlayer } from '@objects/Player/draw';
-import { Edge, Flip, TPolygon } from '@core/types';
+import { Edge, TPolygon } from '@core/types';
 import { Draw } from '@core/Draw';
 
 interface PlayerProps extends MovingGameObjectProps {
@@ -13,8 +12,8 @@ interface PlayerProps extends MovingGameObjectProps {
 }
 
 export class Player extends MovingGameObject {
-  width = 10;
-  height = 20;
+  width = 15;
+  height = 23;
 
   inputs: Inputs;
 
@@ -36,15 +35,28 @@ export class Player extends MovingGameObject {
 
   public draw = () => {
     const coordinates = this.getCoordinates();
-    const sizes = this.getSizes();
+    const sizes = { width: this.width, height: this.height };
 
     switch (this.orientation) {
       case Orientation.right: {
-        drawPlayer({ sizes, coordinates, flip: null });
+        Draw.drawImage(
+          this.imageLoader.getImage(
+            this.animation.sprite(['player_stay_1.png', 'player_stay_2.png', 'player_stay_3.png']),
+          ),
+          coordinates,
+          sizes,
+        );
         break;
       }
       case Orientation.left: {
-        drawPlayer({ sizes, coordinates, flip: Flip.x });
+        Draw.drawImage(
+          this.imageLoader.getImage(
+            this.animation.sprite(['player_stay_1.png', 'player_stay_2.png', 'player_stay_3.png']),
+          ),
+          coordinates,
+          sizes,
+          true,
+        );
       }
     }
   };

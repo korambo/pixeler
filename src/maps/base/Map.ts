@@ -4,23 +4,20 @@ import { Inputs } from '@effects/Inputs';
 import { Interaction } from '@objects/base/Interaction';
 import { ImageLoader } from '@core/ImageLoader/ImageLoader';
 import { Options } from '@core/Options';
-import { Terrain } from '@objects/tiles/Terrain';
-import { Platform } from '@objects/Platform';
 import { Decoration } from '@objects/base/Decoration';
+import { Terrain } from '@objects/base/Terrain';
 
 export interface MapProps extends CanvasProps {
   inputs: Inputs;
   imageLoader: ImageLoader;
 }
 
-type Tiles = Platform | Terrain;
-
 export abstract class Map extends Canvas {
   protected abstract start: TCoordinates;
 
-  private tiles: Tiles[];
-  private interactions: Interaction[];
-  private decorations: Decoration[];
+  private terrain: Terrain[] = [];
+  private interactions: Interaction[] = [];
+  private decorations: Decoration[] = [];
 
   protected imageLoader: ImageLoader;
   protected inputs: Inputs;
@@ -42,8 +39,8 @@ export abstract class Map extends Canvas {
     ctx.fillRect(0, 0, sizes.width, sizes.height);
   };
 
-  public setTiles = (cb: (props: { imageLoader: ImageLoader }) => Tiles[]) => {
-    this.tiles = cb({ imageLoader: this.imageLoader });
+  public setTerrain = (cb: (props: { imageLoader: ImageLoader }) => Terrain[]) => {
+    this.terrain = cb({ imageLoader: this.imageLoader });
   };
 
   public setInteractions = (cb: (props: { imageLoader: ImageLoader, inputs: Inputs }) => Interaction[]) => {
@@ -54,7 +51,7 @@ export abstract class Map extends Canvas {
     this.decorations = cb({ imageLoader: this.imageLoader });
   };
 
-  public getTiles = () => this.tiles;
+  public getTerrain = () => this.terrain;
 
   public getInteractions = () => this.interactions;
 
@@ -63,7 +60,7 @@ export abstract class Map extends Canvas {
   public getStart = (): TCoordinates => this.start;
 
   public draw() {
-    this.tiles.forEach((tile) => tile.draw());
+    this.terrain.forEach((tile) => tile.draw());
     this.interactions.forEach((interaction) => interaction.draw());
     this.decorations.forEach((interaction) => interaction.draw());
   }

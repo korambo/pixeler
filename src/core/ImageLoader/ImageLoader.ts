@@ -3,7 +3,7 @@ const cache: Record<string, any> = {};
 // eslint-disable-next-line no-return-assign
 const importAll = (r) => r.keys().forEach((key: string) => (cache[key] = r(key)));
 
-importAll(require.context('../../', true, /\.svg$/));
+importAll(require.context('../../', true, /\.svg|png$/));
 
 export class ImageLoader {
   private images: Record<string, HTMLImageElement> = {};

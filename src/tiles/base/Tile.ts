@@ -2,11 +2,9 @@ import { Canvas, CanvasProps } from '@core/Canvas';
 import { ImageLoader } from '@core/ImageLoader';
 import { TSizes } from '@core/types';
 import { Options } from '@core/Options';
-
-export enum TileType {
-  outer = 'outer',
-  inner = 'inner',
-}
+import { TileType } from '@tiles/types';
+import { Draw } from '@core/Draw';
+import { TILE_SIZE } from '@core/constants';
 
 export interface TileProps extends CanvasProps, TSizes {
   type: TileType;
@@ -19,9 +17,9 @@ export abstract class Tile extends Canvas {
 
   protected imageLoader: ImageLoader;
 
+  protected abstract sprite: Record<TileType, string>;
   protected readonly type: TileType;
   private pattern: CanvasPattern;
-  private inited = false;
 
   constructor(props: TileProps) {
     super(props);
@@ -35,10 +33,9 @@ export abstract class Tile extends Canvas {
     this.imageLoader = props.imageLoader;
   }
 
-  protected abstract init(): void;
-
-  protected setPattern = (pattern: CanvasPattern) => {
-    this.pattern = pattern;
+  private setPattern = () => {
+    const img = this.imageLoader.getImage(this.sprite[this.type]);
+    this.pattern = Draw.getPattern(img, { width: TILE_SIZE, height: TILE_SIZE });
   };
 
   public draw = () => {
@@ -46,9 +43,8 @@ export abstract class Tile extends Canvas {
     const coordinates = this.getCoordinates();
     const sizes = this.getSizes();
 
-    if (!this.inited) {
-      this.init();
-      this.inited = true;
+    if (!this.pattern) {
+      this.setPattern();
     }
 
     ctx.beginPath();

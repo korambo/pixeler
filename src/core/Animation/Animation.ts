@@ -26,6 +26,30 @@ export class Animation {
     return this.counter[name];
   };
 
+  public sprite = (sprite: any[]) => {
+    const animationName = 'sprite';
+
+    const counter = this.getCounter(animationName);
+
+    if (counter < 20) {
+      this.setCounter(animationName, counter + 1);
+      return sprite[0];
+    }
+
+    if (counter < 40) {
+      this.setCounter(animationName, counter + 1);
+      return sprite[1];
+    }
+
+    if (counter < 60) {
+      this.setCounter(animationName, counter + 1);
+      return sprite[2];
+    }
+
+    this.setCounter(animationName, 0);
+    return sprite[0];
+  };
+
   public floatingY = () => {
     const animationName = 'floatingY';
     const { y } = this.object.getCoordinates();
