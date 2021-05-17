@@ -4,7 +4,7 @@ import { Map, MapProps } from '@maps/base/Map';
 import { Options } from '@core/Options';
 import { Platform } from '@objects/terrain/Platform';
 import { Ground } from '@tiles/Ground';
-import { Rock } from '@objects/decoration/Rock/Rock';
+import { Rock } from '@objects/decoration/Rock';
 
 class RockMap extends Map {
   protected width = 320;
