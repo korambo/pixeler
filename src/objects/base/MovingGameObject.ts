@@ -13,7 +13,6 @@ export abstract class MovingGameObject extends GameObject {
   abstract speed: number;
 
   abstract jumpSpeed: number;
-
   abstract jumpTime: number;
 
   abstract orientation: Orientation;
@@ -24,8 +23,8 @@ export abstract class MovingGameObject extends GameObject {
   public canMove = false;
 
   public isJump = false;
-
   public isOnGround = false;
+  public isMoving = false;
 
   protected constructor(props: MovingGameObjectProps) {
     super(props);
@@ -48,5 +47,9 @@ export abstract class MovingGameObject extends GameObject {
 
   public setAcceleration = (acceleration: number) => {
     this.acceleration = acceleration;
+  };
+
+  public setJump = (isJum: boolean) => {
+    this.isJump = isJum;
   };
 }

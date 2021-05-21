@@ -9,8 +9,8 @@ import { Draw } from '@core/Draw';
 // }
 
 export class Heart extends Interaction {
-  protected width = 15;
-  protected height = 13;
+  protected width = 11;
+  protected height = 10;
 
   protected interactionTime = 200;
   protected interactionPaddings = { left: 40, right: 40 };
@@ -31,17 +31,17 @@ export class Heart extends Interaction {
   }
 
   public animate = () => {
-    this.animation.floatingY();
+    this.animation.floatingY(40);
   };
 
   public draw() {
     const coordinates = this.getCoordinates();
-    const img = this.imageLoader.getImage('heart.svg');
+    const img = this.imageLoader.getImage('heart.png');
 
     if (!this.looted) {
       if (this.canLoot) this.info.draw();
 
-      Draw.drawImage(img, coordinates, { width: this.width, height: this.height });
+      Draw.drawImage(img, coordinates, this.getSizes());
     }
   }
 

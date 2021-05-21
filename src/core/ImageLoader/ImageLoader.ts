@@ -45,7 +45,13 @@ export class ImageLoader {
     }
   };
 
-  public getImage = (name: string) => this.images[name];
+  public getImage = (name: string) => {
+    const image = this.images[name];
+
+    if (!image) throw new Error(`Image ${name} not found!`);
+
+    return this.images[name];
+  };
 
   public isLoaded = () => this.loaded;
 }

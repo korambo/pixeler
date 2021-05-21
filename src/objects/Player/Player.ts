@@ -1,27 +1,31 @@
 import { Inputs } from '@effects/Inputs';
 import { MovingGameObject, MovingGameObjectProps } from '@objects/base/MovingGameObject';
-import { outerSquire } from '@objects/__presets/boundaryCheck';
+import { outerRectangle } from '@objects/__presets/boundaryCheck';
 
 import { Orientation } from '@objects/types';
 
 import { Edge, TPolygon } from '@core/types';
 import { Draw } from '@core/Draw';
+import { Sprite } from '@core/Sprite';
+import { SpriteAnimationOrientation } from '@core/Animation/types';
 
 interface PlayerProps extends MovingGameObjectProps {
   inputs: Inputs;
 }
 
 export class Player extends MovingGameObject {
-  width = 15;
-  height = 23;
+  width = 18;
+  height = 24;
 
   inputs: Inputs;
 
   orientation = Orientation.right;
 
-  speed = Draw.getPixels(1.5);
-  jumpSpeed = Draw.getPixels(3);
+  speed = Draw.getPixels(1.4);
+  jumpSpeed = Draw.getPixels(3.4);
   jumpTime = 300;
+
+  private sprite: { stay: Sprite; move: Sprite };
 
   constructor(props: PlayerProps) {
     super(props);
@@ -29,39 +33,46 @@ export class Player extends MovingGameObject {
     this.inputs = props.inputs;
   }
 
+  private initSprite = () => {
+    const frameSize = { width: this.width, height: this.height };
+
+    this.sprite = {
+      stay: new Sprite({
+        image: this.imageLoader.getImage('player_stay_sprite.png'),
+        frameSize,
+        canFlip: true,
+      }),
+      move: new Sprite({
+        image: this.imageLoader.getImage('player_move_sprite.png'),
+        frameSize,
+        canFlip: true,
+      }),
+    };
+  };
+
   public boundaryCheck(movingObject: MovingGameObject) {
-    outerSquire(this, movingObject);
+    outerRectangle(this, movingObject);
   }
 
   public draw = () => {
     const coordinates = this.getCoordinates();
-    const sizes = { width: this.width, height: this.height };
 
-    switch (this.orientation) {
-      case Orientation.right: {
-        Draw.drawImage(
-          this.imageLoader.getImage(
-            this.animation.sprite(['player_stay_1.png', 'player_stay_2.png', 'player_stay_3.png']),
-          ),
-          coordinates,
-          sizes,
-        );
-        break;
-      }
-      case Orientation.left: {
-        Draw.drawImage(
-          this.imageLoader.getImage(
-            this.animation.sprite(['player_stay_1.png', 'player_stay_2.png', 'player_stay_3.png']),
-          ),
-          coordinates,
-          sizes,
-          true,
-        );
-      }
+    if (!this.sprite) {
+      this.initSprite();
     }
+
+    if (this.isMoving) {
+      this.animation
+        .sprite(this.sprite.move, SpriteAnimationOrientation.x, 12)
+        .drawImage(coordinates, this.orientation === Orientation.left);
+      return;
+    }
+
+    this.animation
+      .sprite(this.sprite.stay, SpriteAnimationOrientation.x, 18)
+      .drawImage(coordinates, this.orientation === Orientation.left);
   };
 
-  // eslint-disable-next-line consistent-return
   public getEdgePolygon(edge: Edge): TPolygon {
     const sizes = this.getSizes();
     const coordinates = this.getCoordinates();
@@ -76,18 +87,18 @@ export class Player extends MovingGameObject {
         switch (this.orientation) {
           case Orientation.right: {
             return [
-              [coordinates.x, coordinates.y + sizes.height],
-              [Draw.removePixels(coordinates.x + sizes.width, 2), coordinates.y + sizes.height],
-              [Draw.removePixels(coordinates.x + sizes.width, 2), coordinates.y + sizes.height - this.edgeSize],
-              [coordinates.x, coordinates.y + sizes.height - this.edgeSize],
+              [Draw.addPixels(coordinates.x, 4), coordinates.y + sizes.height],
+              [Draw.removePixels(coordinates.x + sizes.width, 3), coordinates.y + sizes.height],
+              [Draw.removePixels(coordinates.x + sizes.width, 3), coordinates.y + sizes.height - this.edgeSize],
+              [Draw.addPixels(coordinates.x, 4), coordinates.y + sizes.height - this.edgeSize],
             ];
           }
           case Orientation.left: {
             return [
-              [Draw.addPixels(coordinates.x, 2), coordinates.y + sizes.height],
-              [coordinates.x + sizes.width, coordinates.y + sizes.height],
-              [coordinates.x + sizes.width, coordinates.y + sizes.height - this.edgeSize],
-              [Draw.addPixels(coordinates.x, 2), coordinates.y + sizes.height - this.edgeSize],
+              [Draw.addPixels(coordinates.x, 3), coordinates.y + sizes.height],
+              [Draw.removePixels(coordinates.x + sizes.width, 4), coordinates.y + sizes.height],
+              [Draw.removePixels(coordinates.x + sizes.width, 4), coordinates.y + sizes.height - this.edgeSize],
+              [Draw.addPixels(coordinates.x, 3), coordinates.y + sizes.height - this.edgeSize],
             ];
           }
         }
@@ -129,12 +140,18 @@ export class Player extends MovingGameObject {
     if (keysPressed.left) {
       this.orientation = Orientation.left;
       this.setCoordinates({ x: coordinates.x - this.speed });
+      this.isMoving = true;
+      return;
     }
 
     if (keysPressed.right) {
       this.orientation = Orientation.right;
       this.setCoordinates({ x: coordinates.x + this.speed });
+      this.isMoving = true;
+      return;
     }
+
+    this.isMoving = false;
   };
 
   private gravityEffect = () => {
@@ -143,11 +160,7 @@ export class Player extends MovingGameObject {
     const accelerationPower = this.gravity.getAccelerationPower();
     const gravityPower = this.gravity.getGravityPower();
 
-    let canGravity = !this.isOnGround;
-
-    if (this.isJump) {
-      canGravity = false;
-    }
+    const canGravity = !this.isOnGround && !this.isJump;
 
     if (acceleration > 0) {
       this.setAcceleration(acceleration - accelerationPower);

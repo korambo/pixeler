@@ -27,14 +27,14 @@ class FlowerMap extends Map {
     ]);
 
     this.setDecoration((decorationProps) => [
-      new Flower({ x: 90, y: this.height - 36, type: 1, ...decorationProps }),
-      new Flower({ x: 105, y: this.height - 36, type: 1, ...decorationProps }),
+      new Flower({ x: 90, y: this.height - 36, type: 0, ...decorationProps }),
+      new Flower({ x: 105, y: this.height - 36, type: 0, ...decorationProps }),
 
-      new Flower({ x: 120, y: this.height - 36, type: 2, ...decorationProps }),
-      new Flower({ x: 135, y: this.height - 36, type: 2, ...decorationProps }),
+      new Flower({ x: 120, y: this.height - 36, type: 1, ...decorationProps }),
+      new Flower({ x: 135, y: this.height - 36, type: 1, ...decorationProps }),
 
-      new Flower({ x: 150, y: this.height - 36, type: 3, ...decorationProps }),
-      new Flower({ x: 165, y: this.height - 36, type: 3, ...decorationProps }),
+      new Flower({ x: 150, y: this.height - 36, type: 2, ...decorationProps }),
+      new Flower({ x: 165, y: this.height - 36, type: 2, ...decorationProps }),
 
       // random type
       new Flower({ x: 190, y: this.height - 36, ...decorationProps }),

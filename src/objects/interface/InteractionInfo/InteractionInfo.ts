@@ -5,7 +5,7 @@ import { CanvasProps } from '@core/Canvas';
 export interface InteractionInfoProps extends CanvasProps {}
 
 export class InteractionInfo extends Interface {
-  protected width = 15;
+  protected width = 16;
   protected height = 10;
 
   public draw = () => {

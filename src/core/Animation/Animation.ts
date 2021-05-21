@@ -1,5 +1,7 @@
 import { MovingGameObject } from '@objects/base/MovingGameObject';
 import { Interaction } from '@objects/base/Interaction';
+import { Sprite } from '@core/Sprite';
+import { SpriteAnimationOrientation } from '@core/Animation/types';
 
 type AnimateObject = MovingGameObject | Interaction;
 
@@ -10,57 +12,77 @@ type AnimateObject = MovingGameObject | Interaction;
 export class Animation {
   private object: AnimateObject;
 
+  private clearTimeout: Record<string, NodeJS.Timeout> = {};
   private counter: Record<string, number> = {};
 
   constructor(object: AnimateObject) {
     this.object = object;
   }
 
+  private resetCounter = (name: string) => {
+    this.clearTimeout[name] = undefined;
+    this.counter[name] = undefined;
+  };
+
+  private timer = (name: string) => {
+    if (this.clearTimeout[name]) clearTimeout(this.clearTimeout[name]);
+    this.clearTimeout[name] = setTimeout(() => this.resetCounter(name), 200);
+  };
+
   private setCounter = (name: string, value: number) => {
     this.counter[name] = value;
   };
 
-  private getCounter = (name: string) => {
+  private increaseCounter = (name: string) => {
     if (typeof this.counter[name] === 'undefined') this.counter[name] = 0;
-
-    return this.counter[name];
+    this.counter[name] += 1;
   };
 
-  public sprite = (sprite: any[]) => {
-    const animationName = 'sprite';
+  private getCounter = (name: string) => this.counter[name];
 
-    const counter = this.getCounter(animationName);
+  /**
+   * Returns one of the sprite elements every stepTime
+   *
+   * @param sprite
+   * @param orientation
+   * @param stepTime
+   */
+  public sprite = (sprite: Sprite, orientation: SpriteAnimationOrientation, stepTime: number) => {
+    const animationName = `sprite_${sprite.getId()}`;
 
-    if (counter < 20) {
-      this.setCounter(animationName, counter + 1);
-      return sprite[0];
+    this.timer(animationName);
+
+    this.increaseCounter(animationName);
+
+    const { x, y } = sprite.getFramesCount();
+
+    const spriteLength = orientation === SpriteAnimationOrientation.x ? x : y;
+
+    if (this.getCounter(animationName) === spriteLength * stepTime) {
+      this.setCounter(animationName, 0);
     }
 
-    if (counter < 40) {
-      this.setCounter(animationName, counter + 1);
-      return sprite[1];
+    switch (orientation) {
+      case SpriteAnimationOrientation.x: {
+        return sprite.getFrame([Math.floor(this.getCounter(animationName) / stepTime), 0]);
+      }
+      case SpriteAnimationOrientation.y: {
+        return sprite.getFrame([0, Math.floor(this.getCounter(animationName) / stepTime)]);
+      }
     }
-
-    if (counter < 60) {
-      this.setCounter(animationName, counter + 1);
-      return sprite[2];
-    }
-
-    this.setCounter(animationName, 0);
-    return sprite[0];
   };
 
-  public floatingY = () => {
+  public floatingY = (stepTime: number) => {
     const animationName = 'floatingY';
     const { y } = this.object.getCoordinates();
 
     const counter = this.getCounter(animationName);
 
-    if (counter < 40) {
-      this.object.setCoordinates({ y: y - 0.5 });
+    if (counter < stepTime) {
+      if (counter % 2) this.object.setCoordinates({ y: y - 1 });
       this.setCounter(animationName, counter + 1);
-    } else if (counter < 80) {
-      this.object.setCoordinates({ y: y + 0.5 });
+    } else if (counter < stepTime * 2) {
+      if (counter % 2) this.object.setCoordinates({ y: y + 1 });
       this.setCounter(animationName, counter + 1);
     } else {
       this.setCounter(animationName, 0);

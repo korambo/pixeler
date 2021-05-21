@@ -1,11 +1,10 @@
 import { MovingGameObject } from '@objects/base/MovingGameObject';
-import { atRectangle, canInteraction } from '@objects/__presets/boundaryCheck';
+import { topIntersect, canInteraction } from '@objects/__presets/boundaryCheck';
+import { Sprite } from '@core/Sprite';
 
 import { Interaction, InteractionProps } from '@objects/base/Interaction';
 import { Player } from '@objects/Player';
-import { Draw, DrawParams } from '@core/Draw';
-
-import { drawEmpty, drawOpened, drawClosed } from '@objects/interaction/Chest/draw';
+import { Draw } from '@core/Draw';
 
 interface ChestProps extends InteractionProps {
   open?: boolean;
@@ -14,7 +13,7 @@ interface ChestProps extends InteractionProps {
 
 export class Chest extends Interaction {
   protected width = 18;
-  protected height = 15;
+  protected height = 20;
 
   protected interactionTime = 200;
   protected interactionPaddings = { left: 40, right: 40, top: -Draw.getPixels(1) };
@@ -24,6 +23,8 @@ export class Chest extends Interaction {
   private open: boolean = false;
   private empty: boolean = false;
 
+  private sprite: Sprite;
+
   constructor(props: ChestProps) {
     super(props);
 
@@ -31,16 +32,12 @@ export class Chest extends Interaction {
     if (typeof props.empty !== 'undefined') this.empty = props.empty;
   }
 
-  public boundaryCheck(movingObject: MovingGameObject) {
-    if (!this.open) {
-      atRectangle(this, movingObject);
-    }
-
-    if (movingObject instanceof Player) {
-      this.canOpen = !this.open && canInteraction(this, movingObject, this.interactionPaddings);
-      this.canLoot = this.open && !this.empty && canInteraction(this, movingObject, this.interactionPaddings);
-    }
-  }
+  private initSprite = () => {
+    this.sprite = new Sprite({
+      image: this.imageLoader.getImage('chest_sprite.png'),
+      frameSize: this.getOriginalSizes(),
+    });
+  };
 
   private openChest = () => {
     this.open = true;
@@ -52,20 +49,34 @@ export class Chest extends Interaction {
 
   public animate = () => {};
 
+  public boundaryCheck(movingObject: MovingGameObject) {
+    if (!this.open) {
+      topIntersect(this, movingObject);
+    }
+
+    if (movingObject instanceof Player) {
+      this.canOpen = !this.open && canInteraction(this, movingObject, this.interactionPaddings);
+      this.canLoot = this.open && !this.empty && canInteraction(this, movingObject, this.interactionPaddings);
+    }
+  }
+
   public draw() {
-    const params: DrawParams = {
-      coordinates: this.getCoordinates(),
-      sizes: this.getSizes(),
-    };
+    const coordinates = this.getCoordinates();
+
+    if (!this.sprite) {
+      this.initSprite();
+    }
 
     if (this.canOpen || this.canLoot) this.info.draw();
 
     if (this.empty && this.open) {
-      drawEmpty(params);
+      this.sprite.drawFrame([1, 0], coordinates);
       return;
     }
 
-    this.open ? drawOpened(params) : drawClosed(params);
+    this.open
+      ? this.sprite.drawFrame([2, 0], coordinates)
+      : this.sprite.drawFrame([0, 0], coordinates);
   }
 
   public inputEffects = () => {

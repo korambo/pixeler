@@ -19,7 +19,6 @@ interface DrawProps extends TSizes, TCoordinates {
 
 export class Draw extends Canvas {
   width: null;
-
   height: null;
 
   private readonly flip: Flip;
@@ -43,6 +42,12 @@ export class Draw extends Canvas {
     });
   }
 
+  /**
+   * Create new canvas element with 2d context
+   *
+   * @param width
+   * @param height
+   */
   static createCanvas = ({ width, height }: TSizes) => {
     const canvas = document.createElement('canvas');
 
@@ -55,44 +60,81 @@ export class Draw extends Canvas {
     };
   };
 
+  /**
+   * Add pixels count relative cellSize
+   *
+   * @param num
+   * @param count
+   */
   static addPixels = (num: number, count: number) => {
     const { cellSize } = Options.getCanvasOptions();
 
     return parseInt(`${num + cellSize * count}`, 10);
   };
 
+  /**
+   * Remove pixels count relative cellSize
+   *
+   * @param num
+   * @param count
+   */
   static removePixels = (num: number, count: number) => {
     const { cellSize } = Options.getCanvasOptions();
 
     return parseInt(`${num - cellSize * count}`, 10);
   };
 
+  /**
+   * Returns pixels count relative cellSize
+   *
+   * @param count
+   */
   static getPixels = (count: number) => {
     const { cellSize } = Options.getCanvasOptions();
 
     return parseInt(`${cellSize * count}`, 10);
   };
 
-  static drawImage = (img: HTMLImageElement, coordinates: TCoordinates, size: TSizes, flip?: boolean) => {
-    const { ctx, cellSize } = Options.getCanvasOptions();
+  /**
+   * Flip image horizontal
+   *
+   * @param image
+   * @param sizes
+   */
+  static flipImage = (image: HTMLImageElement, sizes: TSizes) => {
+    const width = Draw.getPixels(sizes.width);
+    const height = Draw.getPixels(sizes.height);
 
-    const width = size.width * cellSize;
-    const height = size.height * cellSize;
+    const { canvas: imageCanvas, ctx: imageCtx } = Draw.createCanvas({ width, height });
 
-    if (flip) {
-      const { canvas: imageCanvas, ctx: imageCtx } = Draw.createCanvas({ width, height });
+    imageCtx.scale(-1, 1);
+    imageCtx.drawImage(image, 0, 0, width * -1, height);
 
-      imageCtx.save();
-      imageCtx.scale(-1, 1);
-      imageCtx.drawImage(img, 0, 0, width * -1, height);
-      imageCtx.restore();
-      ctx.drawImage(imageCanvas, coordinates.x, coordinates.y, width, height);
-    } else {
-      ctx.drawImage(img, coordinates.x, coordinates.y, width, height);
-    }
+    return imageCanvas;
   };
 
-  static getPattern = (img: HTMLImageElement, size: TSizes): CanvasPattern => {
+  /**
+   * Simple drawing image to canvas
+   *
+   * @param image
+   * @param coordinates
+   * @param sizes
+   * @param flip
+   */
+  static drawImage = (image: HTMLImageElement, coordinates: TCoordinates, sizes: TSizes, flip?: boolean) => {
+    const { ctx } = Options.getCanvasOptions();
+    const imageForDraw = flip ? Draw.flipImage(image, sizes) : image;
+
+    ctx.drawImage(imageForDraw, coordinates.x, coordinates.y, sizes.width, sizes.height);
+  };
+
+  /**
+   * Create pattern from image
+   *
+   * @param image
+   * @param size
+   */
+  static getPattern = (image: HTMLImageElement, size: TSizes): CanvasPattern => {
     const { ctx, cellSize } = Options.getCanvasOptions();
 
     const width = size.width * cellSize;
@@ -100,7 +142,7 @@ export class Draw extends Canvas {
 
     const { canvas: patternCanvas, ctx: patternCtx } = Draw.createCanvas({ width, height });
 
-    patternCtx.drawImage(img, 0, 0, width, height);
+    patternCtx.drawImage(image, 0, 0, width, height);
 
     return ctx.createPattern(patternCanvas, 'repeat');
   };

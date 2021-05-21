@@ -1,7 +1,5 @@
 import { Tile, TileInstance } from '@tiles/base/Tile';
 import { ImageLoader } from '@core/ImageLoader';
-import { MovingGameObject } from '@objects/base/MovingGameObject';
-import { atRectangle } from '@objects/__presets/boundaryCheck';
 import { Draw } from '@core/Draw';
 import { TILE_SIZE } from '@core/constants';
 import { TileType } from '@tiles/types';
@@ -127,10 +125,6 @@ export class Platform extends Terrain {
       }));
     }
   };
-
-  public boundaryCheck(movingObject: MovingGameObject) {
-    atRectangle(this, movingObject);
-  }
 
   public draw() {
     this.tiles.forEach((item) => item.draw());

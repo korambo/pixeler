@@ -33,7 +33,7 @@ export abstract class Tile extends Canvas {
     this.imageLoader = props.imageLoader;
   }
 
-  private setPattern = () => {
+  private initPattern = () => {
     const img = this.imageLoader.getImage(this.sprite[this.type]);
     this.pattern = Draw.getPattern(img, { width: TILE_SIZE, height: TILE_SIZE });
   };
@@ -44,7 +44,7 @@ export abstract class Tile extends Canvas {
     const sizes = this.getSizes();
 
     if (!this.pattern) {
-      this.setPattern();
+      this.initPattern();
     }
 
     ctx.beginPath();

@@ -30,6 +30,8 @@ export class Camera extends Canvas {
   constructor(props: CameraProps) {
     super(props);
 
+    this.x = props.x - this.width / 2;
+
     this.map = props.map;
   }
 

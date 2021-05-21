@@ -61,7 +61,7 @@ export abstract class Map extends Canvas {
 
   public draw() {
     this.terrain.forEach((tile) => tile.draw());
-    this.interactions.forEach((interaction) => interaction.draw());
     this.decorations.forEach((interaction) => interaction.draw());
+    this.interactions.forEach((interaction) => interaction.draw());
   }
 }

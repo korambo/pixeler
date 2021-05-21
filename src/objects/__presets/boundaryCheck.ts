@@ -45,58 +45,9 @@ export const canInteraction = (object: GameObject, moving: MovingGameObject, pad
  * @param object
  * @param moving
  */
-export const outerSquire = (object: GameObject, moving: MovingGameObject) => {
-  const objectCoordinates = object.getCoordinates();
-  const objectSize = object.getSizes();
-  const movingCoordinates = moving.getCoordinates();
-  const movingSize = moving.getSizes();
-
-  const movingPivot: TCoordinates = {
-    x: movingCoordinates.x,
-    y: movingCoordinates.y + movingSize.height,
-  };
-
-  const hasIntersect = polygonIntersectsPolygon(object.getPolygon(), moving.getPolygon());
-
-  if (!hasIntersect) return false;
-
-  // const paddings = getIntersectPaddings(object, moving);
-
-  const topPadding = movingPivot.y - objectCoordinates.y;
-  const rightPadding = objectCoordinates.x + objectSize.width - movingPivot.x;
-  const bottomPadding = objectCoordinates.y + objectSize.height - movingPivot.y;
-  const leftPadding = movingPivot.x - objectCoordinates.x;
-
-  // const currentPadding = Math.min(...Object.values(paddings));
-  const currentPadding = Math.min(topPadding, rightPadding, bottomPadding, leftPadding);
-
-  if (currentPadding === topPadding && movingPivot.y >= objectCoordinates.y) {
-    moving.setIsOnGround(true);
-    moving.setCoordinates({ y: objectCoordinates.y - movingSize.height });
-  }
-
-  // if (currentPadding === paddings.top && movingPivot.y >= objectCoordinates.y) {
-  //   moving.setIsOnGround(true)
-  //   moving.setCoordinates({ y: objectCoordinates.y - movingSize.height });
-  // }
-
-  // if (currentPadding === paddings.right && movingPivot.x <= objectCoordinates.x + objectSize.width) {
-  //   moving.setCoordinates({ x: objectCoordinates.x + objectSize.width + movingSize.width / 2 });
-  // }
-  // todo
-  return false;
-};
-
-/**
- *
- * @param object
- * @param moving
- */
-export const atRectangle = (object: GameObject, moving: MovingGameObject) => {
+export const topIntersect = (object: GameObject, moving: MovingGameObject) => {
   const objectCoordinates = object.getCoordinates();
   const movingSize = moving.getSizes();
-
-  // console.log(getIntersectPaddings(object, moving));
 
   const hasIntersect = polygonIntersectsPolygon(object.getEdgePolygon(Edge.top), moving.getEdgePolygon(Edge.bottom));
 
@@ -104,4 +55,78 @@ export const atRectangle = (object: GameObject, moving: MovingGameObject) => {
 
   moving.setIsOnGround(true);
   moving.setCoordinates({ y: objectCoordinates.y - movingSize.height });
+};
+
+/**
+ *
+ * @param object
+ * @param moving
+ */
+export const rightIntersect = (object: GameObject, moving: MovingGameObject) => {
+  const objectCoordinates = object.getCoordinates();
+  const objectSizes = object.getSizes();
+
+  const hasIntersect = polygonIntersectsPolygon(object.getEdgePolygon(Edge.right), moving.getEdgePolygon(Edge.left));
+
+  if (!hasIntersect) return;
+
+  moving.setCoordinates({ x: objectCoordinates.x + objectSizes.width });
+};
+
+/**
+ *
+ * @param object
+ * @param moving
+ */
+export const bottomIntersect = (object: GameObject, moving: MovingGameObject) => {
+  const objectCoordinates = object.getCoordinates();
+  const objectSizes = object.getSizes();
+
+  const hasIntersect = polygonIntersectsPolygon(object.getEdgePolygon(Edge.bottom), moving.getEdgePolygon(Edge.top));
+
+  if (!hasIntersect) return;
+
+  if (moving.isJump) {
+    moving.setJump(false);
+  }
+
+  moving.setCoordinates({ y: objectCoordinates.y + objectSizes.height });
+};
+
+/**
+ *
+ * @param object
+ * @param moving
+ */
+export const leftIntersect = (object: GameObject, moving: MovingGameObject) => {
+  const objectCoordinates = object.getCoordinates();
+  const movingSize = moving.getSizes();
+
+  const hasIntersect = polygonIntersectsPolygon(object.getEdgePolygon(Edge.left), moving.getEdgePolygon(Edge.right));
+
+  if (!hasIntersect) return;
+
+  moving.setCoordinates({ x: objectCoordinates.x - movingSize.width });
+};
+
+/**
+ *
+ * @param object
+ * @param moving
+ */
+export const outerRectangle = (object: GameObject, moving: MovingGameObject) => {
+  const hasIntersect = polygonIntersectsPolygon(object.getPolygon(), moving.getPolygon());
+
+  if (!hasIntersect) return false;
+
+  const paddings = getIntersectPaddings(moving, object);
+
+  const min = Math.min(...Object.values(paddings));
+
+  switch (min) {
+    case paddings.top: return topIntersect(object, moving);
+    case paddings.right: return rightIntersect(object, moving);
+    case paddings.bottom: return bottomIntersect(object, moving);
+    case paddings.left: return leftIntersect(object, moving);
+  }
 };

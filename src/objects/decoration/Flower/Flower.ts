@@ -1,26 +1,40 @@
-import { Draw } from '@core/Draw';
 import { Decoration, DecorationProps } from '@objects/base/Decoration';
+import { Sprite } from '@core/Sprite';
 
 interface FlowerProps extends DecorationProps {
-  type?: 1|2|3;
+  type?: 0|1|2;
 }
 
 export class Flower extends Decoration {
   width = 10;
   height = 6;
 
+  sprite: Sprite;
+
   private readonly type: number;
 
   constructor(props: FlowerProps) {
     super(props);
 
-    this.type = props.type || Math.floor(Math.random() * 3) + 1;
+    this.type = typeof props.type !== 'number' ? Math.floor(Math.random() * 2) : props.type;
   }
+
+  private initSprite = () => {
+    const frameSize = { width: this.width, height: this.height };
+
+    this.sprite = new Sprite({
+      image: this.imageLoader.getImage('flower_sprite.png'),
+      frameSize,
+    });
+  };
 
   public draw() {
     const coordinates = this.getCoordinates();
-    const img = this.imageLoader.getImage(`flower_${this.type}.png`);
 
-    Draw.drawImage(img, coordinates, { width: this.width, height: this.height });
+    if (!this.sprite) {
+      this.initSprite();
+    }
+
+    this.sprite.drawFrame([0, this.type], coordinates);
   }
 }

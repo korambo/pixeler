@@ -1,6 +1,8 @@
 import { Game } from '@core/Game';
 import { Options } from '@core/Options';
 
+import { BoundaryTest } from '@maps/BoundaryTest';
+
 import './style.css';
 
 const createCanvas = (canvasId: string) => {
@@ -19,7 +21,7 @@ const init = () => {
 
   Options.init(id, true);
 
-  const game = new Game({ debug: true });
+  const game = new Game({ debug: true, customMap: BoundaryTest });
 
   // @ts-ignore
   window.game = game;
