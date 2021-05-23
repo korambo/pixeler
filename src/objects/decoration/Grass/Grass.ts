@@ -20,7 +20,7 @@ export class Grass extends Decoration {
   }
 
   private setPattern = () => {
-    const img = this.imageLoader.getImage('grass.png');
+    const img = this.imageLoader.getImage('grass');
     this.pattern = Draw.getPattern(img, { width: this.width, height: this.height });
   };
 

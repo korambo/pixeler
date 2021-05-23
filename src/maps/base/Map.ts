@@ -7,6 +7,19 @@ import { Options } from '@core/Options';
 import { Decoration } from '@objects/base/Decoration';
 import { Terrain } from '@objects/base/Terrain';
 
+interface TerrainParams {
+  imageLoader: ImageLoader;
+}
+
+interface InteractionParams {
+  imageLoader: ImageLoader;
+  inputs: Inputs;
+}
+
+interface DecorationParams {
+  imageLoader: ImageLoader;
+}
+
 export interface MapProps extends CanvasProps {
   inputs: Inputs;
   imageLoader: ImageLoader;
@@ -22,7 +35,7 @@ export abstract class Map extends Canvas {
   protected imageLoader: ImageLoader;
   protected inputs: Inputs;
 
-  protected background = 'lightblue';
+  protected background = '#80b0bc';
 
   protected constructor(props: MapProps) {
     super(props);
@@ -39,15 +52,15 @@ export abstract class Map extends Canvas {
     ctx.fillRect(0, 0, sizes.width, sizes.height);
   };
 
-  public setTerrain = (cb: (props: { imageLoader: ImageLoader }) => Terrain[]) => {
+  public setTerrain = (cb: (params: TerrainParams) => Terrain[]) => {
     this.terrain = cb({ imageLoader: this.imageLoader });
   };
 
-  public setInteractions = (cb: (props: { imageLoader: ImageLoader, inputs: Inputs }) => Interaction[]) => {
+  public setInteractions = (cb: (props: InteractionParams) => Interaction[]) => {
     this.interactions = cb({ imageLoader: this.imageLoader, inputs: this.inputs });
   };
 
-  public setDecoration = (cb: (props: { imageLoader: ImageLoader }) => Decoration[]) => {
+  public setDecoration = (cb: (props: DecorationParams) => Decoration[]) => {
     this.decorations = cb({ imageLoader: this.imageLoader });
   };
 

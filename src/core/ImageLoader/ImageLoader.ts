@@ -1,9 +1,11 @@
+import { Options } from '@core/Options';
+
 const cache: Record<string, any> = {};
 
 // eslint-disable-next-line no-return-assign
 const importAll = (r) => r.keys().forEach((key: string) => (cache[key] = r(key)));
 
-importAll(require.context('../../', true, /\.svg|png$/));
+importAll(require.context('../../', true, /\.png$/));
 
 export class ImageLoader {
   private images: Record<string, HTMLImageElement> = {};
@@ -46,11 +48,13 @@ export class ImageLoader {
   };
 
   public getImage = (name: string) => {
-    const image = this.images[name];
+    const { cellSize } = Options.getCanvasOptions();
+    const imageName = `${name}.x${cellSize}.png`;
+    const image = this.images[imageName];
 
-    if (!image) throw new Error(`Image ${name} not found!`);
+    if (!image) throw new Error(`Image ${imageName} not found!`);
 
-    return this.images[name];
+    return image;
   };
 
   public isLoaded = () => this.loaded;

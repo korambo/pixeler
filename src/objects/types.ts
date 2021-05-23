@@ -3,6 +3,16 @@ export enum Orientation {
   left = 'left',
 }
 
+export enum MoveOrientation {
+  up = 'up',
+  right = 'right',
+  down = 'down',
+  left = 'left',
+  full = 'full',
+  vertical = 'vertical',
+  horizontal = 'horizontal',
+}
+
 export enum Boundary {
   top = 'top',
   right = 'right',

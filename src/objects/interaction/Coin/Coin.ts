@@ -34,7 +34,7 @@ export class Coin extends Interaction {
 
   public draw() {
     const coordinates = this.getCoordinates();
-    const img = this.imageLoader.getImage('coin.png');
+    const img = this.imageLoader.getImage('coin');
 
     if (!this.looted) {
       Draw.drawImage(img, coordinates, this.getSizes());

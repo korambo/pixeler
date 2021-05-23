@@ -2,7 +2,7 @@ import { Inputs } from '@effects/Inputs';
 import { MovingGameObject, MovingGameObjectProps } from '@objects/base/MovingGameObject';
 import { outerRectangle } from '@objects/__presets/boundaryCheck';
 
-import { Orientation } from '@objects/types';
+import { MoveOrientation, Orientation } from '@objects/types';
 
 import { Edge, TPolygon } from '@core/types';
 import { Draw } from '@core/Draw';
@@ -14,16 +14,17 @@ interface PlayerProps extends MovingGameObjectProps {
 }
 
 export class Player extends MovingGameObject {
-  width = 18;
-  height = 24;
+  protected width = 18;
+  protected height = 24;
 
-  inputs: Inputs;
+  private inputs: Inputs;
 
-  orientation = Orientation.right;
+  protected orientation = Orientation.right;
+  protected moveOrientation = [MoveOrientation.horizontal];
 
-  speed = Draw.getPixels(1.4);
-  jumpSpeed = Draw.getPixels(3.4);
-  jumpTime = 300;
+  protected speed = Draw.getPixels(1.4);
+  protected jumpSpeed = Draw.getPixels(3.4);
+  protected jumpTime = 300;
 
   private sprite: { stay: Sprite; move: Sprite };
 
@@ -38,12 +39,12 @@ export class Player extends MovingGameObject {
 
     this.sprite = {
       stay: new Sprite({
-        image: this.imageLoader.getImage('player_stay_sprite.png'),
+        image: this.imageLoader.getImage('player_stay_sprite'),
         frameSize,
         canFlip: true,
       }),
       move: new Sprite({
-        image: this.imageLoader.getImage('player_move_sprite.png'),
+        image: this.imageLoader.getImage('player_move_sprite'),
         frameSize,
         canFlip: true,
       }),
@@ -129,26 +130,36 @@ export class Player extends MovingGameObject {
     const coordinates = this.getCoordinates();
     const keysPressed = this.inputs.getKeysPressed();
 
-    if (keysPressed.up && this.isOnGround) {
-      // this.setCoordinates({ y: coordinates.y - this.speed });
+    if (this.orientationIs([MoveOrientation.vertical, MoveOrientation.full, MoveOrientation.up])) {
+      if (keysPressed.up) {
+        this.setCoordinates({ y: coordinates.y - this.speed });
+        return;
+      }
     }
 
-    if (keysPressed.down && this.isOnGround) {
-      // this.setCoordinates({ y: coordinates.y + this.speed });
+    if (this.orientationIs([MoveOrientation.vertical, MoveOrientation.full, MoveOrientation.down])) {
+      if (keysPressed.down) {
+        this.setCoordinates({ y: coordinates.y + this.speed });
+        return;
+      }
     }
 
-    if (keysPressed.left) {
-      this.orientation = Orientation.left;
-      this.setCoordinates({ x: coordinates.x - this.speed });
-      this.isMoving = true;
-      return;
+    if (this.orientationIs([MoveOrientation.horizontal, MoveOrientation.full, MoveOrientation.left])) {
+      if (keysPressed.left) {
+        this.orientation = Orientation.left;
+        this.setCoordinates({ x: coordinates.x - this.speed });
+        this.isMoving = true;
+        return;
+      }
     }
 
-    if (keysPressed.right) {
-      this.orientation = Orientation.right;
-      this.setCoordinates({ x: coordinates.x + this.speed });
-      this.isMoving = true;
-      return;
+    if (this.orientationIs([MoveOrientation.horizontal, MoveOrientation.full, MoveOrientation.right])) {
+      if (keysPressed.right) {
+        this.orientation = Orientation.right;
+        this.setCoordinates({ x: coordinates.x + this.speed });
+        this.isMoving = true;
+        return;
+      }
     }
 
     this.isMoving = false;
@@ -160,7 +171,11 @@ export class Player extends MovingGameObject {
     const accelerationPower = this.gravity.getAccelerationPower();
     const gravityPower = this.gravity.getGravityPower();
 
-    const canGravity = !this.isOnGround && !this.isJump;
+    const canGravity = (
+      !this.isOnGround &&
+      !this.isJump &&
+      this.orientationOnlyIs([MoveOrientation.horizontal, MoveOrientation.left, MoveOrientation.right])
+    );
 
     if (acceleration > 0) {
       this.setAcceleration(acceleration - accelerationPower);
@@ -180,17 +195,17 @@ export class Player extends MovingGameObject {
     this.jump();
   };
 
-  private checkOnGround = () => {
-    // const coordinates = this.getCoordinates();
-    // const sizes = this.getSizes();
-
-    // this.setIsOnGround(coordinates.y >= this.canvas.height - sizes.height);
-    this.setIsOnGround(false);
-  };
-
   public effects = () => {
     this.gravityEffect();
     this.checkCanMove();
-    this.checkOnGround();
+    this.setIsOnGround(false);
+
+    this.canBoundary = !this.orientationIs([
+      MoveOrientation.vertical,
+      MoveOrientation.down,
+      MoveOrientation.up,
+    ]);
+
+    this.setMoveOrientation([MoveOrientation.horizontal]);
   };
 }

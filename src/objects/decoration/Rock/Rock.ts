@@ -7,7 +7,7 @@ export class Rock extends Decoration {
 
   public draw() {
     const coordinates = this.getCoordinates();
-    const img = this.imageLoader.getImage('rock.png');
+    const img = this.imageLoader.getImage('rock');
 
     Draw.drawImage(img, coordinates, this.getSizes());
   }

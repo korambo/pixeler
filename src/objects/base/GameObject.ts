@@ -2,6 +2,7 @@ import { Canvas, CanvasProps } from '@core/Canvas';
 import { MovingGameObject } from '@objects/base/MovingGameObject';
 import { ImageLoader } from '@core/ImageLoader/ImageLoader';
 import { Boundary } from '@objects/types';
+import { Animation } from '@core/Animation';
 import {
   bottomIntersect,
   leftIntersect,
@@ -19,9 +20,14 @@ export abstract class GameObject extends Canvas {
   protected imageLoader: ImageLoader;
 
   protected boundary: Boundary[];
+  protected animation: Animation;
+
+  public canBoundary = true;
 
   constructor(props: GameObjectProps) {
     super(props);
+
+    this.animation = new Animation(this);
 
     this.boundary = props.boundary || [Boundary.full];
 
@@ -29,6 +35,8 @@ export abstract class GameObject extends Canvas {
   }
 
   public boundaryCheck(movingObject: MovingGameObject) {
+    if (!movingObject.canBoundary) return;
+
     this.boundary.forEach((boundary) => {
       switch (boundary) {
         case Boundary.top: return topIntersect(this, movingObject);

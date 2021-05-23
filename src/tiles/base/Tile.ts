@@ -5,6 +5,7 @@ import { Options } from '@core/Options';
 import { TileType } from '@tiles/types';
 import { Draw } from '@core/Draw';
 import { TILE_SIZE } from '@core/constants';
+import { Sprite } from '@core/Sprite';
 
 export interface TileProps extends CanvasProps, TSizes {
   type: TileType;
@@ -17,7 +18,8 @@ export abstract class Tile extends Canvas {
 
   protected imageLoader: ImageLoader;
 
-  protected abstract sprite: Record<TileType, string>;
+  protected abstract spriteImage: string;
+  protected sprite: Sprite;
   protected readonly type: TileType;
   private pattern: CanvasPattern;
 
@@ -34,8 +36,19 @@ export abstract class Tile extends Canvas {
   }
 
   private initPattern = () => {
-    const img = this.imageLoader.getImage(this.sprite[this.type]);
-    this.pattern = Draw.getPattern(img, { width: TILE_SIZE, height: TILE_SIZE });
+    const img = this.getSpriteTile(this.type);
+    this.pattern = Draw.getPattern(img.getImage(), { width: TILE_SIZE, height: TILE_SIZE });
+  };
+
+  public getSpriteTile = (type: TileType) => {
+    switch (type) {
+      case TileType.outerLeft: return this.sprite.getFrame([0, 0]);
+      case TileType.outerTop: return this.sprite.getFrame([1, 0]);
+      case TileType.outerRight: return this.sprite.getFrame([2, 0]);
+      case TileType.innerLeft: return this.sprite.getFrame([0, 1]);
+      case TileType.inner: return this.sprite.getFrame([1, 1]);
+      case TileType.innerRight: return this.sprite.getFrame([2, 1]);
+    }
   };
 
   public draw = () => {
@@ -44,6 +57,11 @@ export abstract class Tile extends Canvas {
     const sizes = this.getSizes();
 
     if (!this.pattern) {
+      this.sprite = new Sprite({
+        frameSize: { width: TILE_SIZE, height: TILE_SIZE },
+        image: this.imageLoader.getImage(this.spriteImage),
+      });
+
       this.initPattern();
     }
 

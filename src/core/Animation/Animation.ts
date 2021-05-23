@@ -1,21 +1,18 @@
-import { MovingGameObject } from '@objects/base/MovingGameObject';
-import { Interaction } from '@objects/base/Interaction';
 import { Sprite } from '@core/Sprite';
 import { SpriteAnimationOrientation } from '@core/Animation/types';
-
-type AnimateObject = MovingGameObject | Interaction;
+import { GameObject } from '@objects/base/GameObject';
 
 // interface AnimationProps {
 //
 // }
 
 export class Animation {
-  private object: AnimateObject;
+  private object: GameObject;
 
   private clearTimeout: Record<string, NodeJS.Timeout> = {};
   private counter: Record<string, number> = {};
 
-  constructor(object: AnimateObject) {
+  constructor(object: GameObject) {
     this.object = object;
   }
 

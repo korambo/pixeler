@@ -64,7 +64,15 @@ export class Sprite extends Image {
 
   public getFramesCount = () => this.framesCount;
 
-  public getFrame = ([x, y]: [number, number]) => this.frames[x][y];
+  public getFrame = ([x, y]: [number, number]) => {
+    const frame = this.frames[x][y];
+
+    if (!frame) {
+      throw new Error(`Frame x:${x} y:${y} is not found!`);
+    }
+
+    return frame;
+  };
 
   public drawFrame = ([x, y]: [number, number], coordinates: TCoordinates, flip?: boolean) => {
     const frameImage = this.frames[x][y];

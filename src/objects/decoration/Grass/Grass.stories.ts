@@ -4,7 +4,7 @@ import { Map, MapProps } from '@maps/base/Map';
 import { Options } from '@core/Options';
 import { Platform } from '@objects/terrain/Platform';
 import { Ground } from '@tiles/Ground';
-import { Rock } from '@objects/decoration/Rock';
+import { Grass } from '@objects/decoration/Grass';
 
 class RockMap extends Map {
   protected width = 320;
@@ -27,13 +27,14 @@ class RockMap extends Map {
     ]);
 
     this.setDecoration((decorationProps) => [
-      new Rock({ x: 150, y: this.height - 43, ...decorationProps }),
+      new Grass({ x: 130, y: this.height - 40, ...decorationProps }),
+      new Grass({ x: 150, y: this.height - 40, count: 4, ...decorationProps }),
     ]);
   }
 }
 
 export default {
-  title: 'Decoration/Rock',
+  title: 'Decoration/Grass',
 } as Meta;
 
 export const States = () => {

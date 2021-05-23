@@ -23,7 +23,7 @@ export class Flower extends Decoration {
     const frameSize = { width: this.width, height: this.height };
 
     this.sprite = new Sprite({
-      image: this.imageLoader.getImage('flower_sprite.png'),
+      image: this.imageLoader.getImage('flower_sprite'),
       frameSize,
     });
   };

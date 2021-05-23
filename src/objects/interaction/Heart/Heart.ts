@@ -13,7 +13,7 @@ export class Heart extends Interaction {
   protected height = 10;
 
   protected interactionTime = 200;
-  protected interactionPaddings = { left: 40, right: 40 };
+  protected interactionPaddings = { left: -10, right: -10 };
 
   private looted: boolean = false;
   private canLoot: boolean = false;
@@ -25,7 +25,9 @@ export class Heart extends Interaction {
   public boundaryCheck(movingObject: MovingGameObject) {
     if (movingObject instanceof Player) {
       if (!this.looted) {
-        this.canLoot = canInteraction(this, movingObject, this.interactionPaddings);
+        if (canInteraction(this, movingObject, this.interactionPaddings)) {
+          this.lootHeart();
+        }
       }
     }
   }
@@ -36,7 +38,7 @@ export class Heart extends Interaction {
 
   public draw() {
     const coordinates = this.getCoordinates();
-    const img = this.imageLoader.getImage('heart.png');
+    const img = this.imageLoader.getImage('heart');
 
     if (!this.looted) {
       if (this.canLoot) this.info.draw();
@@ -45,15 +47,5 @@ export class Heart extends Interaction {
     }
   }
 
-  public inputEffects = () => {
-    const keysPressed = this.inputs.getKeysPressed();
-
-    if (!this.canInteract()) return;
-
-    if (keysPressed.action) {
-      if (this.canLoot) {
-        this.lootHeart();
-      }
-    }
-  };
+  public inputEffects = () => {};
 }

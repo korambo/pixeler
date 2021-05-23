@@ -1,8 +1,8 @@
-import { polygonIntersectsPolygon } from 'geometric';
+import { polygonIntersectsPolygon, polygonInPolygon } from 'geometric';
 
 import { MovingGameObject } from '@objects/base/MovingGameObject';
 import { GameObject } from '@objects/base/GameObject';
-import { Edge, TCoordinates, TPaddings } from '@core/types';
+import { Edge, TCoordinates, TPaddings, TPolygon } from '@core/types';
 
 /**
  *
@@ -10,7 +10,7 @@ import { Edge, TCoordinates, TPaddings } from '@core/types';
  * @param objectB
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const getIntersectPaddings = (objectA: GameObject, objectB: GameObject): TPaddings => {
+export const getIntersectPaddings = (objectA: GameObject, objectB: GameObject): TPaddings => {
   const objectACoordinates = objectA.getCoordinates();
   const objectASize = objectA.getSizes();
 
@@ -129,4 +129,31 @@ export const outerRectangle = (object: GameObject, moving: MovingGameObject) => 
     case paddings.bottom: return bottomIntersect(object, moving);
     case paddings.left: return leftIntersect(object, moving);
   }
+};
+
+/**
+ *
+ * @param object
+ * @param polygon
+ * @param paddings
+ */
+export const canIntersect = (object: GameObject, polygon: TPolygon, paddings?: Partial<TPaddings>) => (
+  polygonIntersectsPolygon(object.getPolygon(paddings), polygon) ||
+  polygonInPolygon(polygon, object.getPolygon(paddings))
+);
+
+/**
+ *
+ * @param object
+ * @param polygon
+ */
+export const canIntersectEdges = (object: GameObject, polygon: TPolygon) => {
+  const edgePolygons = object.getEdgePolygons();
+
+  return {
+    top: polygonIntersectsPolygon(edgePolygons.top, polygon),
+    right: polygonIntersectsPolygon(edgePolygons.right, polygon),
+    bottom: polygonIntersectsPolygon(edgePolygons.bottom, polygon),
+    left: polygonIntersectsPolygon(edgePolygons.left, polygon),
+  };
 };

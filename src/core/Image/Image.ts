@@ -54,6 +54,8 @@ export class Image extends Canvas {
     this.flipped = imageCanvas;
   };
 
+  public getImage = () => this.image;
+
   public drawImage = ({ x, y }: TCoordinates, flip?: boolean) => {
     const { ctx } = Options.getCanvasOptions();
     const { width, height } = this.getSizes();

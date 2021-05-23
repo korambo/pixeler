@@ -4,7 +4,7 @@ import { Options } from '@core/Options';
 export interface CanvasProps extends TCoordinates {}
 
 export abstract class Canvas {
-  protected edgeSize = Options.getCanvasOptions().cellSize * 1.5;
+  protected edgeSize = Options.getCanvasOptions().cellSize * 1.4;
 
   protected x: number;
   protected y: number;
@@ -88,7 +88,6 @@ export abstract class Canvas {
     return polygon;
   }
 
-  // eslint-disable-next-line consistent-return
   public getEdgePolygon(edge: Edge): TPolygon {
     const sizes = this.getSizes();
     const coordinates = this.getCoordinates();
@@ -128,4 +127,11 @@ export abstract class Canvas {
       }
     }
   }
+
+  public getEdgePolygons = () => ({
+    top: this.getEdgePolygon(Edge.top),
+    right: this.getEdgePolygon(Edge.right),
+    bottom: this.getEdgePolygon(Edge.bottom),
+    left: this.getEdgePolygon(Edge.left),
+  });
 }

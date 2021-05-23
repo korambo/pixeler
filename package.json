@@ -3,6 +3,7 @@
     "start": "npx webpack serve",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
+    "deploy-storybook": "storybook-to-ghpages",
     "lint": "eslint ./src --ext .ts",
     "prepare": "husky install"
   },
@@ -16,6 +17,7 @@
     "@storybook/addon-essentials": "^6.2.9",
     "@storybook/addon-links": "^6.2.9",
     "@storybook/html": "^6.2.9",
+    "@storybook/storybook-deployer": "^2.8.8",
     "@typescript-eslint/eslint-plugin": "^4.4.1",
     "@typescript-eslint/parser": "^4.22.1",
     "babel-loader": "^8.2.2",

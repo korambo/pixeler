@@ -25,15 +25,15 @@ const drawPlate = ({ coordinates, sizes }: DrawParams) => new Draw({
   ],
 });
 
-const drawText = ({ coordinates }: DrawParams) => ({
+const drawText = ({ coordinates, sizes }: DrawParams) => ({
   draw() {
     const { ctx } = Options.getCanvasOptions();
 
     ctx.fillStyle = 'white';
     ctx.beginPath();
     ctx.fillText(
-      'Press F',
-      Draw.addPixels(coordinates.x, 4),
+      'F',
+      coordinates.x + sizes.width / 2,
       Draw.removePixels(coordinates.y, 12),
     );
     ctx.fill();

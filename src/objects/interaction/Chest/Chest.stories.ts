@@ -27,10 +27,10 @@ class ChestMap extends Map {
     ]);
 
     this.setInteractions((interactionProps) => [
-      new Chest({ x: 100, y: this.height - 45, ...interactionProps }),
-      new Chest({ x: 140, y: this.height - 45, empty: true, ...interactionProps }),
-      new Chest({ x: 180, y: this.height - 45, open: true, ...interactionProps }),
-      new Chest({ x: 220, y: this.height - 45, open: true, empty: true, ...interactionProps }),
+      new Chest({ x: 100, y: this.height - 50, ...interactionProps }),
+      new Chest({ x: 140, y: this.height - 50, empty: true, ...interactionProps }),
+      new Chest({ x: 180, y: this.height - 50, open: true, ...interactionProps }),
+      new Chest({ x: 220, y: this.height - 50, open: true, empty: true, ...interactionProps }),
     ]);
   }
 }

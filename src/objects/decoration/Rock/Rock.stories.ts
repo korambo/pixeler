@@ -27,7 +27,7 @@ class RockMap extends Map {
     ]);
 
     this.setDecoration((decorationProps) => [
-      new Rock({ x: 150, y: this.height - 43, ...decorationProps }),
+      new Rock({ x: 150, y: this.height - 40, ...decorationProps }),
     ]);
   }
 }

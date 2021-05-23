@@ -134,7 +134,7 @@ export class Draw extends Canvas {
    * @param image
    * @param size
    */
-  static getPattern = (image: HTMLImageElement, size: TSizes): CanvasPattern => {
+  static getPattern = (image: HTMLImageElement | HTMLCanvasElement, size: TSizes): CanvasPattern => {
     const { ctx, cellSize } = Options.getCanvasOptions();
 
     const width = size.width * cellSize;
