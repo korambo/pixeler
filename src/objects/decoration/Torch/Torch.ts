@@ -3,10 +3,10 @@ import { Sprite } from '@core/Sprite';
 import { SpriteAnimationOrientation } from '@core/Animation/types';
 
 export class Torch extends Decoration {
-  width = 12;
-  height = 12;
+  protected width = 12;
+  protected height = 12;
 
-  sprite: Sprite;
+  private sprite: Sprite;
 
   private initSprite = () => {
     const frameSize = { width: this.width, height: this.height };

@@ -22,7 +22,7 @@ export class Line extends Canvas {
 
   public readonly canFlip: boolean;
 
-  constructor(props: LineProps) {
+  public constructor(props: LineProps) {
     super(props);
 
     const { cellSize } = Options.getCanvasOptions();

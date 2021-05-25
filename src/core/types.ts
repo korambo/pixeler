@@ -14,9 +14,8 @@ export interface TPaddings {
   bottom: number;
   left: number;
 }
-export type TDot = [x: number, y: number];
 
-export type TPolygon = [TDot, TDot, TDot, TDot];
+export interface TPolygon extends TSizes, TCoordinates {}
 
 export enum Flip {
   x = 'x',

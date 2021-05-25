@@ -1,18 +1,19 @@
 import { Sprite } from '@core/Sprite';
 import { SpriteAnimationOrientation } from '@core/Animation/types';
 import { GameObject } from '@objects/base/GameObject';
+import { Decoration } from '@objects/base/Decoration';
 
 // interface AnimationProps {
 //
 // }
 
 export class Animation {
-  private object: GameObject;
+  private object: GameObject|Decoration;
 
   private clearTimeout: Record<string, NodeJS.Timeout> = {};
   private counter: Record<string, number> = {};
 
-  constructor(object: GameObject) {
+  public constructor(object: GameObject|Decoration) {
     this.object = object;
   }
 

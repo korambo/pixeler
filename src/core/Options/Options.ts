@@ -39,6 +39,7 @@ export class Options {
       return {
         coordinates: Boolean(Options.debug),
         info: Boolean(Options.debug),
+        boxes: Boolean(Options.debug),
       };
     }
 

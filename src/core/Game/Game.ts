@@ -6,41 +6,38 @@ import { SimpleMap } from '@maps/SimpleMap';
 
 import { GAME_HEIGHT, GAME_WIDTH } from '@core/constants';
 
-import { Map, MapProps } from '@maps/base/Map';
+import { Map } from '@maps/base/Map';
+import { MapInstance } from '@maps/types';
 import { Canvas } from '@core/Canvas';
 import { MovingGameObject } from '@objects/base/MovingGameObject';
 import { Options } from '@core/Options';
 import { Debug } from '@core/Debug';
 import { ImageLoader } from '@core/ImageLoader';
+import { Rectangle } from '@geometry/Rectangle';
 
 interface GameProps {
-  debug?: boolean;
-  customMap?: { new(props: MapProps): Map };
+  customMap?: MapInstance;
 }
 
-// debug
-const maxRedraw = 60;
-let curDraw = 0;
-
 export class Game extends Canvas {
-  width = GAME_WIDTH;
-  height = GAME_HEIGHT;
+  protected width = GAME_WIDTH;
+  protected height = GAME_HEIGHT;
 
-  imageLoader: ImageLoader;
+  protected imageLoader: ImageLoader;
 
   // effects
-  gravity: Gravity;
-  inputs: Inputs;
-  camera: Camera;
+  private readonly gravity: Gravity;
+  private readonly inputs: Inputs;
+  private readonly camera: Camera;
 
-  movingObjects: MovingGameObject[];
+  private readonly movingObjects: MovingGameObject[];
 
-  map: Map;
-  player: Player;
+  private readonly map: Map;
+  private readonly player: Player;
 
-  debug: Debug;
+  private readonly debug: Debug;
 
-  constructor(props: GameProps) {
+  public constructor(props: GameProps) {
     super(props);
 
     this.imageLoader = new ImageLoader();
@@ -48,7 +45,13 @@ export class Game extends Canvas {
     this.gravity = new Gravity();
     this.inputs = new Inputs();
 
-    this.map = new (props.customMap || SimpleMap)({ x: 0, y: 0, inputs: this.inputs, imageLoader: this.imageLoader });
+    this.map = new (props.customMap || SimpleMap)({
+      x: 0,
+      y: 0,
+      inputs: this.inputs,
+      imageLoader: this.imageLoader,
+      gravity: this.gravity,
+    });
 
     const startCoordinates = this.map.getStart();
 
@@ -67,16 +70,9 @@ export class Game extends Canvas {
   }
 
   public draw = () => {
-    const debug = Options.getDebug();
-    // debug
-    // eslint-disable-next-line no-constant-condition
-    if (false) {
-      curDraw++;
-      if (curDraw > maxRedraw) {
-        return;
-      }
-    }
     requestAnimationFrame(this.draw);
+
+    const debug = Options.getDebug();
 
     if (!this.imageLoader.isLoaded()) {
       this.drawLoader();
@@ -91,6 +87,7 @@ export class Game extends Canvas {
 
     this.movingObjects.forEach((movingObject) => {
       movingObject.draw();
+      debug.boxes && new Rectangle(movingObject.getPolygon()).draw();
     });
 
     if (debug.coordinates) {
@@ -128,12 +125,12 @@ export class Game extends Canvas {
     }
   };
 
-  animate = () => {
+  public animate = () => {
     this.movingObjects.forEach((movingObject) => movingObject.animate());
     this.map.getInteractions().forEach((interaction) => interaction.animate());
   };
 
-  effects = () => {
+  public effects = () => {
     this.camera.boundaryCheck(this.player);
     this.camera.effect();
 
@@ -142,13 +139,17 @@ export class Game extends Canvas {
 
       movingObject.effects();
 
-      this.map.getTerrain().forEach((terrain) => terrain.boundaryCheck(movingObject));
-      this.map.getInteractions().forEach((interaction) => interaction.boundaryCheck(movingObject));
+      // this.movingObjects
+      //   .filter((item) => item !== movingObject)
+      //   .forEach((item) => movingObject.effects(item));
+
+      this.map.getTerrain().forEach((terrain) => terrain.effects(movingObject));
+      this.map.getInteractions().forEach((interaction) => interaction.effects(movingObject));
     });
   };
 
-  inputEffects = () => {
-    this.movingObjects.forEach((movingObject) => movingObject.inputEffects());
+  public inputEffects = () => {
+    this.player.inputEffects();
     this.map.getInteractions().forEach((interaction) => interaction.inputEffects());
   };
 

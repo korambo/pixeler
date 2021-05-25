@@ -10,7 +10,7 @@ export interface PolygonProps {
 export class Polygon extends Figure {
   private readonly dots: TPolygon;
 
-  constructor(props: PolygonProps) {
+  public constructor(props: PolygonProps) {
     super({
       ...props, x: null, y: null, width: null, height: null,
     });

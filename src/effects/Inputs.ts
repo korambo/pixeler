@@ -17,9 +17,9 @@ const defaultPressed = {
 
 // TODO переработать
 export class Inputs {
-  keysPressed = { ...defaultPressed };
+  private keysPressed = { ...defaultPressed };
 
-  constructor() {
+  public constructor() {
     document.body.addEventListener('keydown', this.keyDown);
     document.body.addEventListener('keyup', this.keyUp);
   }

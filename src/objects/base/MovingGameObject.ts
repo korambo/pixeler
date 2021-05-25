@@ -1,42 +1,33 @@
-import { Gravity } from '@effects/Gravity';
 import { MoveOrientation, Orientation } from '@objects/types';
 import { GameObject, GameObjectProps } from '@objects/base/GameObject';
+import { MovingPhysic } from '@effects/MovingPhysic';
 
 export interface MovingGameObjectProps extends GameObjectProps {
-  gravity: Gravity,
+
 }
 
 export abstract class MovingGameObject extends GameObject {
-  private acceleration = 0;
-
-  protected abstract speed: number;
-
-  protected abstract jumpSpeed: number;
-  protected abstract jumpTime: number;
-
   protected abstract orientation: Orientation;
 
   protected moveOrientation: MoveOrientation[];
 
-  protected gravity: Gravity;
-
-  public canMove = false;
-
-  public isJump = false;
-  public isOnGround = false;
-  public isMoving = false;
+  protected _physic: MovingPhysic;
 
   protected constructor(props: MovingGameObjectProps) {
     super(props);
 
-    this.gravity = props.gravity;
+    this._physic = new MovingPhysic({
+      gravity: this.gravity,
+      object: this,
+      canCollision: true,
+    });
+  }
+
+  public get physic() {
+    return this._physic;
   }
 
   public abstract animate(): void;
-
-  public abstract effects(): void;
-
-  public abstract inputEffects(): void;
 
   public orientationOnlyIs = (orientations: MoveOrientation[]) => this.moveOrientation.every((item) => (
     orientations.includes(item)
@@ -48,19 +39,5 @@ export abstract class MovingGameObject extends GameObject {
 
   public setMoveOrientation = (orientation: MoveOrientation[]) => {
     this.moveOrientation = orientation;
-  };
-
-  public setIsOnGround = (isOnGround: boolean) => {
-    this.isOnGround = isOnGround;
-  };
-
-  public getAcceleration = () => this.acceleration;
-
-  public setAcceleration = (acceleration: number) => {
-    this.acceleration = acceleration;
-  };
-
-  public setJump = (isJum: boolean) => {
-    this.isJump = isJum;
   };
 }

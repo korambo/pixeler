@@ -22,7 +22,7 @@ export class Debug {
   private draws: number = 0;
   private fps: number = 0;
 
-  constructor(props: DebugProps) {
+  public constructor(props: DebugProps) {
     this.camera = props.camera;
     this.items = props.items;
 

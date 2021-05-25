@@ -19,7 +19,7 @@ export abstract class Figure extends Canvas {
 
   protected color: string = 'darkgrey';
 
-  constructor(props: FigureProps) {
+  public constructor(props: FigureProps) {
     super(props);
 
     this.setSizes({

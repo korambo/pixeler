@@ -16,12 +16,10 @@ export class Image extends Canvas {
 
   protected image: HTMLImageElement | HTMLCanvasElement;
   private flipped: HTMLCanvasElement;
-  private id: string;
+  private readonly id: string;
 
-  constructor(props: ImageProps) {
+  public constructor(props: ImageProps) {
     super(props);
-
-    // const { cellSize } = Options.getCanvasOptions();
 
     this.setSizes({
       width: props.image.width,

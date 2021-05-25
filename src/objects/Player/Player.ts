@@ -1,11 +1,9 @@
 import { Inputs } from '@effects/Inputs';
 import { MovingGameObject, MovingGameObjectProps } from '@objects/base/MovingGameObject';
-import { outerRectangle } from '@objects/__presets/boundaryCheck';
-
+// import { outerRectangle } from '@objects/__presets/boundaryCheck';
 import { MoveOrientation, Orientation } from '@objects/types';
 
-import { Edge, TPolygon } from '@core/types';
-import { Draw } from '@core/Draw';
+// import { Edge, TPolygon } from '@core/types';
 import { Sprite } from '@core/Sprite';
 import { SpriteAnimationOrientation } from '@core/Animation/types';
 
@@ -20,15 +18,10 @@ export class Player extends MovingGameObject {
   private inputs: Inputs;
 
   protected orientation = Orientation.right;
-  protected moveOrientation = [MoveOrientation.horizontal];
-
-  protected speed = Draw.getPixels(1.4);
-  protected jumpSpeed = Draw.getPixels(3.4);
-  protected jumpTime = 300;
 
   private sprite: { stay: Sprite; move: Sprite };
 
-  constructor(props: PlayerProps) {
+  public constructor(props: PlayerProps) {
     super(props);
 
     this.inputs = props.inputs;
@@ -51,10 +44,6 @@ export class Player extends MovingGameObject {
     };
   };
 
-  public boundaryCheck(movingObject: MovingGameObject) {
-    outerRectangle(this, movingObject);
-  }
-
   public draw = () => {
     const coordinates = this.getCoordinates();
 
@@ -62,7 +51,7 @@ export class Player extends MovingGameObject {
       this.initSprite();
     }
 
-    if (this.isMoving) {
+    if (this.physic.isMoving && this.physic.onGround) {
       this.animation
         .sprite(this.sprite.move, SpriteAnimationOrientation.x, 12)
         .drawImage(coordinates, this.orientation === Orientation.left);
@@ -74,118 +63,28 @@ export class Player extends MovingGameObject {
       .drawImage(coordinates, this.orientation === Orientation.left);
   };
 
-  public getEdgePolygon(edge: Edge): TPolygon {
-    const sizes = this.getSizes();
-    const coordinates = this.getCoordinates();
-
-    switch (edge) {
-      case Edge.top:
-      case Edge.right:
-      case Edge.left: {
-        return MovingGameObject.prototype.getEdgePolygon.call(this, edge) as TPolygon;
-      }
-      case Edge.bottom: {
-        switch (this.orientation) {
-          case Orientation.right: {
-            return [
-              [Draw.addPixels(coordinates.x, 4), coordinates.y + sizes.height],
-              [Draw.removePixels(coordinates.x + sizes.width, 3), coordinates.y + sizes.height],
-              [Draw.removePixels(coordinates.x + sizes.width, 3), coordinates.y + sizes.height - this.edgeSize],
-              [Draw.addPixels(coordinates.x, 4), coordinates.y + sizes.height - this.edgeSize],
-            ];
-          }
-          case Orientation.left: {
-            return [
-              [Draw.addPixels(coordinates.x, 3), coordinates.y + sizes.height],
-              [Draw.removePixels(coordinates.x + sizes.width, 4), coordinates.y + sizes.height],
-              [Draw.removePixels(coordinates.x + sizes.width, 4), coordinates.y + sizes.height - this.edgeSize],
-              [Draw.addPixels(coordinates.x, 3), coordinates.y + sizes.height - this.edgeSize],
-            ];
-          }
-        }
-      }
-    }
-  }
-
-  private checkCanMove = () => {
-    this.canMove = this.isOnGround;
-  };
-
   private jump = () => {
-    const coordinates = this.getCoordinates();
     const keysPressed = this.inputs.getKeysPressed();
 
-    if (keysPressed.jump && this.canMove && !this.isJump) {
-      this.isJump = true;
-      this.setAcceleration(this.jumpSpeed);
-      setTimeout(() => { this.isJump = false; }, this.jumpTime);
-    }
-
-    if (this.isJump) {
-      this.setCoordinates({ y: coordinates.y - this.getAcceleration() });
-    }
+    this.physic.jump(keysPressed.jump);
   };
 
   private move = () => {
-    const coordinates = this.getCoordinates();
     const keysPressed = this.inputs.getKeysPressed();
 
-    if (this.orientationIs([MoveOrientation.vertical, MoveOrientation.full, MoveOrientation.up])) {
-      if (keysPressed.up) {
-        this.setCoordinates({ y: coordinates.y - this.speed });
-        return;
-      }
+    if (keysPressed.left) {
+      this.orientation = Orientation.left;
+      this.physic.moveX(MoveOrientation.left);
+      return;
     }
 
-    if (this.orientationIs([MoveOrientation.vertical, MoveOrientation.full, MoveOrientation.down])) {
-      if (keysPressed.down) {
-        this.setCoordinates({ y: coordinates.y + this.speed });
-        return;
-      }
+    if (keysPressed.right) {
+      this.orientation = Orientation.right;
+      this.physic.moveX(MoveOrientation.right);
+      return;
     }
 
-    if (this.orientationIs([MoveOrientation.horizontal, MoveOrientation.full, MoveOrientation.left])) {
-      if (keysPressed.left) {
-        this.orientation = Orientation.left;
-        this.setCoordinates({ x: coordinates.x - this.speed });
-        this.isMoving = true;
-        return;
-      }
-    }
-
-    if (this.orientationIs([MoveOrientation.horizontal, MoveOrientation.full, MoveOrientation.right])) {
-      if (keysPressed.right) {
-        this.orientation = Orientation.right;
-        this.setCoordinates({ x: coordinates.x + this.speed });
-        this.isMoving = true;
-        return;
-      }
-    }
-
-    this.isMoving = false;
-  };
-
-  private gravityEffect = () => {
-    const coordinates = this.getCoordinates();
-    const acceleration = this.getAcceleration();
-    const accelerationPower = this.gravity.getAccelerationPower();
-    const gravityPower = this.gravity.getGravityPower();
-
-    const canGravity = (
-      !this.isOnGround &&
-      !this.isJump &&
-      this.orientationOnlyIs([MoveOrientation.horizontal, MoveOrientation.left, MoveOrientation.right])
-    );
-
-    if (acceleration > 0) {
-      this.setAcceleration(acceleration - accelerationPower);
-    } else if (acceleration < 0) {
-      this.setAcceleration(0);
-    }
-
-    if (canGravity) {
-      this.setCoordinates({ y: coordinates.y + gravityPower });
-    }
+    this.physic.stopX();
   };
 
   public animate = () => {};
@@ -193,19 +92,5 @@ export class Player extends MovingGameObject {
   public inputEffects = () => {
     this.move();
     this.jump();
-  };
-
-  public effects = () => {
-    this.gravityEffect();
-    this.checkCanMove();
-    this.setIsOnGround(false);
-
-    this.canBoundary = !this.orientationIs([
-      MoveOrientation.vertical,
-      MoveOrientation.down,
-      MoveOrientation.up,
-    ]);
-
-    this.setMoveOrientation([MoveOrientation.horizontal]);
   };
 }

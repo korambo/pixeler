@@ -6,14 +6,18 @@ import { ImageLoader } from '@core/ImageLoader/ImageLoader';
 import { Options } from '@core/Options';
 import { Decoration } from '@objects/base/Decoration';
 import { Terrain } from '@objects/base/Terrain';
+import { Gravity } from '@effects/Gravity';
+import { Rectangle } from '@geometry/Rectangle';
 
 interface TerrainParams {
   imageLoader: ImageLoader;
+  gravity: Gravity;
 }
 
 interface InteractionParams {
-  imageLoader: ImageLoader;
   inputs: Inputs;
+  imageLoader: ImageLoader;
+  gravity: Gravity;
 }
 
 interface DecorationParams {
@@ -23,6 +27,7 @@ interface DecorationParams {
 export interface MapProps extends CanvasProps {
   inputs: Inputs;
   imageLoader: ImageLoader;
+  gravity: Gravity;
 }
 
 export abstract class Map extends Canvas {
@@ -34,12 +39,14 @@ export abstract class Map extends Canvas {
 
   protected imageLoader: ImageLoader;
   protected inputs: Inputs;
+  protected gravity: Gravity;
 
   protected background = '#80b0bc';
 
   protected constructor(props: MapProps) {
     super(props);
 
+    this.gravity = props.gravity;
     this.inputs = props.inputs;
     this.imageLoader = props.imageLoader;
   }
@@ -53,11 +60,11 @@ export abstract class Map extends Canvas {
   };
 
   public setTerrain = (cb: (params: TerrainParams) => Terrain[]) => {
-    this.terrain = cb({ imageLoader: this.imageLoader });
+    this.terrain = cb({ imageLoader: this.imageLoader, gravity: this.gravity });
   };
 
   public setInteractions = (cb: (props: InteractionParams) => Interaction[]) => {
-    this.interactions = cb({ imageLoader: this.imageLoader, inputs: this.inputs });
+    this.interactions = cb({ imageLoader: this.imageLoader, inputs: this.inputs, gravity: this.gravity });
   };
 
   public setDecoration = (cb: (props: DecorationParams) => Decoration[]) => {
@@ -73,8 +80,18 @@ export abstract class Map extends Canvas {
   public getStart = (): TCoordinates => this.start;
 
   public draw() {
-    this.terrain.forEach((tile) => tile.draw());
-    this.decorations.forEach((interaction) => interaction.draw());
-    this.interactions.forEach((interaction) => interaction.draw());
+    const { boxes } = Options.getDebug();
+
+    this.terrain.forEach((tile) => {
+      tile.draw();
+      boxes && new Rectangle(tile.getPolygon()).draw();
+    });
+    this.decorations.forEach((interaction) => {
+      interaction.draw();
+    });
+    this.interactions.forEach((interaction) => {
+      interaction.draw();
+      boxes && new Rectangle(interaction.getPolygon()).draw();
+    });
   }
 }

@@ -18,14 +18,14 @@ interface DrawProps extends TSizes, TCoordinates {
 }
 
 export class Draw extends Canvas {
-  width: null;
-  height: null;
+  protected width: null;
+  protected height: null;
 
   private readonly flip: Flip;
 
   private elements: DrawElement[];
 
-  constructor(props: DrawProps) {
+  public constructor(props: DrawProps) {
     super(props);
 
     if (typeof props.flip !== 'undefined') this.flip = props.flip;
@@ -48,7 +48,7 @@ export class Draw extends Canvas {
    * @param width
    * @param height
    */
-  static createCanvas = ({ width, height }: TSizes) => {
+  public static createCanvas = ({ width, height }: TSizes) => {
     const canvas = document.createElement('canvas');
 
     canvas.width = width;
@@ -66,7 +66,7 @@ export class Draw extends Canvas {
    * @param num
    * @param count
    */
-  static addPixels = (num: number, count: number) => {
+  public static addPixels = (num: number, count: number) => {
     const { cellSize } = Options.getCanvasOptions();
 
     return parseInt(`${num + cellSize * count}`, 10);
@@ -78,7 +78,7 @@ export class Draw extends Canvas {
    * @param num
    * @param count
    */
-  static removePixels = (num: number, count: number) => {
+  public static removePixels = (num: number, count: number) => {
     const { cellSize } = Options.getCanvasOptions();
 
     return parseInt(`${num - cellSize * count}`, 10);
@@ -89,7 +89,7 @@ export class Draw extends Canvas {
    *
    * @param count
    */
-  static getPixels = (count: number) => {
+  public static getPixels = (count: number) => {
     const { cellSize } = Options.getCanvasOptions();
 
     return parseInt(`${cellSize * count}`, 10);
@@ -101,7 +101,7 @@ export class Draw extends Canvas {
    * @param image
    * @param sizes
    */
-  static flipImage = (image: HTMLImageElement, sizes: TSizes) => {
+  public static flipImage = (image: HTMLImageElement, sizes: TSizes) => {
     const width = Draw.getPixels(sizes.width);
     const height = Draw.getPixels(sizes.height);
 
@@ -121,7 +121,7 @@ export class Draw extends Canvas {
    * @param sizes
    * @param flip
    */
-  static drawImage = (image: HTMLImageElement, coordinates: TCoordinates, sizes: TSizes, flip?: boolean) => {
+  public static drawImage = (image: HTMLImageElement, coordinates: TCoordinates, sizes: TSizes, flip?: boolean) => {
     const { ctx } = Options.getCanvasOptions();
     const imageForDraw = flip ? Draw.flipImage(image, sizes) : image;
 
@@ -134,7 +134,7 @@ export class Draw extends Canvas {
    * @param image
    * @param size
    */
-  static getPattern = (image: HTMLImageElement | HTMLCanvasElement, size: TSizes): CanvasPattern => {
+  public static getPattern = (image: HTMLImageElement | HTMLCanvasElement, size: TSizes): CanvasPattern => {
     const { ctx, cellSize } = Options.getCanvasOptions();
 
     const width = size.width * cellSize;

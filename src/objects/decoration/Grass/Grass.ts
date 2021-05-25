@@ -7,13 +7,13 @@ interface GrassProps extends DecorationProps {
 }
 
 export class Grass extends Decoration {
-  width = 10;
-  height = 10;
+  protected width = 10;
+  protected height = 10;
 
   private pattern: CanvasPattern;
   private readonly count: number;
 
-  constructor(props: GrassProps) {
+  public constructor(props: GrassProps) {
     super(props);
 
     this.count = props.count || 1;

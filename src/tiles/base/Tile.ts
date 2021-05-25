@@ -23,7 +23,7 @@ export abstract class Tile extends Canvas {
   protected readonly type: TileType;
   private pattern: CanvasPattern;
 
-  constructor(props: TileProps) {
+  public constructor(props: TileProps) {
     super(props);
 
     this.setSizes({
@@ -36,6 +36,10 @@ export abstract class Tile extends Canvas {
   }
 
   private initPattern = () => {
+    this.sprite = new Sprite({
+      frameSize: { width: TILE_SIZE, height: TILE_SIZE },
+      image: this.imageLoader.getImage(this.spriteImage),
+    });
     const img = this.getSpriteTile(this.type);
     this.pattern = Draw.getPattern(img.getImage(), { width: TILE_SIZE, height: TILE_SIZE });
   };
@@ -57,11 +61,6 @@ export abstract class Tile extends Canvas {
     const sizes = this.getSizes();
 
     if (!this.pattern) {
-      this.sprite = new Sprite({
-        frameSize: { width: TILE_SIZE, height: TILE_SIZE },
-        image: this.imageLoader.getImage(this.spriteImage),
-      });
-
       this.initPattern();
     }
 
@@ -71,5 +70,3 @@ export abstract class Tile extends Canvas {
     ctx.fill();
   };
 }
-
-export type TileInstance = { new(props: TileProps): Tile };

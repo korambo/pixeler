@@ -1,3 +1,5 @@
+import { Tile, TileProps } from '@tiles/base/Tile';
+
 export enum TileType {
   outerRight = 'outerRight',
   outerLeft = 'outerLeft',
@@ -6,3 +8,5 @@ export enum TileType {
   innerRight = 'innerRight',
   innerLeft = 'innerLeft',
 }
+
+export type TileInstance = { new(props: TileProps): Tile };

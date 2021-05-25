@@ -27,7 +27,7 @@ export class Camera extends Canvas {
     left: GAME_WIDTH / 2,
   };
 
-  constructor(props: CameraProps) {
+  public constructor(props: CameraProps) {
     super(props);
 
     this.x = props.x - this.width / 2;

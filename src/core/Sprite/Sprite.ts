@@ -10,9 +10,9 @@ interface SpriteProps extends ImageProps {
 export class Sprite extends Image {
   private readonly frameSize: TSizes;
   private frames: Array<Image[]>;
-  private framesCount: TCoordinates;
+  private readonly framesCount: TCoordinates;
 
-  constructor(props: SpriteProps) {
+  public constructor(props: SpriteProps) {
     super(props);
 
     this.frameSize = props.frameSize;

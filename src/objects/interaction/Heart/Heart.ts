@@ -1,8 +1,6 @@
 import { MovingGameObject } from '@objects/base/MovingGameObject';
-import { canInteraction } from '@objects/__presets/boundaryCheck';
 
 import { Interaction } from '@objects/base/Interaction';
-import { Player } from '@objects/Player';
 import { Draw } from '@core/Draw';
 
 // interface HeartProps extends InteractionProps {
@@ -13,7 +11,6 @@ export class Heart extends Interaction {
   protected height = 10;
 
   protected interactionTime = 200;
-  protected interactionPaddings = { left: -10, right: -10 };
 
   private looted: boolean = false;
   private canLoot: boolean = false;
@@ -22,12 +19,12 @@ export class Heart extends Interaction {
     this.looted = true;
   };
 
-  public boundaryCheck(movingObject: MovingGameObject) {
-    if (movingObject instanceof Player) {
+  public effects(moving?: MovingGameObject) {
+    super.effects(moving);
+
+    if (this.physic.playerIntersect) {
       if (!this.looted) {
-        if (canInteraction(this, movingObject, this.interactionPaddings)) {
-          this.lootHeart();
-        }
+        this.lootHeart();
       }
     }
   }

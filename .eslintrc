@@ -7,10 +7,12 @@
   "rules": {
     "@typescript-eslint/no-unused-expressions": "off",
     "@typescript-eslint/lines-between-class-members": "off",
+    "@typescript-eslint/explicit-member-accessibility": ["error", { "accessibility": "explicit" }],
 
     "import/prefer-default-export": "off",
     "import/no-extraneous-dependencies": "off",
 
+    "no-underscore-dangle": "off",
     "operator-linebreak": "off",
     "consistent-return": "off",
     "no-useless-return": "off",

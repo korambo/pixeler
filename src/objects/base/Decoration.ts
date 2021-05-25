@@ -1,16 +1,19 @@
 import { ImageLoader } from '@core/ImageLoader';
-import { GameObject, GameObjectProps } from '@objects/base/GameObject';
+import { Canvas, CanvasProps } from '@core/Canvas';
+import { Animation } from '@core/Animation';
 
-export interface DecorationProps extends GameObjectProps {
+export interface DecorationProps extends CanvasProps {
   imageLoader: ImageLoader;
 }
 
-export abstract class Decoration extends GameObject {
+export abstract class Decoration extends Canvas {
   protected imageLoader: ImageLoader;
+  protected animation: Animation;
 
-  constructor(props: GameObjectProps) {
+  public constructor(props: DecorationProps) {
     super(props);
 
+    this.animation = new Animation(this);
     this.imageLoader = props.imageLoader;
   }
 }

@@ -9,17 +9,19 @@ import { Ground } from '@tiles/Ground';
 import { Flower } from '@objects/decoration/Flower';
 import { Grass } from '@objects/decoration/Grass/Grass';
 import { Coin } from '@objects/interaction/Coin';
-import { Boundary } from '@objects/types';
+// import { Boundary } from '@objects/types';
 import { Torch } from '@objects/decoration/Torch';
 import { Stairs } from '@objects/interaction/Stairs';
+import { Bonfire } from '@objects/decoration/Bonfire';
+import { Bush } from '@objects/decoration/Bush';
 
 export class SimpleMap extends Map {
   protected width = 500;
   protected height = 260;
 
-  protected start = { x: 320, y: this.height - 100 };
+  protected start = { x: 50, y: this.height - 80 };
 
-  constructor(props: MapProps) {
+  public constructor(props: MapProps) {
     super(props);
 
     this.setTerrain((terrainProps) => [
@@ -30,7 +32,7 @@ export class SimpleMap extends Map {
         tile: Ground,
         outerBorder: { left: false, right: false },
         innerBorder: { left: false, right: true },
-        boundary: [Boundary.top, Boundary.horizontal],
+        // boundary: [Boundary.top, Boundary.horizontal],
         ...terrainProps,
       }),
 
@@ -41,39 +43,18 @@ export class SimpleMap extends Map {
         tile: Ground,
         outerBorder: { left: true, right: false },
         innerBorder: { left: true, right: false },
-        boundary: [Boundary.top, Boundary.horizontal],
+        // boundary: [Boundary.top, Boundary.horizontal],
         ...terrainProps,
       }),
 
       new Platform({
-        tilesCount: [14, 4],
+        tilesCount: [14, 2],
         x: 170,
-        y: this.height - 70,
+        y: this.height - 110,
         tile: Ground,
         outerBorder: { left: true, right: true },
         innerBorder: { left: true, right: true },
-        boundary: [Boundary.top],
-        ...terrainProps,
-      }),
-
-      new Platform({
-        tilesCount: [4, 1],
-        x: 230,
-        y: this.height - 80,
-        tile: Ground,
-        outerBorder: { left: false, right: true },
-        boundary: [Boundary.top],
-        ...terrainProps,
-      }),
-
-      new Platform({
-        tilesCount: [4, 5],
-        x: 190,
-        y: this.height - 120,
-        tile: Ground,
-        outerBorder: { left: true, right: true },
-        innerBorder: { left: true, right: true },
-        boundary: [Boundary.top],
+        // boundary: [Boundary.top],
         ...terrainProps,
       }),
 
@@ -84,7 +65,7 @@ export class SimpleMap extends Map {
         tile: Ground,
         outerBorder: { left: true, right: false },
         innerBorder: { left: true, right: true },
-        boundary: [Boundary.top, Boundary.horizontal],
+        // boundary: [Boundary.top, Boundary.horizontal],
         ...terrainProps,
       }),
 
@@ -94,7 +75,7 @@ export class SimpleMap extends Map {
         y: this.height - 50,
         tile: Ground,
         innerBorder: { left: true, right: true },
-        boundary: [Boundary.top, Boundary.horizontal],
+        // boundary: [Boundary.top, Boundary.horizontal],
         ...terrainProps,
       }),
     ]);
@@ -116,13 +97,17 @@ export class SimpleMap extends Map {
 
       new Chest({ x: 450, y: this.height - 60, ...interactionProps }),
 
-      new Stairs({ x: 195, y: this.height - 120, count: 5, ...interactionProps }),
+      new Stairs({ x: 195, y: this.height - 110, count: 6, ...interactionProps }),
     ]);
 
     this.setDecoration((decorationProps) => [
-      new Torch({ x: 215, y: this.height - 95, ...decorationProps }),
+      new Torch({ x: 215, y: this.height - 105, ...decorationProps }),
 
-      new Grass({ x: 0, y: this.height - 36, count: 12, ...decorationProps }),
+      new Bush({ x: 170, y: this.height - 122, ...decorationProps }),
+
+      new Bonfire({ x: 15, y: this.height - 54, ...decorationProps }),
+
+      new Grass({ x: 40, y: this.height - 36, count: 8, ...decorationProps }),
 
       new Rock({ x: 115, y: this.height - 40, ...decorationProps }),
 
@@ -134,11 +119,11 @@ export class SimpleMap extends Map {
 
       new Grass({ x: 430, y: this.height - 46, count: 2, ...decorationProps }),
 
-      new Grass({ x: 240, y: this.height - 86, count: 2, ...decorationProps }),
+      new Grass({ x: 240, y: this.height - 116, count: 2, ...decorationProps }),
 
       new Grass({ x: 330, y: this.height - 56, count: 4, ...decorationProps }),
 
-      new Grass({ x: 270, y: this.height - 76, count: 2, ...decorationProps }),
+      new Grass({ x: 270, y: this.height - 116, count: 2, ...decorationProps }),
 
       new Flower({ x: 206, y: this.height - 46, type: 2, ...decorationProps }),
 

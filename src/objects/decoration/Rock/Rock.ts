@@ -2,8 +2,8 @@ import { Draw } from '@core/Draw';
 import { Decoration } from '@objects/base/Decoration';
 
 export class Rock extends Decoration {
-  width = 12;
-  height = 10;
+  protected width = 12;
+  protected height = 10;
 
   public draw() {
     const coordinates = this.getCoordinates();

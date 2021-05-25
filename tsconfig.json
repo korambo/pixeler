@@ -9,13 +9,11 @@
       "@tiles/*": ["tiles/*"],
       "@geometry/*": ["geometry/*"]
     },
+    "target": "ES5",
     "experimentalDecorators": true
   },
   "outDir": "./dist/",
   "noImplicitAny": true,
-  "module": "es6",
-  "target": "es5",
-  "jsx": "react",
   "allowJs": true,
   "sourceMap": true,
   "moduleResolution": "node",

@@ -12,7 +12,7 @@ class TorchMap extends Map {
 
   protected start = { x: 20, y: this.height - 60 };
 
-  constructor(props: MapProps) {
+  public constructor(props: MapProps) {
     super(props);
 
     this.setTerrain((terrainProps) => [

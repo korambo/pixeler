@@ -9,7 +9,7 @@ export interface DotProps extends CanvasProps {
 }
 
 export class Dot extends Figure {
-  constructor(props: DotProps) {
+  public constructor(props: DotProps) {
     super({
       ...props,
       width: Draw.getPixels(1),

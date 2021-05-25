@@ -1,8 +1,6 @@
 import { MovingGameObject } from '@objects/base/MovingGameObject';
-import { canInteraction } from '@objects/__presets/boundaryCheck';
 
 import { Interaction } from '@objects/base/Interaction';
-import { Player } from '@objects/Player';
 import { Draw } from '@core/Draw';
 
 export class Coin extends Interaction {
@@ -10,7 +8,6 @@ export class Coin extends Interaction {
   protected height = 7;
 
   protected interactionTime = 200;
-  protected interactionPaddings = { top: -10, right: -5, bottom: -5, left: -10 };
 
   private looted: boolean = false;
 
@@ -18,12 +15,12 @@ export class Coin extends Interaction {
     this.looted = true;
   };
 
-  public boundaryCheck(movingObject: MovingGameObject) {
-    if (movingObject instanceof Player) {
+  public effects(moving?: MovingGameObject) {
+    super.effects(moving);
+
+    if (this.physic.playerIntersect) {
       if (!this.looted) {
-        if (canInteraction(this, movingObject, this.interactionPaddings)) {
-          this.lootCoin();
-        }
+        this.lootCoin();
       }
     }
   }

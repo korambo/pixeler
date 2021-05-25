@@ -6,14 +6,14 @@ interface FlowerProps extends DecorationProps {
 }
 
 export class Flower extends Decoration {
-  width = 10;
-  height = 6;
+  protected width = 10;
+  protected height = 6;
 
-  sprite: Sprite;
+  private sprite: Sprite;
 
   private readonly type: number;
 
-  constructor(props: FlowerProps) {
+  public constructor(props: FlowerProps) {
     super(props);
 
     this.type = typeof props.type !== 'number' ? Math.floor(Math.random() * 2) : props.type;

@@ -1,10 +1,7 @@
 import { MovingGameObject } from '@objects/base/MovingGameObject';
-import { canInteraction } from '@objects/__presets/boundaryCheck';
 import { Sprite } from '@core/Sprite';
 
 import { Interaction, InteractionProps } from '@objects/base/Interaction';
-import { Player } from '@objects/Player';
-import { Draw } from '@core/Draw';
 
 interface ChestProps extends InteractionProps {
   open?: boolean;
@@ -16,7 +13,6 @@ export class Chest extends Interaction {
   protected height = 20;
 
   protected interactionTime = 200;
-  protected interactionPaddings = { left: 40, right: 40, top: -Draw.getPixels(3) };
 
   private canLoot: boolean = false;
   private canOpen: boolean = false;
@@ -25,7 +21,7 @@ export class Chest extends Interaction {
 
   private sprite: Sprite;
 
-  constructor(props: ChestProps) {
+  public constructor(props: ChestProps) {
     super(props);
 
     if (typeof props.open !== 'undefined') this.open = props.open;
@@ -35,7 +31,10 @@ export class Chest extends Interaction {
   private initSprite = () => {
     this.sprite = new Sprite({
       image: this.imageLoader.getImage('chest_sprite'),
-      frameSize: this.getOriginalSizes(),
+      frameSize: {
+        width: this.width,
+        height: this.height,
+      },
     });
   };
 
@@ -49,11 +48,11 @@ export class Chest extends Interaction {
 
   public animate = () => {};
 
-  public boundaryCheck(movingObject: MovingGameObject) {
-    if (movingObject instanceof Player) {
-      this.canOpen = !this.open && canInteraction(this, movingObject, this.interactionPaddings);
-      this.canLoot = this.open && !this.empty && canInteraction(this, movingObject, this.interactionPaddings);
-    }
+  public effects(moving?: MovingGameObject) {
+    super.effects(moving);
+
+    this.canOpen = !this.open && this.physic.playerIntersect;
+    this.canLoot = this.open && !this.empty && this.physic.playerIntersect;
   }
 
   public draw() {

@@ -11,7 +11,7 @@ export class ImageLoader {
   private images: Record<string, HTMLImageElement> = {};
   private loaded = false;
 
-  constructor() {
+  public constructor() {
     this.loadImages();
   }
 

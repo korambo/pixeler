@@ -1,7 +1,7 @@
 import { Game } from '@core/Game';
 import { Options } from '@core/Options';
 
-// import { BoundaryTest } from '@maps/BoundaryTest';
+// import { PhysicTest } from '@maps/PhysicTest';
 
 import './style.css';
 
@@ -21,7 +21,9 @@ const init = () => {
 
   Options.init(id, true);
 
-  const game = new Game({ debug: true });
+  const game = new Game({
+    // customMap: PhysicTest,
+  });
 
   // @ts-ignore
   window.game = game;

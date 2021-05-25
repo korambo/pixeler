@@ -1,8 +1,8 @@
-import { Tile, TileInstance } from '@tiles/base/Tile';
+import { Tile } from '@tiles/base/Tile';
 import { ImageLoader } from '@core/ImageLoader';
 import { Draw } from '@core/Draw';
 import { TILE_SIZE } from '@core/constants';
-import { TileType } from '@tiles/types';
+import { TileInstance, TileType } from '@tiles/types';
 import { Terrain, TerrainProps } from '@objects/base/Terrain';
 
 type TilesCount = [xCount: number, yCount: number];
@@ -27,8 +27,8 @@ interface PlatformProps extends TerrainProps {
 }
 
 export class Platform extends Terrain {
-  width = null;
-  height = null;
+  protected width = null;
+  protected height = null;
 
   protected imageLoader: ImageLoader;
 
@@ -41,7 +41,7 @@ export class Platform extends Terrain {
   private outerBorder: OuterBorder;
   private innerBorder: InnerBorder;
 
-  constructor(props: PlatformProps) {
+  public constructor(props: PlatformProps) {
     super(props);
 
     this.Tile = props.tile;
