@@ -15,173 +15,209 @@ class PlatformMap extends Map {
     super(props);
 
     this.setTerrain((terrainProps) => [
+      // main
+
       new Platform({
         tilesCount: [32, 3],
         x: 0,
         y: this.height - 30,
         tile: GroundTile,
-        outerBorder: { left: false, right: false },
+        ...terrainProps,
+      }),
+
+      // single
+
+      new Platform({
+        tilesCount: [1, 1],
+        x: 10,
+        y: 10,
+        tile: GroundTile,
         ...terrainProps,
       }),
 
       new Platform({
         tilesCount: [1, 1],
-        x: 30,
+        x: 10,
         y: 30,
         tile: GroundTile,
-        outerBorder: { left: false, right: false },
+        onlyInner: true,
         ...terrainProps,
       }),
 
+      // horizontal
+
       new Platform({
-        tilesCount: [1, 1],
+        tilesCount: [2, 1],
         x: 30,
-        y: 50,
+        y: 10,
         tile: GroundTile,
-        outerBorder: { left: false, right: false },
-        onlyInner: true,
         ...terrainProps,
       }),
 
       new Platform({
         tilesCount: [2, 1],
+        x: 30,
+        y: 30,
+        tile: GroundTile,
+        onlyInner: true,
+        ...terrainProps,
+      }),
+
+      new Platform({
+        tilesCount: [3, 1],
+        x: 60,
+        y: 10,
+        tile: GroundTile,
+        ...terrainProps,
+      }),
+
+      new Platform({
+        tilesCount: [3, 1],
+        x: 60,
+        y: 30,
+        tile: GroundTile,
+        onlyInner: true,
+        ...terrainProps,
+      }),
+
+      new Platform({
+        tilesCount: [4, 1],
+        x: 100,
+        y: 10,
+        tile: GroundTile,
+        ...terrainProps,
+      }),
+
+      new Platform({
+        tilesCount: [4, 1],
+        x: 100,
+        y: 30,
+        tile: GroundTile,
+        onlyInner: true,
+        ...terrainProps,
+      }),
+
+      // vertical
+
+      new Platform({
+        tilesCount: [1, 2],
+        x: 30,
+        y: 50,
+        tile: GroundTile,
+        ...terrainProps,
+      }),
+
+      new Platform({
+        tilesCount: [1, 2],
         x: 50,
         y: 50,
         tile: GroundTile,
-        outerBorder: { left: false, right: false },
         onlyInner: true,
         ...terrainProps,
       }),
 
       new Platform({
-        tilesCount: [2, 1],
-        x: 50,
-        y: 30,
+        tilesCount: [1, 3],
+        x: 70,
+        y: 50,
         tile: GroundTile,
-        outerBorder: { left: false, right: false },
         ...terrainProps,
       }),
 
       new Platform({
-        tilesCount: [3, 2],
-        x: 80,
-        y: 30,
+        tilesCount: [1, 3],
+        x: 90,
+        y: 50,
         tile: GroundTile,
-        outerBorder: { left: false, right: false },
-        innerBorder: { left: false, right: false },
+        onlyInner: true,
         ...terrainProps,
       }),
 
       new Platform({
-        tilesCount: [3, 2],
-        x: 80,
+        tilesCount: [1, 4],
+        x: 110,
+        y: 50,
+        tile: GroundTile,
+        ...terrainProps,
+      }),
+
+      new Platform({
+        tilesCount: [1, 4],
+        x: 130,
+        y: 50,
+        tile: GroundTile,
+        onlyInner: true,
+        ...terrainProps,
+      }),
+
+      // squire
+
+      new Platform({
+        tilesCount: [2, 2],
+        x: 150,
+        y: 10,
+        tile: GroundTile,
+        ...terrainProps,
+      }),
+
+      new Platform({
+        tilesCount: [2, 2],
+        x: 150,
+        y: 40,
+        tile: GroundTile,
+        onlyInner: true,
+        ...terrainProps,
+      }),
+
+      new Platform({
+        tilesCount: [3, 3],
+        x: 180,
+        y: 10,
+        tile: GroundTile,
+        ...terrainProps,
+      }),
+
+      new Platform({
+        tilesCount: [3, 3],
+        x: 180,
+        y: 50,
+        tile: GroundTile,
+        onlyInner: true,
+        ...terrainProps,
+      }),
+
+      // rectangle
+
+      new Platform({
+        tilesCount: [4, 6],
+        x: 220,
+        y: 10,
+        tile: GroundTile,
+        ...terrainProps,
+      }),
+
+      new Platform({
+        tilesCount: [4, 6],
+        x: 220,
         y: 80,
         tile: GroundTile,
-        innerBorder: { left: true, right: false },
         onlyInner: true,
         ...terrainProps,
       }),
 
       new Platform({
-        tilesCount: [3, 2],
-        x: 120,
-        y: 80,
+        tilesCount: [4, 2],
+        x: 270,
+        y: 10,
         tile: GroundTile,
-        innerBorder: { left: false, right: false },
-        onlyInner: true,
         ...terrainProps,
       }),
 
       new Platform({
-        tilesCount: [3, 2],
-        x: 160,
-        y: 80,
+        tilesCount: [4, 2],
+        x: 270,
+        y: 40,
         tile: GroundTile,
-        innerBorder: { left: false, right: true },
-        onlyInner: true,
-        ...terrainProps,
-      }),
-
-      new Platform({
-        tilesCount: [3, 2],
-        x: 80,
-        y: 60,
-        tile: GroundTile,
-        outerBorder: { left: true, right: true },
-        innerBorder: { left: true, right: true },
-        ...terrainProps,
-      }),
-
-      new Platform({
-        tilesCount: [3, 2],
-        x: 120,
-        y: 30,
-        tile: GroundTile,
-        outerBorder: { left: true, right: false },
-        innerBorder: { left: true, right: false },
-        ...terrainProps,
-      }),
-      new Platform({
-        tilesCount: [3, 2],
-        x: 120,
-        y: 60,
-        tile: GroundTile,
-        outerBorder: { left: false, right: true },
-        innerBorder: { left: false, right: true },
-        ...terrainProps,
-      }),
-
-      new Platform({
-        tilesCount: [3, 2],
-        x: 160,
-        y: 30,
-        tile: GroundTile,
-        outerBorder: { left: false, right: true },
-        innerBorder: { left: true, right: false },
-        ...terrainProps,
-      }),
-      new Platform({
-        tilesCount: [3, 2],
-        x: 160,
-        y: 60,
-        tile: GroundTile,
-        outerBorder: { left: true, right: false },
-        innerBorder: { left: false, right: true },
-        ...terrainProps,
-      }),
-      new Platform({
-        tilesCount: [4, 4],
-        x: 200,
-        y: 30,
-        tile: GroundTile,
-        outerBorder: { left: false, right: false },
-        innerBorder: { left: false, right: false },
-        ...terrainProps,
-      }),
-      new Platform({
-        tilesCount: [4, 4],
-        x: 250,
-        y: 30,
-        tile: GroundTile,
-        outerBorder: { left: true, right: true },
-        innerBorder: { left: true, right: true },
-        ...terrainProps,
-      }),
-      new Platform({
-        tilesCount: [4, 4],
-        x: 200,
-        y: 70,
-        tile: GroundTile,
-        innerBorder: { left: false, right: false },
-        onlyInner: true,
-        ...terrainProps,
-      }),
-      new Platform({
-        tilesCount: [4, 4],
-        x: 250,
-        y: 70,
-        tile: GroundTile,
-        innerBorder: { left: true, right: true },
         onlyInner: true,
         ...terrainProps,
       }),
@@ -194,7 +230,7 @@ export default {
 } as Meta;
 
 export const Ground = () => {
-  Options.init('game');
+  Options.init({ canvasId: 'game' });
 
   const game = new Game({ customMap: PlatformMap });
   game.draw();

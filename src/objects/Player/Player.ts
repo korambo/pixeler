@@ -18,7 +18,6 @@ export class Player extends MovingGameObject {
   private inputs: Inputs;
 
   protected orientation = Orientation.right;
-
   private sprite: { stay: Sprite; move: Sprite };
 
   public constructor(props: PlayerProps) {
@@ -44,6 +43,51 @@ export class Player extends MovingGameObject {
     };
   };
 
+  private jump = () => {
+    const keysPressed = this.inputs.getKeysPressed();
+
+    this.physic.jump(keysPressed.jump);
+  };
+
+  private move = () => {
+    const keysPressed = this.inputs.getKeysPressed();
+
+    if (this.physic.canMoving.y) {
+      if (keysPressed.up) {
+        this.physic.moveY(MoveOrientation.up);
+        return;
+      }
+
+      if (keysPressed.down) {
+        this.physic.moveY(MoveOrientation.down);
+        return;
+      }
+    }
+
+    if (this.physic.canMoving.x) {
+      if (keysPressed.left) {
+        this.orientation = Orientation.left;
+        this.physic.moveX(MoveOrientation.left);
+        return;
+      }
+
+      if (keysPressed.right) {
+        this.orientation = Orientation.right;
+        this.physic.moveX(MoveOrientation.right);
+        return;
+      }
+    }
+
+    this.physic.stop();
+  };
+
+  public animate = () => {};
+
+  public inputEffects = () => {
+    this.move();
+    this.jump();
+  };
+
   public draw = () => {
     const coordinates = this.getCoordinates();
 
@@ -61,36 +105,5 @@ export class Player extends MovingGameObject {
     this.animation
       .sprite(this.sprite.stay, SpriteAnimationOrientation.x, 18)
       .drawImage(coordinates, this.orientation === Orientation.left);
-  };
-
-  private jump = () => {
-    const keysPressed = this.inputs.getKeysPressed();
-
-    this.physic.jump(keysPressed.jump);
-  };
-
-  private move = () => {
-    const keysPressed = this.inputs.getKeysPressed();
-
-    if (keysPressed.left) {
-      this.orientation = Orientation.left;
-      this.physic.moveX(MoveOrientation.left);
-      return;
-    }
-
-    if (keysPressed.right) {
-      this.orientation = Orientation.right;
-      this.physic.moveX(MoveOrientation.right);
-      return;
-    }
-
-    this.physic.stopX();
-  };
-
-  public animate = () => {};
-
-  public inputEffects = () => {
-    this.move();
-    this.jump();
   };
 }

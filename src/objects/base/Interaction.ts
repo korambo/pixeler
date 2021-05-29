@@ -30,6 +30,7 @@ export abstract class Interaction extends GameObject {
       gravity: this.gravity,
       object: this,
       canCollision: false,
+      canInteraction: true,
     });
 
     this.inputs = props.inputs;
@@ -39,15 +40,17 @@ export abstract class Interaction extends GameObject {
 
   abstract inputEffects(): void;
 
-  public canInteract = () => !this.interactionTimeout;
+  public canInteract() {
+    return !this.interactionTimeout;
+  }
 
-  public setInteractionTimeout = () => {
+  public setInteractionTimeout() {
     this.interactionTimeout = setTimeout(() => {
       this.clearInteractionTimeout();
     }, this.interactionTime);
-  };
+  }
 
-  public clearInteractionTimeout = () => {
+  public clearInteractionTimeout() {
     this.interactionTimeout = null;
-  };
+  }
 }

@@ -1,8 +1,9 @@
 import { TCoordinates } from '@core/types';
 import { MovingGameObject } from '@objects/base/MovingGameObject';
-import { Physic } from '@effects/Physic';
+import { Physic, PhysicProps } from '@effects/Physic';
 import { Draw } from '@core/Draw';
 import { MoveOrientation } from '@objects/types';
+import { Gravity } from '@effects/Gravity';
 
 interface JumpOptions {
   speed: number;
@@ -10,85 +11,98 @@ interface JumpOptions {
   active: boolean;
 }
 
-// interface MovingPhysicProps extends PhysicProps {}
+interface MovingPhysicProps extends PhysicProps {
+  object: MovingGameObject;
+}
 
 export class MovingPhysic extends Physic {
-  protected object: MovingGameObject;
+  protected readonly gravity: Gravity;
+  protected readonly object: MovingGameObject;
+
+  private _onGround: boolean;
+  private _onStairs: boolean;
+  private _isMoving: boolean;
+  private _canMoving = { x: true, y: false };
 
   private _acceleration = 0;
   private _velocity: TCoordinates = { x: 0, y: 0 };
   private _speed = Draw.getPixels(1.4);
+
   private _jumpOptions: JumpOptions = {
     speed: Draw.getPixels(6),
     time: 500,
     active: false,
   };
 
-  private _onGround: boolean;
-  private _isMoving: boolean;
+  // REMOVE THIS (ONLY FOR STORYBOOK)
+  public constructor(props: MovingPhysicProps) {
+    super(props);
+    this.object = props.object;
+    this.gravity = props.gravity;
+  }
 
-  public set onGround(onGround) {
-    this._onGround = onGround;
+  private set velocity(velocity: Partial<TCoordinates>) {
+    this._velocity = { ...this._velocity, ...velocity };
+  }
+
+  private get velocity() {
+    return this._velocity;
+  }
+
+  private set jumpOptions(jumpOptions: Partial<JumpOptions>) {
+    this._jumpOptions = { ...this._jumpOptions, ...jumpOptions };
+  }
+
+  private get jumpOptions() {
+    return this._jumpOptions;
+  }
+
+  public get onStairs() {
+    return this._onStairs;
+  }
+
+  public set onStairs(onStairs) {
+    this._onStairs = onStairs;
   }
 
   public get onGround() {
     return this._onGround;
   }
 
-  public set isMoving(isMoving) {
-    this._isMoving = isMoving;
+  public set onGround(onGround) {
+    this._onGround = onGround;
+  }
+
+  public get canMoving() {
+    return this._canMoving;
+  }
+
+  public set canMoving(canYMoving: Partial<{ x: boolean; y: boolean }>) {
+    this._canMoving = { ...this._canMoving, ...canYMoving };
   }
 
   public get isMoving() {
     return this._isMoving;
   }
 
-  public set acceleration(acceleration) {
-    this._acceleration = acceleration;
-  }
-
-  public get acceleration() {
-    return this._acceleration;
-  }
-
-  public set velocity(velocity: Partial<TCoordinates>) {
-    this._velocity = { ...this._velocity, ...velocity };
-  }
-
-  public get velocity() {
-    return this._velocity;
-  }
-
-  public set speed(speed) {
-    this._speed = speed;
-  }
-
   public get speed() {
     return this._speed;
-  }
-
-  public set jumpOptions(jumpOptions) {
-    this._jumpOptions = jumpOptions;
-  }
-
-  public get jumpOptions() {
-    return this._jumpOptions;
   }
 
   private accelerationEffect() {
     const accelerationPower = this.gravity.getAccelerationPower();
 
-    if (this.acceleration > 0) {
-      this.acceleration -= accelerationPower;
-    } else if (this.acceleration < 0) {
-      this.acceleration = 0;
+    if (this._acceleration > 0) {
+      this._acceleration -= accelerationPower;
+    } else if (this._acceleration < 0) {
+      this._acceleration = 0;
     }
   }
 
   private gravityEffect() {
     const gravityPower = this.gravity.getGravityPower();
 
-    if (this.onGround || this.jumpOptions.active) return;
+    if (this.onGround || this.onStairs || this.jumpOptions.active) return;
 
     this.velocity = { y: gravityPower };
   }
@@ -106,13 +120,13 @@ export class MovingPhysic extends Physic {
     const gravityPower = this.gravity.getGravityPower();
 
     if (canJump && this.onGround && !this.jumpOptions.active) {
-      this.jumpOptions.active = true;
-      this.acceleration = this.jumpOptions.speed;
-      setTimeout(() => { this.jumpOptions.active = false; }, this.jumpOptions.time);
+      this.jumpOptions = { active: true };
+      this._acceleration = this.jumpOptions.speed;
+      setTimeout(() => { this.jumpOptions = { active: false }; }, this.jumpOptions.time);
     }
 
     if (this.jumpOptions.active) {
-      this.velocity = { y: gravityPower - this.acceleration };
+      this.velocity = { y: gravityPower - this._acceleration };
     }
   }
 
@@ -120,28 +134,44 @@ export class MovingPhysic extends Physic {
     switch (orientation) {
       case MoveOrientation.left: {
         this.velocity = { x: -this.speed };
-        this.isMoving = true;
+        this._isMoving = true;
         break;
       }
       case MoveOrientation.right: {
         this.velocity = { x: +this.speed };
-        this.isMoving = true;
+        this._isMoving = true;
       }
     }
   }
 
-  public stopX() {
-    this.velocity = { x: 0 };
-    this.isMoving = false;
+  public moveY(orientation: MoveOrientation.up | MoveOrientation.down) {
+    switch (orientation) {
+      case MoveOrientation.up: {
+        this.velocity = { y: -this.speed };
+        this._isMoving = true;
+        break;
+      }
+      case MoveOrientation.down: {
+        this.velocity = { y: +this.speed };
+        this._isMoving = true;
+      }
+    }
+  }
+
+  public stop() {
+    this.velocity = { x: 0, y: 0 };
+    this._isMoving = false;
   }
 
   public effect(moving: MovingGameObject) {
     super.effect(moving);
 
-    this.onGround = false;
+    this.canCollision = !this.onStairs;
 
     this.accelerationEffect();
     this.gravityEffect();
     this.velocityEffect();
+
+    this._onGround = false;
   }
 }

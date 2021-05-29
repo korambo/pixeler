@@ -19,7 +19,7 @@ export class SimpleMap extends Map {
   protected width = 500;
   protected height = 260;
 
-  protected start = { x: 50, y: this.height - 80 };
+  protected start = { x: 50, y: this.height - 60 };
 
   public constructor(props: MapProps) {
     super(props);
@@ -30,9 +30,7 @@ export class SimpleMap extends Map {
         x: 0,
         y: this.height - 30,
         tile: Ground,
-        outerBorder: { left: false, right: false },
-        innerBorder: { left: false, right: true },
-        // boundary: [Boundary.top, Boundary.horizontal],
+        border: { left: false },
         ...terrainProps,
       }),
 
@@ -41,9 +39,6 @@ export class SimpleMap extends Map {
         x: 420,
         y: this.height - 40,
         tile: Ground,
-        outerBorder: { left: true, right: false },
-        innerBorder: { left: true, right: false },
-        // boundary: [Boundary.top, Boundary.horizontal],
         ...terrainProps,
       }),
 
@@ -52,20 +47,15 @@ export class SimpleMap extends Map {
         x: 170,
         y: this.height - 110,
         tile: Ground,
-        outerBorder: { left: true, right: true },
-        innerBorder: { left: true, right: true },
-        // boundary: [Boundary.top],
         ...terrainProps,
       }),
 
       new Platform({
-        tilesCount: [20, 2],
-        x: 200,
+        tilesCount: [18, 2],
+        x: 220,
         y: this.height - 40,
         tile: Ground,
-        outerBorder: { left: true, right: false },
-        innerBorder: { left: true, right: true },
-        // boundary: [Boundary.top, Boundary.horizontal],
+        border: { bottom: false },
         ...terrainProps,
       }),
 
@@ -74,14 +64,13 @@ export class SimpleMap extends Map {
         x: 300,
         y: this.height - 50,
         tile: Ground,
-        innerBorder: { left: true, right: true },
-        // boundary: [Boundary.top, Boundary.horizontal],
+        border: { bottom: false },
         ...terrainProps,
       }),
     ]);
 
     this.setInteractions((interactionProps) => [
-      new Heart({ x: 205, y: this.height - 132, ...interactionProps }),
+      new Heart({ x: 295, y: this.height - 125, ...interactionProps }),
 
       new Coin({ x: 90, y: this.height - 40, ...interactionProps }),
       new Coin({ x: 110, y: this.height - 40, ...interactionProps }),
@@ -89,11 +78,11 @@ export class SimpleMap extends Map {
       new Coin({ x: 150, y: this.height - 40, ...interactionProps }),
       new Coin({ x: 170, y: this.height - 40, ...interactionProps }),
 
-      new Coin({ x: 235, y: this.height - 90, ...interactionProps }),
-      new Coin({ x: 255, y: this.height - 90, ...interactionProps }),
+      new Coin({ x: 215, y: this.height - 120, ...interactionProps }),
+      new Coin({ x: 235, y: this.height - 120, ...interactionProps }),
 
-      new Coin({ x: 275, y: this.height - 80, ...interactionProps }),
-      new Coin({ x: 295, y: this.height - 80, ...interactionProps }),
+      new Coin({ x: 255, y: this.height - 120, ...interactionProps }),
+      new Coin({ x: 275, y: this.height - 120, ...interactionProps }),
 
       new Chest({ x: 450, y: this.height - 60, ...interactionProps }),
 
@@ -115,7 +104,7 @@ export class SimpleMap extends Map {
 
       new Grass({ x: 140, y: this.height - 36, count: 6, ...decorationProps }),
 
-      new Grass({ x: 220, y: this.height - 46, count: 7, ...decorationProps }),
+      new Grass({ x: 220, y: this.height - 46, count: 8, ...decorationProps }),
 
       new Grass({ x: 430, y: this.height - 46, count: 2, ...decorationProps }),
 
@@ -125,7 +114,7 @@ export class SimpleMap extends Map {
 
       new Grass({ x: 270, y: this.height - 116, count: 2, ...decorationProps }),
 
-      new Flower({ x: 206, y: this.height - 46, type: 2, ...decorationProps }),
+      new Flower({ x: 206, y: this.height - 36, type: 2, ...decorationProps }),
 
       new Rock({ x: 228, y: this.height - 50, ...decorationProps }),
 

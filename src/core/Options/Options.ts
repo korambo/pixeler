@@ -1,10 +1,16 @@
 import { GAME_HEIGHT, GAME_WIDTH } from '@core/constants';
 import { DebugOptions } from '@core/Options/types';
+import { objectOrBool } from '../../tools/other';
+
+interface OptionsProps {
+  canvasId: string;
+  debug?: Partial<DebugOptions> | boolean;
+}
 
 export class Options {
   private static inited: boolean;
 
-  private static debug: DebugOptions | boolean;
+  private static debug: DebugOptions;
 
   private static canvas: HTMLCanvasElement;
   private static ctx: CanvasRenderingContext2D;
@@ -13,13 +19,17 @@ export class Options {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
 
-  public static init = (canvasId: string, debug?: DebugOptions | boolean) => {
+  public static init = ({ canvasId, debug }: OptionsProps) => {
     Options.canvas = document.getElementById(canvasId) as HTMLCanvasElement;
     Options.ctx = Options.canvas.getContext('2d');
 
     Options.cellSize = Math.sqrt((Options.canvas.width * Options.canvas.height) / (GAME_WIDTH * GAME_HEIGHT));
 
-    Options.debug = debug;
+    Options.debug = objectOrBool(debug, {
+      coordinates: false,
+      info: false,
+      boxes: false,
+    });
 
     Options.inited = true;
   };
@@ -34,15 +44,7 @@ export class Options {
     };
   }
 
-  public static getDebug = (): DebugOptions => {
-    if (typeof Options.debug === 'undefined' || typeof Options.debug === 'boolean') {
-      return {
-        coordinates: Boolean(Options.debug),
-        info: Boolean(Options.debug),
-        boxes: Boolean(Options.debug),
-      };
-    }
-
-    return Options.debug;
-  };
+  public static getDebug() {
+    return this.debug;
+  }
 }

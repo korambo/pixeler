@@ -10,7 +10,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
+        test: /\.ts$/,
         use: 'ts-loader',
         exclude: /node_modules/,
       }, {
@@ -33,7 +33,7 @@ module.exports = {
     new HtmlWebpackPlugin(),
   ],
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: ['.ts', '.js'],
     plugins: [
       new TsconfigPathsPlugin({ configFile: path.resolve(__dirname, 'tsconfig.json') }),
     ],

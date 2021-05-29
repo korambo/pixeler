@@ -15,11 +15,11 @@ const createCanvas = (canvasId: string) => {
 };
 
 const init = () => {
-  const id = 'game';
+  const canvasId = 'game';
 
-  createCanvas(id);
+  createCanvas(canvasId);
 
-  Options.init(id, true);
+  Options.init({ canvasId, debug: { boxes: false, info: false } });
 
   const game = new Game({
     // customMap: PhysicTest,

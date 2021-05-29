@@ -1,3 +1,4 @@
+const path = require('path');
 const custom = require('../webpack.config.js');
 
 module.exports = {
@@ -13,7 +14,7 @@ module.exports = {
   webpackFinal: (config) => {
     return {
       ...config,
-      resolve: { ...config.resolve, ...custom.resolve },
+      resolve: { ...config.resolve, plugins: [...config.resolve.plugins, ...custom.resolve.plugins]  },
       module: {
         ...config.module,
         rules: [

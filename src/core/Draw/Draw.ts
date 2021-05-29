@@ -129,6 +129,18 @@ export class Draw extends Canvas {
   };
 
   /**
+   *
+   * @param canvas
+   * @param coordinates
+   * @param sizes
+   */
+  public static drawCanvas = (canvas: HTMLCanvasElement, coordinates: TCoordinates, sizes: TSizes) => {
+    const { ctx } = Options.getCanvasOptions();
+
+    ctx.drawImage(canvas, coordinates.x, coordinates.y, sizes.width, sizes.height);
+  };
+
+  /**
    * Create pattern from image
    *
    * @param image

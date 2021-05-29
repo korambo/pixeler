@@ -1,6 +1,10 @@
 import { Draw } from '@core/Draw';
 import { Options } from '@core/Options';
 import { Interaction, InteractionProps } from '@objects/base/Interaction';
+import { Physic } from '@effects/Physic';
+import { MovingGameObject } from '@objects/base/MovingGameObject';
+import { Player } from '@objects/Player';
+import { MoveOrientation } from '@objects/types';
 
 interface StairsProps extends InteractionProps {
   count?: number;
@@ -13,13 +17,23 @@ export class Stairs extends Interaction {
   protected height = null;
 
   protected interactionTime = 200;
-  protected interactionPaddings = { left: -Draw.getPixels(5), right: -Draw.getPixels(5) };
+
+  private yOrientation: MoveOrientation.up | MoveOrientation.down;
+  private playerReadyInteract = false;
+  private onStairs = false;
 
   private pattern: CanvasPattern;
   private readonly count: number;
 
   public constructor(props: StairsProps) {
     super(props);
+
+    this._physic = new Physic({
+      gravity: this.gravity,
+      object: this,
+      canCollision: false,
+      canInteraction: true,
+    });
 
     this.count = props.count || 1;
 
@@ -31,20 +45,31 @@ export class Stairs extends Interaction {
     this.pattern = Draw.getPattern(img, { width: this.width, height: StairsHeight });
   };
 
-  // public boundaryCheck(movingObject: MovingGameObject) {
-  //   if (movingObject instanceof Player) {
-  //     const intersectedEdges = canIntersectEdges(this, movingObject.getEdgePolygon(Edge.bottom));
-  //
-  //     if (intersectedEdges.top) {
-  //       movingObject.setMoveOrientation([MoveOrientation.horizontal, MoveOrientation.down]);
-  //       return;
-  //     }
-  //
-  //     if (canIntersect(this, movingObject.getEdgePolygon(Edge.bottom), this.interactionPaddings)) {
-  //       movingObject.setMoveOrientation([MoveOrientation.full]);
-  //     }
-  //   }
-  // }
+  public canInteract() {
+    return this.playerReadyInteract;
+  }
+
+  public effects(moving?: MovingGameObject) {
+    super.effects(moving);
+    const isPlayer = moving instanceof Player;
+
+    if (this.physic.playerIntersect) {
+      this.playerReadyInteract = moving.physic.onGround;
+      if (isPlayer) {
+        const collision = this.physic.calcCollision(moving);
+        this.yOrientation = collision.bottom > collision.top ? MoveOrientation.down : MoveOrientation.up;
+        moving.physic.onStairs = this.onStairs;
+        moving.physic.canMoving = { x: !this.onStairs, y: this.onStairs };
+      }
+    } else {
+      if (isPlayer) {
+        moving.physic.onStairs = false;
+        moving.physic.canMoving = { x: true, y: false };
+      }
+      this.onStairs = false;
+      this.playerReadyInteract = false;
+    }
+  }
 
   public animate = () => {};
 
@@ -63,5 +88,16 @@ export class Stairs extends Interaction {
     ctx.fill();
   }
 
-  public inputEffects = () => {};
+  public inputEffects = () => {
+    const keysPressed = this.inputs.getKeysPressed();
+
+    if (this.canInteract()) {
+      if (
+        (this.yOrientation === MoveOrientation.up && keysPressed.up) ||
+        (this.yOrientation === MoveOrientation.down && keysPressed.down)
+      ) {
+        this.onStairs = true;
+      }
+    }
+  };
 }

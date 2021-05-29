@@ -8,7 +8,6 @@ import { MovingGameObject } from '@objects/base/MovingGameObject';
 export interface GameObjectProps extends CanvasProps {
   imageLoader: ImageLoader;
   gravity: Gravity;
-  canGravity?: boolean;
 }
 
 export abstract class GameObject extends Canvas {
@@ -19,8 +18,6 @@ export abstract class GameObject extends Canvas {
 
   protected _physic: Physic;
 
-  public canBoundary = true;
-
   protected constructor(props: GameObjectProps) {
     super(props);
 
@@ -30,6 +27,7 @@ export abstract class GameObject extends Canvas {
       gravity: this.gravity,
       object: this,
       canCollision: true,
+      canInteraction: false,
     });
 
     this.imageLoader = props.imageLoader;
@@ -42,24 +40,4 @@ export abstract class GameObject extends Canvas {
   public effects(moving?: MovingGameObject) {
     this.physic.effect(moving);
   }
-
-  // public boundaryCheck(movingObject: MovingGameObject) {
-  //   if (!movingObject.canBoundary) return;
-  //
-  //   this.boundary.forEach((boundary) => {
-  //     switch (boundary) {
-  //       case Boundary.top: return topIntersect(this, movingObject);
-  //       case Boundary.right: return rightIntersect(this, movingObject);
-  //       case Boundary.bottom: return bottomIntersect(this, movingObject);
-  //       case Boundary.left: return leftIntersect(this, movingObject);
-  //       case Boundary.full: return outerRectangle(this, movingObject);
-  //       case Boundary.horizontal: {
-  //         return [rightIntersect(this, movingObject), leftIntersect(this, movingObject)];
-  //       }
-  //       case Boundary.vertical: {
-  //         return [topIntersect(this, movingObject), bottomIntersect(this, movingObject)];
-  //       }
-  //     }
-  //   });
-  // }
 }

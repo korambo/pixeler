@@ -1,5 +1,5 @@
 export interface DebugOptions {
-  coordinates?: boolean;
-  info?: boolean;
-  boxes?: boolean;
+  coordinates: boolean;
+  info: boolean;
+  boxes: boolean;
 }

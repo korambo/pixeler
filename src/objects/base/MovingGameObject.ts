@@ -20,6 +20,7 @@ export abstract class MovingGameObject extends GameObject {
       gravity: this.gravity,
       object: this,
       canCollision: true,
+      canInteraction: true,
     });
   }
 

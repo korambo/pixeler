@@ -17,7 +17,7 @@ export abstract class Figure extends Canvas {
   protected filled: boolean = false;
   protected dashed: [number, number];
 
-  protected color: string = 'darkgrey';
+  protected color: string = 'tomato';
 
   public constructor(props: FigureProps) {
     super(props);

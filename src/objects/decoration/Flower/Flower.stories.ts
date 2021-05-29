@@ -21,7 +21,6 @@ class FlowerMap extends Map {
         x: 0,
         y: this.height - 30,
         tile: Ground,
-        outerBorder: { left: false, right: false },
         ...terrainProps,
       }),
     ]);
@@ -49,7 +48,7 @@ export default {
 } as Meta;
 
 export const States = () => {
-  Options.init('game');
+  Options.init({ canvasId: 'game' });
 
   const game = new Game({ customMap: FlowerMap });
   game.draw();
