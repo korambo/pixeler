@@ -1,17 +1,21 @@
 import { Canvas, CanvasProps } from '@core/Canvas';
-import { ImageLoader } from '@core/ImageLoader/ImageLoader';
+import { AssetsLoader } from '@core/Assets/AssetsLoader';
 import { Animation } from '@core/Animation';
-import { Physic } from '@effects/Physic';
-import { Gravity } from '@effects/Gravity';
+import { Physic } from '@physic/Physic';
+import { Gravity } from '@physic/Gravity';
 import { MovingGameObject } from '@objects/base/MovingGameObject';
+import { Image } from '@core/Assets/Image';
+import { Sprite } from '@core/Assets/Sprite';
 
 export interface GameObjectProps extends CanvasProps {
-  imageLoader: ImageLoader;
+  assetsLoader: AssetsLoader;
   gravity: Gravity;
 }
 
 export abstract class GameObject extends Canvas {
-  protected imageLoader: ImageLoader;
+  protected assetsLoader: AssetsLoader;
+  protected image: Record<string, Image>;
+  protected sprite: Record<string, Sprite>;
 
   protected animation: Animation;
   protected gravity: Gravity;
@@ -30,7 +34,7 @@ export abstract class GameObject extends Canvas {
       canInteraction: false,
     });
 
-    this.imageLoader = props.imageLoader;
+    this.assetsLoader = props.assetsLoader;
   }
 
   public get physic() {

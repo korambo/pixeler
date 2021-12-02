@@ -40,7 +40,7 @@ export class Line extends Canvas {
     if (props.color) this.color = props.color;
   }
 
-  public drawVertical = () => {
+  private drawVertical = () => {
     const { ctx, cellSize } = Options.getCanvasOptions();
     const coordinates = this.getCoordinates();
 
@@ -50,7 +50,7 @@ export class Line extends Canvas {
     ctx.fill();
   };
 
-  public drawHorizontal = () => {
+  private drawHorizontal = () => {
     const { ctx, cellSize } = Options.getCanvasOptions();
     const coordinates = this.getCoordinates();
 
@@ -60,7 +60,7 @@ export class Line extends Canvas {
     ctx.fill();
   };
 
-  public drawIncline = (incline: Angle.deg45 | Angle.deg135) => {
+  private drawIncline = (incline: Angle.deg45 | Angle.deg135) => {
     const { ctx, cellSize } = Options.getCanvasOptions();
     const coordinates = this.getCoordinates();
 
@@ -78,6 +78,9 @@ export class Line extends Canvas {
       ctx.fill();
     }
   };
+
+  // eslint-disable-next-line class-methods-use-this
+  public init() {}
 
   public draw() {
     switch (this.angle) {

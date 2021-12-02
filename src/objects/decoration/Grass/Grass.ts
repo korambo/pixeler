@@ -19,19 +19,15 @@ export class Grass extends Decoration {
     this.count = props.count || 1;
   }
 
-  private setPattern = () => {
-    const img = this.imageLoader.getImage('grass');
+  public init() {
+    const img = this.assetsLoader.getImage('grass');
     this.pattern = Draw.getPattern(img, { width: this.width, height: this.height });
-  };
+  }
 
   public draw() {
     const { ctx } = Options.getCanvasOptions();
     const sizes = this.getSizes();
     const coordinates = this.getCoordinates();
-
-    if (!this.pattern) {
-      this.setPattern();
-    }
 
     ctx.beginPath();
     ctx.fillStyle = this.pattern;

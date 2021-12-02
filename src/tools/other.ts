@@ -16,3 +16,14 @@ export const objectOrBool = <T>(obj: Partial<T> | boolean | undefined, defaultOb
 
   return { ...defaultObj, ...obj };
 };
+
+/**
+ *
+ */
+export const createId = () => (
+  Math
+    .random()
+    .toString(36)
+    .replace(/[^a-z]+/g, '')
+    .substr(2, 10)
+);

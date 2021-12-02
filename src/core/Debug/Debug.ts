@@ -1,6 +1,6 @@
 import { Options } from '@core/Options';
 import { Canvas } from '@core/Canvas';
-import { Camera } from '@effects/Camera';
+import { Camera } from '@core/Camera';
 
 interface DebugInfo {
   key: string;

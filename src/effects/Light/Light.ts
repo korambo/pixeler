@@ -19,7 +19,9 @@ export class Light extends Canvas {
     });
   }
 
-  public draw = () => {
+  // eslint-disable-next-line class-methods-use-this
+  public init() {}
 
-  };
+  // eslint-disable-next-line class-methods-use-this
+  public draw() {}
 }

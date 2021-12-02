@@ -159,28 +159,22 @@ export class Draw extends Canvas {
     return ctx.createPattern(patternCanvas, 'repeat');
   };
 
+  // eslint-disable-next-line class-methods-use-this
+  public init() {}
+
   public draw = () => {
-    const canvasCoordinates = this.getCoordinates();
-    const canvasSizes = this.getSizes();
-
-    this.elements.forEach((item) => {
-      if (this.flip && item.canFlip) {
-        const coordinates = item.getCoordinates();
-        const sizes = item.getSizes();
-
-        if (item instanceof Figure) {
-          if (this.flip === Flip.x) {
-            const end = canvasCoordinates.x + canvasSizes.width;
-            const padding = (coordinates.x - canvasCoordinates.x);
-
-            item.setCoordinates({
-              x: end - sizes.width - padding,
-            });
-          }
-        }
-      }
-
-      item.draw();
-    });
+    // const canvasCoordinates = this.getCoordinates();
+    // const canvasSizes = this.getSizes();
+    //
+    // this.elements.forEach((item) => {
+    //   const coordinates = this.getCoordinates();
+    //
+    //   item.setCoordinates({
+    //     x: canvasCoordinates.x + coordinates.x,
+    //     y: canvasCoordinates.y + coordinates.y,
+    //   });
+    //
+    //   item.draw();
+    // });
   };
 }

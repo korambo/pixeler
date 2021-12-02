@@ -1,4 +1,4 @@
-import { Sprite } from '@core/Sprite';
+import { Sprite } from '@core/Assets/Sprite';
 import { SpriteAnimationOrientation } from '@core/Animation/types';
 import { GameObject } from '@objects/base/GameObject';
 import { Decoration } from '@objects/base/Decoration';

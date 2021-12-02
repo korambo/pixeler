@@ -1,29 +1,27 @@
 import { Decoration } from '@objects/base/Decoration';
-import { Sprite } from '@core/Sprite';
+import { Sprite } from '@core/Assets/Sprite';
 import { SpriteAnimationOrientation } from '@core/Animation/types';
 
 export class Torch extends Decoration {
   protected width = 12;
   protected height = 12;
 
-  private sprite: Sprite;
-
-  private initSprite = () => {
+  public init() {
     const frameSize = { width: this.width, height: this.height };
 
-    this.sprite = new Sprite({
-      image: this.imageLoader.getImage('torch_sprite'),
-      frameSize,
-    });
-  };
+    this.sprite = {
+      base: new Sprite({
+        image: this.assetsLoader.getImage('torch_sprite'),
+        frameSize,
+      }),
+    };
+  }
 
   public draw() {
-    if (!this.sprite) {
-      this.initSprite();
-    }
+    const { base } = this.sprite;
 
     this.animation
-      .sprite(this.sprite, SpriteAnimationOrientation.x, 20)
+      .sprite(base, SpriteAnimationOrientation.x, 20)
       .drawImage(this.getCoordinates());
   }
 }

@@ -1,14 +1,14 @@
 import { Canvas, CanvasProps } from '@core/Canvas';
-import { ImageLoader } from '@core/ImageLoader';
+import { AssetsLoader } from '@core/Assets/AssetsLoader';
 import { TSizes } from '@core/types';
 import { TileType } from '@tiles/types';
 import { Draw } from '@core/Draw';
 import { TILE_SIZE } from '@core/constants';
-import { Sprite } from '@core/Sprite';
+import { Sprite } from '@core/Assets/Sprite';
 
 export interface TileProps extends CanvasProps, TSizes {
   type: TileType;
-  imageLoader: ImageLoader;
+  assetsLoader: AssetsLoader;
   ctx: CanvasRenderingContext2D;
 }
 
@@ -16,7 +16,7 @@ export abstract class Tile extends Canvas {
   protected width = null;
   protected height = null;
 
-  protected imageLoader: ImageLoader;
+  protected assetsLoader: AssetsLoader;
 
   protected abstract spriteImage: string;
   protected sprite: Sprite;
@@ -33,14 +33,14 @@ export abstract class Tile extends Canvas {
     });
 
     this.type = props.type;
-    this.imageLoader = props.imageLoader;
+    this.assetsLoader = props.assetsLoader;
     this.ctx = props.ctx;
   }
 
   private initPattern = () => {
     this.sprite = new Sprite({
       frameSize: { width: TILE_SIZE, height: TILE_SIZE },
-      image: this.imageLoader.getImage(this.spriteImage),
+      image: this.assetsLoader.getImage(this.spriteImage),
     });
     const img = this.getSpriteTile(this.type);
     this.pattern = Draw.getPattern(img.getImage(), { width: TILE_SIZE, height: TILE_SIZE });

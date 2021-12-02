@@ -1,9 +1,9 @@
 import { Draw } from '@core/Draw';
 import { Options } from '@core/Options';
 import { Interaction, InteractionProps } from '@objects/base/Interaction';
-import { Physic } from '@effects/Physic';
+import { Physic } from '@physic/Physic';
 import { MovingGameObject } from '@objects/base/MovingGameObject';
-import { Player } from '@objects/Player';
+import { Player } from '@objects/special/Player';
 import { MoveOrientation } from '@objects/types';
 
 interface StairsProps extends InteractionProps {
@@ -13,7 +13,7 @@ interface StairsProps extends InteractionProps {
 const StairsHeight = 10;
 
 export class Stairs extends Interaction {
-  protected width = 15;
+  protected width = 5;
   protected height = null;
 
   protected interactionTime = 200;
@@ -41,8 +41,8 @@ export class Stairs extends Interaction {
   }
 
   private setPattern = () => {
-    const img = this.imageLoader.getImage('stairs');
-    this.pattern = Draw.getPattern(img, { width: this.width, height: StairsHeight });
+    const img = this.assetsLoader.getImage('stairs');
+    this.pattern = Draw.getPattern(img, { width: 15, height: StairsHeight });
   };
 
   public canInteract() {
@@ -51,18 +51,17 @@ export class Stairs extends Interaction {
 
   public effects(moving?: MovingGameObject) {
     super.effects(moving);
-    const isPlayer = moving instanceof Player;
 
     if (this.physic.playerIntersect) {
       this.playerReadyInteract = moving.physic.onGround;
-      if (isPlayer) {
+      if (moving instanceof Player) {
         const collision = this.physic.calcCollision(moving);
         this.yOrientation = collision.bottom > collision.top ? MoveOrientation.down : MoveOrientation.up;
         moving.physic.onStairs = this.onStairs;
         moving.physic.canMoving = { x: !this.onStairs, y: this.onStairs };
       }
     } else {
-      if (isPlayer) {
+      if (moving instanceof Player) {
         moving.physic.onStairs = false;
         moving.physic.canMoving = { x: true, y: false };
       }
@@ -72,6 +71,9 @@ export class Stairs extends Interaction {
   }
 
   public animate = () => {};
+
+  // eslint-disable-next-line class-methods-use-this
+  public init() {}
 
   public draw() {
     const { ctx } = Options.getCanvasOptions();
@@ -84,7 +86,7 @@ export class Stairs extends Interaction {
 
     ctx.beginPath();
     ctx.fillStyle = this.pattern;
-    ctx.fillRect(coordinates.x, coordinates.y, sizes.width, sizes.height);
+    ctx.fillRect(Draw.removePixels(coordinates.x, 5), coordinates.y, Draw.getPixels(15), sizes.height);
     ctx.fill();
   }
 

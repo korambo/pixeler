@@ -2,6 +2,7 @@ import { MovingGameObject } from '@objects/base/MovingGameObject';
 
 import { Interaction } from '@objects/base/Interaction';
 import { Draw } from '@core/Draw';
+import { Player } from '@objects/special/Player';
 
 // interface HeartProps extends InteractionProps {
 // }
@@ -25,6 +26,15 @@ export class Heart extends Interaction {
     if (this.physic.playerIntersect) {
       if (!this.looted) {
         this.lootHeart();
+        if (moving instanceof Player) {
+          const resHealth = moving.health + 15;
+
+          if (resHealth > moving.maxHealth) {
+            moving.health = moving.maxHealth;
+          } else {
+            moving.health = resHealth;
+          }
+        }
       }
     }
   }
@@ -33,9 +43,14 @@ export class Heart extends Interaction {
     this.animation.floatingY(40);
   };
 
+  public inputEffects = () => {};
+
+  // eslint-disable-next-line class-methods-use-this
+  public init() {}
+
   public draw() {
     const coordinates = this.getCoordinates();
-    const img = this.imageLoader.getImage('heart');
+    const img = this.assetsLoader.getImage('heart');
 
     if (!this.looted) {
       if (this.canLoot) this.info.draw();
@@ -43,6 +58,4 @@ export class Heart extends Interaction {
       Draw.drawImage(img, coordinates, this.getSizes());
     }
   }
-
-  public inputEffects = () => {};
 }

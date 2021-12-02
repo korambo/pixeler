@@ -17,6 +17,9 @@ export class Dot extends Figure {
     });
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  public init() {}
+
   public draw() {
     const { ctx } = Options.getCanvasOptions();
     const sizes = this.getSizes();

@@ -29,14 +29,17 @@ export class Coin extends Interaction {
     this.animation.floatingY(30);
   };
 
+  public inputEffects = () => {};
+
+  // eslint-disable-next-line class-methods-use-this
+  public init() {}
+
   public draw() {
     const coordinates = this.getCoordinates();
-    const img = this.imageLoader.getImage('coin');
+    const img = this.assetsLoader.getImage('coin');
 
     if (!this.looted) {
       Draw.drawImage(img, coordinates, this.getSizes());
     }
   }
-
-  public inputEffects = () => {};
 }

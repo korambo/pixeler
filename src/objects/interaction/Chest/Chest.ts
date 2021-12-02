@@ -1,5 +1,5 @@
 import { MovingGameObject } from '@objects/base/MovingGameObject';
-import { Sprite } from '@core/Sprite';
+import { Sprite } from '@core/Assets/Sprite';
 
 import { Interaction, InteractionProps } from '@objects/base/Interaction';
 
@@ -19,24 +19,12 @@ export class Chest extends Interaction {
   private open: boolean = false;
   private empty: boolean = false;
 
-  private sprite: Sprite;
-
   public constructor(props: ChestProps) {
     super(props);
 
     if (typeof props.open !== 'undefined') this.open = props.open;
     if (typeof props.empty !== 'undefined') this.empty = props.empty;
   }
-
-  private initSprite = () => {
-    this.sprite = new Sprite({
-      image: this.imageLoader.getImage('chest_sprite'),
-      frameSize: {
-        width: this.width,
-        height: this.height,
-      },
-    });
-  };
 
   private openChest = () => {
     this.open = true;
@@ -55,25 +43,6 @@ export class Chest extends Interaction {
     this.canLoot = this.open && !this.empty && this.physic.playerIntersect;
   }
 
-  public draw() {
-    const coordinates = this.getCoordinates();
-
-    if (!this.sprite) {
-      this.initSprite();
-    }
-
-    if (this.canOpen || this.canLoot) this.info.draw();
-
-    if (this.empty && this.open) {
-      this.sprite.drawFrame([1, 0], coordinates);
-      return;
-    }
-
-    this.open
-      ? this.sprite.drawFrame([2, 0], coordinates)
-      : this.sprite.drawFrame([0, 0], coordinates);
-  }
-
   public inputEffects = () => {
     const keysPressed = this.inputs.getKeysPressed();
 
@@ -90,4 +59,34 @@ export class Chest extends Interaction {
       }
     }
   };
+
+  public init() {
+    super.init();
+
+    this.sprite = {
+      base: new Sprite({
+        image: this.assetsLoader.getImage('chest_sprite'),
+        frameSize: {
+          width: this.width,
+          height: this.height,
+        },
+      }),
+    };
+  }
+
+  public draw() {
+    const { base } = this.sprite;
+    const coordinates = this.getCoordinates();
+
+    if (this.canOpen || this.canLoot) this.info.draw();
+
+    if (this.empty && this.open) {
+      base.drawFrame([1, 0], coordinates);
+      return;
+    }
+
+    this.open
+      ? base.drawFrame([2, 0], coordinates)
+      : base.drawFrame([0, 0], coordinates);
+  }
 }

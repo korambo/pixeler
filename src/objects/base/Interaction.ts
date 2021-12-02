@@ -1,8 +1,8 @@
 import { GameObject, GameObjectProps } from '@objects/base/GameObject';
-import { Inputs } from '@effects/Inputs';
+import { Inputs } from '@core/Inputs';
 import { InteractionInfo } from '@objects/interface/InteractionInfo';
 import { Animation } from '@core/Animation';
-import { Physic } from '@effects/Physic';
+import { Physic } from '@physic/Physic';
 
 export interface InteractionProps extends GameObjectProps {
   inputs: Inputs;
@@ -22,7 +22,15 @@ export abstract class Interaction extends GameObject {
   public constructor(props: InteractionProps) {
     super(props);
 
-    this.info = new InteractionInfo({ x: this.x, y: this.y });
+    const sizes = this.getSizes();
+
+    this.info = new InteractionInfo({
+      x: this.x,
+      y: this.y,
+      width: sizes.width,
+      height: sizes.height,
+      assetsLoader: props.assetsLoader,
+    });
 
     this.animation = new Animation(this);
 
@@ -52,5 +60,9 @@ export abstract class Interaction extends GameObject {
 
   public clearInteractionTimeout() {
     this.interactionTimeout = null;
+  }
+
+  public init() {
+    this.info.init();
   }
 }

@@ -39,6 +39,9 @@ export class Rectangle extends Figure {
     ctx.stroke();
   };
 
+  // eslint-disable-next-line class-methods-use-this
+  public init() {}
+
   public draw() {
     const { ctx } = Options.getCanvasOptions();
 

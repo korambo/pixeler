@@ -1,5 +1,5 @@
 import { Decoration, DecorationProps } from '@objects/base/Decoration';
-import { Sprite } from '@core/Sprite';
+import { Sprite } from '@core/Assets/Sprite';
 
 interface FlowerProps extends DecorationProps {
   type?: 0|1|2;
@@ -9,8 +9,6 @@ export class Flower extends Decoration {
   protected width = 10;
   protected height = 6;
 
-  private sprite: Sprite;
-
   private readonly type: number;
 
   public constructor(props: FlowerProps) {
@@ -19,22 +17,21 @@ export class Flower extends Decoration {
     this.type = typeof props.type !== 'number' ? Math.floor(Math.random() * 2) : props.type;
   }
 
-  private initSprite = () => {
+  public init() {
     const frameSize = { width: this.width, height: this.height };
 
-    this.sprite = new Sprite({
-      image: this.imageLoader.getImage('flower_sprite'),
-      frameSize,
-    });
-  };
+    this.sprite = {
+      base: new Sprite({
+        image: this.assetsLoader.getImage('flower_sprite'),
+        frameSize,
+      }),
+    };
+  }
 
   public draw() {
+    const { base } = this.sprite;
     const coordinates = this.getCoordinates();
 
-    if (!this.sprite) {
-      this.initSprite();
-    }
-
-    this.sprite.drawFrame([0, this.type], coordinates);
+    base.drawFrame([0, this.type], coordinates);
   }
 }

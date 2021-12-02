@@ -1,33 +1,44 @@
 import { TCoordinates } from '@core/types';
 import { Canvas, CanvasProps } from '@core/Canvas';
-import { Inputs } from '@effects/Inputs';
+import { Inputs } from '@core/Inputs';
 import { Interaction } from '@objects/base/Interaction';
-import { ImageLoader } from '@core/ImageLoader/ImageLoader';
+import { AssetsLoader } from '@core/Assets/AssetsLoader';
 import { Options } from '@core/Options';
 import { Decoration } from '@objects/base/Decoration';
 import { Terrain } from '@objects/base/Terrain';
-import { Gravity } from '@effects/Gravity';
+import { Gravity } from '@physic/Gravity';
 import { Rectangle } from '@geometry/Rectangle';
+import { Enemy } from '@objects/base/Enemy/Enemy';
+import { MovingGameObject } from '@objects/base/MovingGameObject';
+import { Player } from '@objects/special/Player';
 
 interface TerrainParams {
-  imageLoader: ImageLoader;
+  assetsLoader: AssetsLoader;
   gravity: Gravity;
 }
 
 interface InteractionParams {
   inputs: Inputs;
-  imageLoader: ImageLoader;
+  assetsLoader: AssetsLoader;
   gravity: Gravity;
 }
 
 interface DecorationParams {
-  imageLoader: ImageLoader;
+  assetsLoader: AssetsLoader;
+}
+
+interface EnemiesParams {
+  inputs: Inputs;
+  assetsLoader: AssetsLoader;
+  gravity: Gravity;
+  player: Player;
 }
 
 export interface MapProps extends CanvasProps {
   inputs: Inputs;
-  imageLoader: ImageLoader;
+  assetsLoader: AssetsLoader;
   gravity: Gravity;
+  player: Player;
 }
 
 export abstract class Map extends Canvas {
@@ -36,10 +47,13 @@ export abstract class Map extends Canvas {
   private terrain: Terrain[] = [];
   private interactions: Interaction[] = [];
   private decorations: Decoration[] = [];
+  private enemies: Enemy[] = [];
 
-  protected imageLoader: ImageLoader;
+  protected movingObjects: MovingGameObject[];
+  protected assetsLoader: AssetsLoader;
   protected inputs: Inputs;
   protected gravity: Gravity;
+  protected player: Player;
 
   protected background = '#80b0bc';
 
@@ -48,7 +62,8 @@ export abstract class Map extends Canvas {
 
     this.gravity = props.gravity;
     this.inputs = props.inputs;
-    this.imageLoader = props.imageLoader;
+    this.assetsLoader = props.assetsLoader;
+    this.player = props.player;
   }
 
   public drawBackground = () => {
@@ -60,15 +75,24 @@ export abstract class Map extends Canvas {
   };
 
   public setTerrain = (cb: (params: TerrainParams) => Terrain[]) => {
-    this.terrain = cb({ imageLoader: this.imageLoader, gravity: this.gravity });
+    this.terrain = cb({ assetsLoader: this.assetsLoader, gravity: this.gravity });
   };
 
   public setInteractions = (cb: (props: InteractionParams) => Interaction[]) => {
-    this.interactions = cb({ imageLoader: this.imageLoader, inputs: this.inputs, gravity: this.gravity });
+    this.interactions = cb({ assetsLoader: this.assetsLoader, inputs: this.inputs, gravity: this.gravity });
   };
 
   public setDecoration = (cb: (props: DecorationParams) => Decoration[]) => {
-    this.decorations = cb({ imageLoader: this.imageLoader });
+    this.decorations = cb({ assetsLoader: this.assetsLoader });
+  };
+
+  public setEnemies = (cb: (props: EnemiesParams) => Enemy[]) => {
+    this.enemies = cb({
+      assetsLoader: this.assetsLoader,
+      inputs: this.inputs,
+      gravity: this.gravity,
+      player: this.player,
+    });
   };
 
   public getTerrain = () => this.terrain;
@@ -77,7 +101,15 @@ export abstract class Map extends Canvas {
 
   public getDecoration = () => this.decorations;
 
+  public getEnemies = () => this.enemies;
+
   public getStart = (): TCoordinates => this.start;
+
+  public init() {
+    this.terrain.forEach((tile) => tile.init());
+    this.decorations.forEach((decorations) => decorations.init());
+    this.interactions.forEach((interaction) => interaction.init());
+  }
 
   public draw() {
     const { boxes } = Options.getDebug();
@@ -86,8 +118,8 @@ export abstract class Map extends Canvas {
       tile.draw();
       boxes && new Rectangle(tile.getPolygon()).draw();
     });
-    this.decorations.forEach((interaction) => {
-      interaction.draw();
+    this.decorations.forEach((decorations) => {
+      decorations.draw();
     });
     this.interactions.forEach((interaction) => {
       interaction.draw();

@@ -1,10 +1,10 @@
 import { Tile } from '@tiles/base/Tile';
-import { ImageLoader } from '@core/ImageLoader';
+import { AssetsLoader } from '@core/Assets/AssetsLoader';
 import { Draw } from '@core/Draw';
 import { TILE_SIZE } from '@core/constants';
 import { TileInstance, TileType } from '@tiles/types';
 import { Terrain, TerrainProps } from '@objects/base/Terrain';
-import { Physic } from '@effects/Physic';
+import { Physic } from '@physic/Physic';
 import { Options } from '@core/Options';
 import { objectOrBool } from '../../../tools/other';
 
@@ -19,7 +19,7 @@ interface Border {
 
 interface PlatformProps extends TerrainProps {
   tile: TileInstance;
-  imageLoader: ImageLoader;
+  assetsLoader: AssetsLoader;
   tilesCount: TilesCount;
   border?: Partial<Border> | boolean;
   onlyInner?: boolean;
@@ -31,7 +31,7 @@ export class Platform extends Terrain {
   protected width = null;
   protected height = null;
 
-  protected imageLoader: ImageLoader;
+  protected assetsLoader: AssetsLoader;
 
   private readonly Tile: TileInstance;
   private readonly tilesCount: TilesCount;
@@ -39,7 +39,6 @@ export class Platform extends Terrain {
   private customCanvas: { canvas: HTMLCanvasElement; ctx: CanvasRenderingContext2D };
 
   private isBackground: boolean;
-  private inited = false;
 
   protected onlyInner: boolean;
 
@@ -58,7 +57,7 @@ export class Platform extends Terrain {
     }
 
     this.Tile = props.tile;
-    this.imageLoader = props.imageLoader;
+    this.assetsLoader = props.assetsLoader;
     this.tilesCount = props.tilesCount;
     this.border = objectOrBool(props.border, {
       top: true,
@@ -87,7 +86,7 @@ export class Platform extends Terrain {
         height: sizes.height,
         x: 0,
         y: 0,
-        imageLoader: this.imageLoader,
+        assetsLoader: this.assetsLoader,
         type: TileType.inner,
         ctx: this.customCanvas.ctx,
       }),
@@ -100,7 +99,7 @@ export class Platform extends Terrain {
       height: Draw.getPixels(TILE_SIZE),
       x: 0,
       y: 0,
-      imageLoader: this.imageLoader,
+      assetsLoader: this.assetsLoader,
       type: this.onlyInner ? TileType.fullInner : TileType.fullOuter,
       ctx: this.customCanvas.ctx,
     }));
@@ -115,7 +114,7 @@ export class Platform extends Terrain {
         height: Draw.getPixels(TILE_SIZE),
         x: 0,
         y: 0,
-        imageLoader: this.imageLoader,
+        assetsLoader: this.assetsLoader,
         type: this.onlyInner ? TileType.horizontalInnerLeft : TileType.horizontalOuterLeft,
         ctx: this.customCanvas.ctx,
       }),
@@ -124,7 +123,7 @@ export class Platform extends Terrain {
         height: Draw.getPixels(TILE_SIZE),
         x: TILE_SIZE,
         y: 0,
-        imageLoader: this.imageLoader,
+        assetsLoader: this.assetsLoader,
         type: this.onlyInner ? TileType.horizontalInner : TileType.horizontalOuter,
         ctx: this.customCanvas.ctx,
       }),
@@ -133,7 +132,7 @@ export class Platform extends Terrain {
         height: Draw.getPixels(TILE_SIZE),
         x: TILE_SIZE * (xCount - 1),
         y: 0,
-        imageLoader: this.imageLoader,
+        assetsLoader: this.assetsLoader,
         type: this.onlyInner ? TileType.horizontalInnerRight : TileType.horizontalOuterRight,
         ctx: this.customCanvas.ctx,
       }),
@@ -149,7 +148,7 @@ export class Platform extends Terrain {
         height: Draw.getPixels(TILE_SIZE),
         x: 0,
         y: 0,
-        imageLoader: this.imageLoader,
+        assetsLoader: this.assetsLoader,
         type: this.onlyInner ? TileType.verticalInnerTop : TileType.verticalOuterTop,
         ctx: this.customCanvas.ctx,
       }),
@@ -158,7 +157,7 @@ export class Platform extends Terrain {
         height: Draw.getPixels(TILE_SIZE * (yCount - 2)),
         x: 0,
         y: TILE_SIZE,
-        imageLoader: this.imageLoader,
+        assetsLoader: this.assetsLoader,
         type: TileType.verticalInner,
         ctx: this.customCanvas.ctx,
       }),
@@ -167,7 +166,7 @@ export class Platform extends Terrain {
         height: Draw.getPixels(TILE_SIZE),
         x: 0,
         y: TILE_SIZE * (yCount - 1),
-        imageLoader: this.imageLoader,
+        assetsLoader: this.assetsLoader,
         type: TileType.verticalBottom,
         ctx: this.customCanvas.ctx,
       }),
@@ -185,7 +184,7 @@ export class Platform extends Terrain {
             height: Draw.getPixels(TILE_SIZE),
             x: 0,
             y: 0,
-            imageLoader: this.imageLoader,
+            assetsLoader: this.assetsLoader,
             type: this.onlyInner ? TileType.innerTop : TileType.outerTop,
             ctx: this.customCanvas.ctx,
           }),
@@ -198,7 +197,7 @@ export class Platform extends Terrain {
             height: Draw.getPixels(TILE_SIZE),
             x: 0,
             y: TILE_SIZE * (yCount - 1),
-            imageLoader: this.imageLoader,
+            assetsLoader: this.assetsLoader,
             type: TileType.bottom,
             ctx: this.customCanvas.ctx,
           }),
@@ -214,7 +213,7 @@ export class Platform extends Terrain {
             height: Draw.getPixels(TILE_SIZE * yCount),
             x: 0,
             y: 0,
-            imageLoader: this.imageLoader,
+            assetsLoader: this.assetsLoader,
             type: TileType.left,
             ctx: this.customCanvas.ctx,
           }),
@@ -227,7 +226,7 @@ export class Platform extends Terrain {
             height: Draw.getPixels(TILE_SIZE * yCount),
             x: TILE_SIZE * (xCount - 1),
             y: 0,
-            imageLoader: this.imageLoader,
+            assetsLoader: this.assetsLoader,
             type: TileType.right,
             ctx: this.customCanvas.ctx,
           }),
@@ -250,7 +249,7 @@ export class Platform extends Terrain {
         height: Draw.getPixels(TILE_SIZE),
         x: (xCount - 1) * TILE_SIZE,
         y: 0,
-        imageLoader: this.imageLoader,
+        assetsLoader: this.assetsLoader,
         type: this.onlyInner ? TileType.innerTopRight : TileType.outerTopRight,
         ctx: this.customCanvas.ctx,
       }));
@@ -262,7 +261,7 @@ export class Platform extends Terrain {
         height: Draw.getPixels(TILE_SIZE),
         x: 0,
         y: 0,
-        imageLoader: this.imageLoader,
+        assetsLoader: this.assetsLoader,
         type: this.onlyInner ? TileType.innerTopLeft : TileType.outerTopLeft,
         ctx: this.customCanvas.ctx,
       }));
@@ -274,7 +273,7 @@ export class Platform extends Terrain {
         height: Draw.getPixels(TILE_SIZE),
         x: (xCount - 1) * TILE_SIZE,
         y: TILE_SIZE * (yCount - 1),
-        imageLoader: this.imageLoader,
+        assetsLoader: this.assetsLoader,
         type: TileType.bottomRight,
         ctx: this.customCanvas.ctx,
       }));
@@ -286,7 +285,7 @@ export class Platform extends Terrain {
         height: Draw.getPixels(TILE_SIZE),
         x: 0,
         y: TILE_SIZE * (yCount - 1),
-        imageLoader: this.imageLoader,
+        assetsLoader: this.assetsLoader,
         type: TileType.bottomLeft,
         ctx: this.customCanvas.ctx,
       }));
@@ -317,26 +316,22 @@ export class Platform extends Terrain {
     this.angels();
   }
 
-  private init = () => {
+  public init() {
     this.initTiles();
 
     this.tiles.forEach((item) => item.draw());
-    this.inited = true;
-  };
+  }
 
   public draw() {
     const { ctx } = Options.getCanvasOptions();
     const polygon = this.getPolygon();
 
-    if (!this.inited) {
-      this.init();
-    }
-
     Draw.drawCanvas(this.customCanvas.canvas, this.getCoordinates(), this.getSizes());
 
     if (this.isBackground) {
       ctx.beginPath();
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
+      ctx.fillStyle = 'rgba(255,255,255,0.025)';
+      // ctx.fillStyle = 'rgba(0,0,0,0.05)';
       ctx.fillRect(polygon.x, polygon.y, polygon.width, polygon.height);
       ctx.fill();
     }

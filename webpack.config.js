@@ -30,7 +30,9 @@ module.exports = {
     ],
   },
   plugins: [
-    new HtmlWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      title: 'Pixeler',
+    }),
   ],
   resolve: {
     extensions: ['.ts', '.js'],

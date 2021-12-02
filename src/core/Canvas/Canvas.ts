@@ -15,7 +15,9 @@ export abstract class Canvas {
     this.y = props.y;
   }
 
-  abstract draw(): void;
+  public abstract init(): void;
+
+  public abstract draw(): void;
 
   public setSizes = (sizes: Partial<TSizes>) => {
     const { cellSize } = Options.getCanvasOptions();
